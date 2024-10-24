@@ -1,0 +1,1 @@
+# Strongym-management
