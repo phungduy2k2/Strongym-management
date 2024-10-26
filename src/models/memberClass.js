@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// collection phụ lk 2 collection Member và Class
 const MemberClassSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },

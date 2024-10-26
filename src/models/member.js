@@ -13,7 +13,7 @@ const MemberSchema = new mongoose.Schema(
     status: { type: String, enum: ['active', 'expired'], default: 'active' },
     expiredDate: { type: Date, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Member = mongoose.models.Member || mongoose.model("Member", MemberSchema);

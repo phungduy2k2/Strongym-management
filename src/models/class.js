@@ -12,7 +12,7 @@ const ClassSchema = new mongoose.Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Class = mongoose.models.Class || mongoose.model("Class", ClassSchema);

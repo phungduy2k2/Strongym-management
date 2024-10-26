@@ -10,7 +10,7 @@ const EquipmentSchema = new mongoose.Schema(
     },
     nextMaintenanceDate: { type: Date, required: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Equipment = mongoose.models.Equipment || mongoose.model("Equipment", EquipmentSchema);

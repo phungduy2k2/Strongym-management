@@ -10,7 +10,7 @@ const EmployeeSchema = new mongoose.Schema(
     address: { type: String, required: true },
     position: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Employee = mongoose.models.Employee || mongoose.model("Employee", EmployeeSchema);

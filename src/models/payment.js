@@ -14,10 +14,9 @@ const PaymentSchema = new mongoose.Schema(
     description: { type: String, required: true },
     paymentMethod: {type: String, enum: ['cash', 'card', 'stripe'], default: 'stripe' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Payment =
-  mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);
+const Payment = mongoose.models.Payment || mongoose.model("Payment", PaymentSchema);
 
 export default Payment;
