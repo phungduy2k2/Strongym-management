@@ -6,6 +6,12 @@ services:
       - "3000:3000"
     environment:
       - MONGODB_URI= ${MONGODB_URI}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"] # Thay đổi URL để phù hợp với ứng dụng
+      interval: 60s       # Kiểm tra mỗi 60 giây
+      timeout: 10s        # Thời gian tối đa để một kiểm tra có thể chạy
+      retries: 3          # Số lần thử trước khi đánh dấu container là không hoạt động
     depends_on:
       - mongo
 
@@ -15,4 +21,10 @@ services:
       - "27017:27017"
     volumes:
       - ./data/mongo:/data/db
-      
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
