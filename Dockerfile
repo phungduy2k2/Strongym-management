@@ -4,12 +4,12 @@ FROM node:18-alpine
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 # Tạo thư mục làm việc
-WORKDIR /home/node/app
+WORKDIR /home/app
 
 # Sao chép file cấu hình package.json và package-lock.json
 COPY package*.json ./
 
-USER node
+USER duypv
 
 # Cài đặt các dependencies
 RUN npm install
