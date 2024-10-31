@@ -2,18 +2,17 @@ import mongoose from "mongoose";
 
 const BlogSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, index: true },
     content: { type: String, required: true },
-    category: [{ type: String }],
+    category: { type: [String], default: [], index: true },
     creatorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
     }
 },
   { timestamps: true }
 );
 
-const Blog =
-  mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
+const Blog = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
 
 export default Blog;

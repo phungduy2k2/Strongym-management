@@ -4,14 +4,18 @@ const MemberSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     birth: { type: Date, required: true },
-    phone: { type: String, required: true },
+    phone: {
+      type: String,
+      required: true,
+      match: [/^0\d{9}$/, "Số điện thoại không hợp lệ!"],
+    },
     address: { type: String, required: true },
     membershipPlanId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "MembershipPlan",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MembershipPlan",
     },
-    status: { type: String, enum: ['active', 'expired'], default: 'active' },
-    expiredDate: { type: Date, required: true },
+    status: { type: String, enum: ["active", "expired"], default: "active" },
+    expiredDate: { type: Date },
   },
   { timestamps: true }
 );
