@@ -1,17 +1,75 @@
-version: '3'
+version: '3.8'
 services:
+  # Application service
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI= ${MONGODB_URI}
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGODB_URI=mongodb://mongo:27017/strongym_db
+      - SESSION_SECRET=your-session-secret
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"] # Thay đổi URL để phù hợp với ứng dụng
+      interval: 1000s       # Kiểm tra mỗi 1000 giây
+      timeout: 10s        # Thời gian tối đa để một kiểm tra có thể chạy
+      retries: 3          # Số lần thử trước khi đánh dấu container là không hoạt động
     depends_on:
+      - redis
       - mongo
+    networks:
+      - backend
 
+  # Redis service
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  # MongoDB service
   mongo:
-    image: mongo
+    image: mongo:6
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=yourpassword
     ports:
       - "27017:27017"
     volumes:
       - ./data/mongo:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 1000s
+      timeout: 10s
+      retries: 3
+    networks:
+      - backend
+  
+  # Reverse Proxy Service (Nginx)
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - backend
+      - frontend
+
+  networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
+
+  volumes:
+    mongo-data:
