@@ -34,14 +34,14 @@ export default function Login() {
   async function handleLogin() {
     const res = await login(formData);
 
-    console.log(res, "res login");
-
     if (res.success) {
       toast.success(res.message, {
         position: "bottom-right",
       });
       setIsAuthUser(true);
-      setUser(res?.finalData?.user);
+      
+      const currentUser = res?.finalData?.user;
+      setUser(currentUser);
       setFormData(initialFormdata);
 
       Cookies.set("token", res?.finalData?.token);

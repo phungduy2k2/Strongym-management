@@ -1,5 +1,6 @@
 import connectToDB from "@/database";
 import User from "@/models/user";
+import { messages } from "@/utils/message";
 import { hash } from "bcryptjs";
 import Joi from "joi";
 import { NextResponse } from "next/server";
@@ -20,7 +21,6 @@ export async function POST(req) {
   const { error } = schema.validate({ username, password, role });
 
   if (error) {
-    console.log(error);
     return NextResponse.json({
       success: false,
       message: error.details[0].message,
@@ -28,12 +28,12 @@ export async function POST(req) {
   }
 
   try {
-    const isuserExist = await User.findOne({ username });
+    const userExist = await User.findOne({ username });
 
-    if (isuserExist) {
+    if (userExist) {
       return NextResponse.json({
         success: false,
-        message: error.details[0].message,
+        message: messages.register.EMAIL_EXIST,
       });
     } else {
       const hashPassword = await hash(password, 12);
@@ -47,7 +47,7 @@ export async function POST(req) {
       if (newCreatedUser) {
         return NextResponse.json({
           success: true,
-          message: "Account created successfully!",
+          message: messages.register.SUCCESS,
         });
       }
     }
@@ -56,7 +56,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: false,
-      message: "Something went wrong! Please try again later",
+      message: messages.register.ERROR,
     });
   }
 }

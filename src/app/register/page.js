@@ -2,10 +2,11 @@
 
 import InputComponent from "@/components/FormElements/InputComponent";
 import SelectComponent from "@/components/FormElements/SelectComponent";
+import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 const initialFormData = {
@@ -17,6 +18,7 @@ const initialFormData = {
 export default function Register() {
   const [formData, setFormData] = useState(initialFormData);
   const [isRegistered, setIsRegistered] = useState(false);
+  const { isAuthUser } = useContext(GlobalContext);
 
   const router = useRouter();
 
@@ -44,12 +46,11 @@ export default function Register() {
         position: 'bottom-right'
       });
     }
-    console.log(data, 'data register');
   }
 
-  // useEffect(() => {
-  //   if (isAuthUser) router.push("/");
-  // }, [isAuthUser]);
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
 
   return (
     <div className="bg-white relative">

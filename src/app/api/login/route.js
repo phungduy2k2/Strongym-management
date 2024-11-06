@@ -1,5 +1,6 @@
 import connectToDB from "@/database";
 import User from "@/models/user";
+import { messages } from "@/utils/message";
 import { compare } from "bcryptjs";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
@@ -31,7 +32,7 @@ export async function POST(req) {
     if (!checkUser) {
       return NextResponse.json({
         success: false,
-        message: "Account not found with this username",
+        message: messages.login.USER_NOT_FOUND,
       });
     }
 
@@ -39,7 +40,7 @@ export async function POST(req) {
     if (!checkPassword) {
       return NextResponse.json({
         success: false,
-        message: "Incorrect password. Please try again !",
+        message: messages.login.INCORRECT_PASSWORD,
       });
     }
 
@@ -49,7 +50,7 @@ export async function POST(req) {
         username: checkUser?.username,
         role: checkUser?.role,
       },
-      "default_secret_key",
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
 
@@ -65,7 +66,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: true,
-      message: "Login successfully!",
+      message: messages.login.SUCCESS,
       finalData,
     });
   } catch (e) {
@@ -73,7 +74,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: false,
-      message: "Something went wrong ! Please try again later",
+      message: messages.login.ERROR,
     });
   }
 }
