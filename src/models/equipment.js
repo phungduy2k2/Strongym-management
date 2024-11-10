@@ -6,7 +6,7 @@ const EquipmentSchema = new mongoose.Schema(
     quantity: { type: Number, required: true },
     creatorId: { 
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Member"
+        ref: "User"
     },
     nextMaintenanceDate: { type: Date, required: false },
   },

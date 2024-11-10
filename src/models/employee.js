@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const EmployeeSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     birth: { type: Date, required: true },
-    phone: { type: String, required: true },
+    phone: { type: String, required: true, index: true },
     imageUrl: { type: String, required: true },
     idCard: { type: String, required: true },
     address: { type: String, required: true },
