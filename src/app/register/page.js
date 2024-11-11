@@ -23,13 +23,7 @@ export default function Register() {
   const router = useRouter();
 
   function isFormValid() {
-    return formData &&
-      formData.username &&
-      formData.username.trim() !== "" &&
-      formData.password &&
-      formData.password.trim() !== ""
-      ? true
-      : false;
+    return formData?.username?.trim() && formData?.password?.trim();
   }
 
   async function handleRegisterOnSubmit() {

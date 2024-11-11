@@ -22,13 +22,7 @@ export default function Login() {
   const router = useRouter();
 
   function isValidForm() {
-    return formData &&
-      formData.username &&
-      formData.username.trim() !== "" &&
-      formData.password &&
-      formData.password.trim() !== ""
-      ? true
-      : false;
+    return formData?.username?.trim() && formData?.password?.trim();
   }
 
   async function handleLogin() {

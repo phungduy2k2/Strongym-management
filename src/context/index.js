@@ -6,7 +6,7 @@ import { createContext, useEffect, useState } from "react";
 export const GlobalContext = createContext(null);
 
 export default function GlobalState({ children }) {
-  const [isAuthUser, setIsAuthUser] = useState(null);
+  const [isAuthUser, setIsAuthUser] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -14,8 +14,6 @@ export default function GlobalState({ children }) {
       setIsAuthUser(true);
       const userData = JSON.parse(localStorage.getItem("user")) || {};
       setUser(userData);
-    } else {
-      setIsAuthUser(false);
     }
   }, [Cookies]);
 
