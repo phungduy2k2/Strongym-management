@@ -1,17 +1,18 @@
 "use client";
 
 import InputComponent from "@/components/FormElements/InputComponent";
-import SelectComponent from "@/components/FormElements/SelectComponent";
+import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 const initialFormData = {
   username: "",
   password: "",
+  passwordConfirm: "",
   role: "member",
 };
 
@@ -23,21 +24,27 @@ export default function Register() {
   const router = useRouter();
 
   function isFormValid() {
-    return formData?.username?.trim() && formData?.password?.trim();
+    return (
+      formData?.username?.trim() &&
+      formData?.password?.trim() &&
+      formData?.passwordConfirm?.trim() &&
+      formData?.password === formData?.passwordConfirm
+    );
   }
 
   async function handleRegisterOnSubmit() {
-    const data = await registerNewUser(formData);
+    const { passwordConfirm, ...dataToSend } = formData;
+    const data = await registerNewUser(dataToSend);
 
     if (data.success) {
       toast.success(data.message, {
-        position: 'bottom-right'
+        position: "bottom-right",
       });
       setIsRegistered(true);
       setFormData(initialFormData);
     } else {
       toast.error(data.message, {
-        position: 'bottom-right'
+        position: "bottom-right",
       });
     }
   }
@@ -81,18 +88,6 @@ export default function Register() {
                         }}
                         value={formData[controlItem.id]}
                       />
-                    ) : controlItem.componentType === "select" ? (
-                      <SelectComponent
-                        options={controlItem.options}
-                        label={controlItem.label}
-                        onChange={(event) => {
-                          setFormData({
-                            ...formData,
-                            [controlItem.id]: event.target.value,
-                          });
-                        }}
-                        value={formData[controlItem.id]}
-                      />
                     ) : null
                   )}
                   <button
@@ -109,6 +104,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 }

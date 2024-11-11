@@ -14,6 +14,13 @@ export const registrationFormControls = [
     componentType: "input",
   },
   {
+    id: "passwordConfirm",
+    type: "password",
+    placeholder: "Confirm password",
+    label: "Password confirm",
+    componentType: "input",
+  },
+  {
     id: "role",
     type: "",
     placeholder: "",

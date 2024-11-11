@@ -7,7 +7,7 @@ export const messages = {
     },
     register: {
         SUCCESS: "Account created successfully!",
-        EMAIL_EXIST: "Email is already exist. Please try with different email.",
+        EMAIL_EXIST: "Username is already exist. Please try with different username.",
         ERROR: "Something went wrong! Please try again later."
     }
 }

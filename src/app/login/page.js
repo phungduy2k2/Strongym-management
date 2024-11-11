@@ -1,6 +1,7 @@
 "use client";
 
 import InputComponent from "@/components/FormElements/InputComponent";
+import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { login } from "@/services/login";
 import { loginFormControls } from "@/utils";
@@ -101,6 +102,7 @@ export default function Login() {
           </div>
         </div>
       </div>
+      <Notification/>
     </div>
   );
 }
