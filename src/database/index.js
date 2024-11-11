@@ -5,17 +5,23 @@ const configOptions = {
   useUnifiedTopology: true,
 };
 
-const connectToDB = async () => {
-  console.log(process.env.MONGODB_URI);
+let isConnected = false;
 
-  const connectionUrl = process.env.MONGODB_URI;
+async function connectToDB() {
+  if (isConnected) return;
 
-  mongoose
-    .connect(connectionUrl, configOptions)
-    .then(() => console.log("Database connected successfully!"))
-    .catch((err) =>
-      console.log(`Getting error from DB connection ${err.message}`)
-    );
-};
+  try {
+    const connectionUrl = process.env.MONGODB_URI;
+
+    await mongoose
+      .connect(connectionUrl, configOptions)
+      .then(() => console.log("Database connected successfully!"));
+
+    isConnected = true;
+  } catch (err) {
+    console.log(`Getting error from DB connection ${err.message}`);
+    throw err;
+  }
+}
 
 export default connectToDB;

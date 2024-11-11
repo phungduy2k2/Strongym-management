@@ -23,24 +23,21 @@ export const messages = {
         ERROR: "Failed to update member. Please try again."
     },
     getAllMember: {
-        NOT_AUTHORIZED: "You are not authorized!",
+        NO_FOUND: "No member found",
         ERROR: "Failed to get members. Please try again."
     },
     deleteMember: {
         SUCCESS: "Delete member successfully!",
         NO_ID: "Member ID is required.",
         ERROR: "Failed to delete member. Please try again.",
-        NOT_AUTHORIZED: "You are not authorized!",
     },
 
     /// equipment
     addEquipment: {
         SUCCESS: "Add new equipment successfully!",
-        MEMBER_EXIST: "This phone is already used. Please try with different phone number.",
         ERROR: "Failed to add new equipment. Please try again."
     },
     getAllEquipment: {
-        NOT_AUTHORIZED: "You are not authorized!",
         ERROR: "Failed to get equipments. Please try again."
     },
     updateEquipment: {
@@ -51,7 +48,6 @@ export const messages = {
         SUCCESS: "Delete equipment successfully!",
         NO_ID: "Equipment ID is required.",
         ERROR: "Failed to delete equipment. Please try again.",
-        NOT_AUTHORIZED: "You are not authorized!",
     },
 
     /// employee
@@ -61,7 +57,7 @@ export const messages = {
         ERROR: "Failed to add new employee. Please try again."
     },
     getAllEmployee: {
-        NOT_AUTHORIZED: "You are not authorized!",
+        NO_FOUND: "No employee found.",
         ERROR: "Failed to get employees. Please try again."
     },
     searchEmployee: {
@@ -78,7 +74,6 @@ export const messages = {
         SUCCESS: "Delete employee successfully!",
         NO_ID: "Employee ID is required.",
         ERROR: "Failed to delete employee. Please try again.",
-        NOT_AUTHORIZED: "You are not authorized!",
     },
 
     /// blog
