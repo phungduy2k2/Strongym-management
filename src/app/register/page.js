@@ -4,10 +4,9 @@ import InputComponent from "@/components/FormElements/InputComponent";
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
-import { registrationFormControls } from "@/utils";
+import { registrationFormControls, showToast } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useContext, useState, useEffect } from "react";
-import { toast } from "react-toastify";
 
 const initialFormData = {
   username: "",
@@ -37,15 +36,11 @@ export default function Register() {
     const data = await registerNewUser(dataToSend);
 
     if (data.success) {
-      toast.success(data.message, {
-        position: "bottom-right",
-      });
+      showToast("success", data.message);
       setIsRegistered(true);
       setFormData(initialFormData);
     } else {
-      toast.error(data.message, {
-        position: "bottom-right",
-      });
+      showToast("error", data.message);
     }
   }
 

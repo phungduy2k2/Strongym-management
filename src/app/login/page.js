@@ -4,11 +4,10 @@ import InputComponent from "@/components/FormElements/InputComponent";
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { login } from "@/services/login";
-import { loginFormControls } from "@/utils";
+import { loginFormControls, showToast } from "@/utils";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
 
 const initialFormdata = {
   username: "",
@@ -30,9 +29,7 @@ export default function Login() {
     const res = await login(formData);
 
     if (res.success) {
-      toast.success(res.message, {
-        position: "bottom-right",
-      });
+      showToast("success", res.message);
       setIsAuthUser(true);
       
       const currentUser = res?.finalData?.user;
@@ -42,9 +39,7 @@ export default function Login() {
       Cookies.set("token", res?.finalData?.token);
       localStorage.setItem("user", JSON.stringify(res?.finalData?.user));
     } else {
-      toast.error(res.message, {
-        position: "bottom-right",
-      });
+      showToast("error", res.message);
       setIsAuthUser(false);
     }
   }

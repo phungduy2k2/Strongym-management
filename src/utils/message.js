@@ -1,13 +1,13 @@
 export const messages = {
     login: {
-        SUCCESS: "Login successfully!",
-        USER_NOT_FOUND: "Account not found with this email.",
-        INCORRECT_PASSWORD: "Incorrect password. Please try again!",
+        SUCCESS: "Đăng nhập thành công!",
+        USER_NOT_FOUND: "Account not found with this username.",
+        INCORRECT_PASSWORD: "Sai mật khẩu. Hãy thử lại!",
         ERROR: "Something went wrong ! Please try again later."
     },
     register: {
-        SUCCESS: "Account created successfully!",
-        EMAIL_EXIST: "Username is already exist. Please try with different username.",
+        SUCCESS: "Tạo tài khoản thành công!",
+        USERNAME_EXIST: "Username is already exist. Please try with different username.",
         ERROR: "Something went wrong! Please try again later."
     }
 }

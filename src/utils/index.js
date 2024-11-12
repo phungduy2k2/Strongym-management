@@ -1,3 +1,14 @@
+import { toast } from "react-toastify";
+
+export const showToast = (type, message) => {
+  const position = {
+    position: "bottom-right"
+  }
+
+  if (type === "success") toast.success(message, position);
+  else if (type === "error") toast.error(message, position);
+}
+
 export const registrationFormControls = [
   {
     id: "username",

@@ -7,7 +7,12 @@ import { NextResponse } from "next/server";
 
 const schema = Joi.object({
   username: Joi.string().min(8).required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string()
+    .pattern(new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
+    .required()
+    .messages({
+      "string.pattern.base": "Password cần tối thiểu 8 ký tự chứa cả chữ cái và số.",
+    }),
   role: Joi.string().required(),
 });
 
@@ -33,7 +38,7 @@ export async function POST(req) {
     if (userExist) {
       return NextResponse.json({
         success: false,
-        message: messages.register.EMAIL_EXIST,
+        message: messages.register.USERNAME_EXIST,
       });
     } else {
       const hashPassword = await hash(password, 12);

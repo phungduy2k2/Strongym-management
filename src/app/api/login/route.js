@@ -8,7 +8,12 @@ import { NextResponse } from "next/server";
 
 const schema = Joi.object({
   username: Joi.string().min(8).required(),
-  password: Joi.string().required(),
+  password: Joi.string()
+  .pattern(new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"))
+  .required()
+  .messages({
+    "string.pattern.base": "Password cần tối thiểu 8 ký tự chứa cả chữ cái và số.",
+  }),
 });
 
 export const dynamic = "force-dynamic";
