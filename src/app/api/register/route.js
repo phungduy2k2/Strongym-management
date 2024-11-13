@@ -40,21 +40,25 @@ export async function POST(req) {
         success: false,
         message: messages.register.USERNAME_EXIST,
       });
-    } else {
-      const hashPassword = await hash(password, 12);
+    }
 
-      const newCreatedUser = await User.create({
-        username,
-        password: hashPassword,
-        role,
+    const hashPassword = await hash(password, 12);
+    const newCreatedUser = await User.create({
+      username,
+      password: hashPassword,
+      role,
+    });
+
+    if (newCreatedUser) {
+      return NextResponse.json({
+        success: true,
+        message: messages.register.SUCCESS,
       });
-
-      if (newCreatedUser) {
-        return NextResponse.json({
-          success: true,
-          message: messages.register.SUCCESS,
-        });
-      }
+    } else {
+      return NextResponse.json({
+        success: false,
+        message: messages.register.ERROR,
+      });
     }
   } catch (err) {
     console.log("Error while new user registration. Please try again");

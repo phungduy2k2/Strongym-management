@@ -59,7 +59,7 @@ export async function POST(req) {
       { expiresIn: "1d" }
     );
 
-    const finalData = {
+    const loginData = {
       token,
       user: {
         username: checkUser.username,
@@ -72,7 +72,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: true,
       message: messages.login.SUCCESS,
-      finalData,
+      loginData,
     });
   } catch (e) {
     console.log("Error while logging in. Please try again");
