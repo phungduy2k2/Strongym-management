@@ -53,6 +53,11 @@ export async function POST(req) {
         success: true,
         message: messages.addBlog.SUCCESS,
       });
+    } else {
+      return NextResponse.json({
+        success: false,
+        message: messages.addBlog.ERROR,
+      });
     }
   } catch (err) {
     console.log(err);

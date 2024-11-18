@@ -8,7 +8,10 @@ const configOptions = {
 let isConnected = false;
 
 async function connectToDB() {
-  if (isConnected) return;
+  if (isConnected) {
+    console.log('Đã connect');
+    return;
+  };
 
   try {
     const connectionUrl = process.env.MONGODB_URI;

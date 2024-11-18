@@ -79,7 +79,7 @@ export const messages = {
     /// blog
     addBlog: {
         SUCCESS: "Add new blog successfully!",
-        BLOG_EXIST: "This blog is already created. Please try again.",
+        BLOG_EXIST: "This blog is already created.",
         ERROR: "Failed to add new blog. Please try again."
     },
     blogByCategory: {
@@ -91,6 +91,22 @@ export const messages = {
     updateBlog: {
         SUCCESS: "Update blog successfully!",
         ERROR: "Failed to update blog. Please try again."
+    },
+
+    /// class
+    addClass: {
+        SUCCESS: "Add new class successfully!",
+        CLASS_EXIST : "This class is already created.",
+        ERROR: "Failed to add new blog. Please try again."
+    },
+    updateClass: {
+        SUCCESS: "Update class successfully!",
+        ERROR: "Failed to update class. Please try again."
+    },
+    deleteClass: {
+        SUCCESS: "Delete class successfully!",
+        NO_ID: "Class ID is required.",
+        ERROR: "Failed to delete class. Please try again.",
     },
 
     /// event

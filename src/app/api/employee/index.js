@@ -101,7 +101,7 @@ export async function GET(req) {
 }
 
 // search employee theo name hoặc phone
-export async function GET(req) {
+export async function SEARCH(req) {
   await connectToDB();
 
   const { searchParams } = new URL(req.url);

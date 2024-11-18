@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const ClassSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     trainerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Member",
     },
     price: { type: Number, required: true },
     description: { type: String, required: true },
