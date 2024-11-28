@@ -2,11 +2,12 @@ import mongoose from "mongoose";
 
 const EmployeeSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     birth: { type: Date, required: true },
     phone: {
       type: String,
       required: true,
+      index: true,
       match: [/^0\d{9}$/, "Số điện thoại không hợp lệ!"],
     },
     imageUrl: { type: String, required: true },
