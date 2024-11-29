@@ -14,22 +14,27 @@ export const messages = {
 
     /// member
     addMember: {
-        SUCCESS: "Add new member successfully!",
-        MEMBER_EXIST: "This phone is already used. Please try with different phone number.",
-        ERROR: "Failed to add new member. Please try again."
-    },
-    updateMember: {
-        SUCCESS: "Update member successfully!",
-        ERROR: "Failed to update member. Please try again."
+        SUCCESS: "Thêm thành viên mới thành công!",
+        MEMBER_EXIST: "Số điện thoại này đã được sử dụng. Vui lòng sử dụng số khác.",
+        ERROR: "Có lỗi khi thêm thành viên. Xin thử lại"
     },
     getAllMember: {
-        NO_FOUND: "No member found",
-        ERROR: "Failed to get members. Please try again."
+        NO_FOUND: "Không có thành viên được tìm thấy.",
+        ERROR: "Có lỗi khi lấy danh sách thành viên. Xin thử lại."
+    },
+    getAMember: {
+        NOT_FOUND: "Không tìm thấy thành viên.",
+        ERROR: "Có lỗi khi tìm thành viên này. Xin thử lại."
+    },
+    updateMember: {
+        NOT_FOUND: "Không tìm thấy thành viên.",
+        SUCCESS: "Cập nhật thành viên thành công!",
+        ERROR: "Cập nhật thất bại. Xin thử lại."
     },
     deleteMember: {
-        SUCCESS: "Delete member successfully!",
-        NO_ID: "Member ID is required.",
-        ERROR: "Failed to delete member. Please try again.",
+        SUCCESS: "Xóa thành viên thành công!",
+        NOT_FOUND: "Không tìm thấy thành viên để xóa.",
+        ERROR: "Có lỗi khi xóa thành viên. Xin thử lại.",
     },
 
     /// equipment
@@ -52,28 +57,28 @@ export const messages = {
 
     /// employee
     addEmployee: {
-        SUCCESS: "Add new employee successfully!",
-        EMPLOYEE_EXIST: "This ID number is already used. Please try with different ID number.",
-        ERROR: "Failed to add new employee. Please try again."
+        SUCCESS: "Thêm nhân viên mới thành công!",
+        EMPLOYEE_EXIST: "Nhân viên này đã tồn tại.",
+        ERROR: "Có lỗi khi thêm nhân viên mới. Xin thử lại."
     },
     getAllEmployee: {
-        NO_FOUND: "No employee found.",
-        ERROR: "Failed to get employees. Please try again."
+        ERROR: "Có lỗi khi tìm nhân viên. Xin thử lại."
     },
     searchEmployee: {
         SUCCESS: "Search for employees successfully.",
         NO_SEARCH: "Please enter name or phone number.",
-        NO_FOUND: "No employee found.",
-        ERROR: "Failed to find employee. Please try again."
+        NOT_FOUND: "Không tìm thấy nhân viên.",
+        ERROR: "Có lỗi khi tìm nhân viên này. Xin thử lại."
     },
     updateEmployee: {
-        SUCCESS: "Update employee successfully!",
-        ERROR: "Failed to update employee. Please try again."
+        SUCCESS: "Cập nhật nhân viên thành công!",
+        NOT_FOUND: "Không tìm thấy nhân viên.",
+        ERROR: "Có lỗi khi cập nhật nhân viên. Xin thử lại."
     },
     deleteEmployee: {
-        SUCCESS: "Delete employee successfully!",
-        NO_ID: "Employee ID is required.",
-        ERROR: "Failed to delete employee. Please try again.",
+        SUCCESS: "Xóa nhân viên thành công!",
+        NOT_FOUND: "Không tìm thấy nhân viên.",
+        ERROR: "Có lỗi khi xóa nhân viên. Xin thử lại.",
     },
 
     /// blog
@@ -120,5 +125,29 @@ export const messages = {
     updateEvent: {
         SUCCESS: "Update event successfully!",
         ERROR: "Failed to update event. Please try again."
+    },
+
+    /// membershipPlan
+    getAllPlans: {
+        ERROR: "Có lỗi khi lấy dữ liệu gói tập. Xin thử lại."
+    },
+    addPlan: {
+        PLAN_EXIST: "Gói tập đã tồn tại.",
+        SUCCESS: "Thêm gói tập thành công!",
+        ERROR: "Có lỗi khi thêm gói tập. Xin thử lại.",
+    },
+    getPlanById: {
+        NOT_FOUND: "Không tìm thấy gói tập.",
+        ERROR: "Có lỗi khi lấy dữ liệu gói tập này. Xin thử lại.",
+    },
+    updatePlan: {
+        NOT_FOUND: "Không tìm thấy gói tập.",
+        SUCCESS: "Cập nhật gói tập thành công!",
+        ERROR: "Có lỗi khi cập nhật gói tập. Xin thử lại."
+    },
+    deletePlan: {
+        NOT_FOUND: "Không tìm thấy gói tập.",
+        SUCCESS: "Xóa gói tập thành công!",
+        ERROR: "Có lỗi khi xóa gói tập. Xin thử lại."
     }
 }
