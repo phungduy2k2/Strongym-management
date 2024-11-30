@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const EmployeeSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, index: true },
+    name: { type: String, required: true },
     birth: { type: Date, required: true },
     phone: {
       type: String,
@@ -10,6 +10,7 @@ const EmployeeSchema = new mongoose.Schema(
       index: true,
       match: [/^0\d{9}$/, "Số điện thoại không hợp lệ!"],
     },
+    gender: { type: String, enum: ["male", "female"], required: true },
     imageUrl: { type: String, required: true },
     idCard: {
       type: String,
@@ -19,7 +20,7 @@ const EmployeeSchema = new mongoose.Schema(
     address: { type: String, required: true },
     position: {
       type: String,
-      enum: ["manager", "teacher", "security", "receptionist", "cleanor"],
+      enum: ["manager", "trainer", "security", "receptionist", "cleanor"],
       required: true,
     },
   },
