@@ -19,7 +19,30 @@ const schema = Joi.object({
   position: Joi.string().required(),
 });
 
-// get membershipPlan by ID ???
+// get employee by id
+export async function GET(req, { params }) {
+  try {
+    await connectToDB();
+    const employee = await Employee.findById(params.id);
+    if (!employee) {
+      return NextResponse.json({
+        success: false,
+        message: messages.getEmployeeById.NOT_FOUND,
+      },{ status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: employee,
+    }, { status: 200 });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({
+      success: false,
+      message: messages.getEmployeeById.ERROR,
+    }, { status: 500 });
+  }
+}
 
 // update employee
 export async function PUT(req, { params }) {

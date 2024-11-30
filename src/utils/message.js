@@ -29,7 +29,7 @@ export const messages = {
     updateMember: {
         NOT_FOUND: "Không tìm thấy thành viên.",
         SUCCESS: "Cập nhật thành viên thành công!",
-        ERROR: "Cập nhật thất bại. Xin thử lại."
+        ERROR: "Cập nhật thành viên thất bại. Xin thử lại."
     },
     deleteMember: {
         SUCCESS: "Xóa thành viên thành công!",
@@ -39,20 +39,26 @@ export const messages = {
 
     /// equipment
     addEquipment: {
-        SUCCESS: "Add new equipment successfully!",
-        ERROR: "Failed to add new equipment. Please try again."
+        SUCCESS: "Thêm thiết bị thành công!",
+        ERROR: "Có lỗi khi thêm thiết bị. Xin thử lại."
     },
     getAllEquipment: {
-        ERROR: "Failed to get equipments. Please try again."
+        NOT_FOUND: "Không tìm thấy thiết bị.",
+        ERROR: "Có lỗi khi tìm thiết bị. Xin thử lại."
+    },
+    getEquipmentById: {
+        NOT_FOUND: "Không tìm thấy thiết bị.",
+        ERROR: "Có lỗi khi tìm thiết bị. Xin thử lại"
     },
     updateEquipment: {
-        SUCCESS: "Update equipment successfully!",
-        ERROR: "Failed to update equipment. Please try again."
+        SUCCESS: "Cập nhật thiết bị thành công!",
+        NOT_FOUND: "Không tìm thấy thiết bị này.",
+        ERROR: "Có lỗi khi cập nhật thiết bị. Xin thử lại."
     },
     deleteEquipment: {
-        SUCCESS: "Delete equipment successfully!",
-        NO_ID: "Equipment ID is required.",
-        ERROR: "Failed to delete equipment. Please try again.",
+        SUCCESS: "Xóa thiết bị thành công!",
+        NOT_FOUND: "Không tìm thấy thiết bị này.",
+        ERROR: "Có lỗi khi xóa thiết bị. Xin thử lại.",
     },
 
     /// employee
@@ -64,9 +70,7 @@ export const messages = {
     getAllEmployee: {
         ERROR: "Có lỗi khi tìm nhân viên. Xin thử lại."
     },
-    searchEmployee: {
-        SUCCESS: "Search for employees successfully.",
-        NO_SEARCH: "Please enter name or phone number.",
+    getEmployeeById: {
         NOT_FOUND: "Không tìm thấy nhân viên.",
         ERROR: "Có lỗi khi tìm nhân viên này. Xin thử lại."
     },
@@ -82,49 +86,66 @@ export const messages = {
     },
 
     /// blog
-    addBlog: {
-        SUCCESS: "Add new blog successfully!",
-        BLOG_EXIST: "This blog is already created.",
-        ERROR: "Failed to add new blog. Please try again."
+    getAllBlog: {
+        ERROR: "Có lỗi khi lấy dữ liệu bài viết. Xin thử lại."
     },
-    blogByCategory: {
-        SUCCESS: "Blogs fetched successfully",
-        NO_CATEGORY: "Category is required for search.",
-        NO_FOUND: "No blogs found.",
-        ERROR: "Failed to find blogs. Please try again."
+    addBlog: {
+        SUCCESS: "Thêm bài viết thành công!",
+        BLOG_EXIST: "Đã tồn tại bài viết này.",
+        ERROR: "Có lỗi khi thêm bài viết. Xin thử lại."
+    },
+    getBlogById: {
+        NOT_FOUND: "Không tìm thấy bài viết.",
+        ERROR: "Có lỗi khi tìm bài viết này. Xin thử lại."
     },
     updateBlog: {
-        SUCCESS: "Update blog successfully!",
-        ERROR: "Failed to update blog. Please try again."
+        NOT_FOUND: "Không tìm thấy bài viết.",
+        SUCCESS: "Cập nhật bài viết thành công!",
+        ERROR: "Có lỗi khi cập nhật bài viết. Xin thử lại."
+    },
+    deleteBlog: {
+        NOT_FOUND: "Không tìm thấy bài viết.",
+        SUCCESS: "Xóa bài viết thành công!",
+        ERROR: "Có lỗi khi xóa bài viết. Xin thử lại."
     },
 
     /// class
     addClass: {
-        SUCCESS: "Add new class successfully!",
-        CLASS_EXIST : "This class is already created.",
-        ERROR: "Failed to add new blog. Please try again."
+        SUCCESS: "Thêm lớp học thành công!",
+        CLASS_EXIST : "Lớp này đã được tạo.",
+        ERROR: "Có lỗi khi thêm lớp học. Xin thử lại."
+    },
+    getAllClass: {
+        ERROR: "Có lỗi khi lấy dữ liệu lớp học. Xin thử lại."
     },
     updateClass: {
-        SUCCESS: "Update class successfully!",
-        ERROR: "Failed to update class. Please try again."
+        NOT_FOUND: "Không tìm thấy lớp học.",
+        SUCCESS: "Cập nhật lớp học thành công!",
+        ERROR: "Có lỗi khi cập nhật lớp học. Xin thử lại."
     },
     deleteClass: {
-        SUCCESS: "Delete class successfully!",
-        NO_ID: "Class ID is required.",
-        ERROR: "Failed to delete class. Please try again.",
+        NOT_FOUND: "Không tìm thấy lớp học.",
+        SUCCESS: "Xóa lớp học thành công!",
+        ERROR: "Có lỗi khi xóa lớp học. Xin thử lại.",
     },
 
     /// event
     addEvent: {
-        SUCCESS: "Add new event successfully!",
-        ERROR: "Failed to add new event. Please try again."
+        SUCCESS: "Thêm sự kiện thành công!",
+        ERROR: "Có lỗi khi thêm sự kiện. Xin thử lại."
     },
-    activeEvent: {
-        ERROR: "Failed to fetch events. Please try again."
+    getActiveEvent: {
+        NOT_FOUND: "Không tìm thấy sự kiện.",
+        ERROR: "Có lỗi khi tìm sự kiện. Xin thử lại."
+    },
+    getEventById: {
+        NOT_FOUND: "Không tìm thấy sự kiện này.",
+        ERROR: "Có lỗi khi tìm sự kiện này. Xin thử lại."
     },
     updateEvent: {
-        SUCCESS: "Update event successfully!",
-        ERROR: "Failed to update event. Please try again."
+        NOT_FOUND: "Không tìm thấy sự kiện.",
+        SUCCESS: "Cập nhật sự kiện thành công!",
+        ERROR: "Có lỗi khi cập nhật sự kiện. Xin thử lại."
     },
 
     /// membershipPlan

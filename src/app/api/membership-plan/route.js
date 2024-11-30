@@ -8,6 +8,7 @@ const schema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().min(0).required(),
     description: Joi.string().required(),
+    amount: Joi.number().min(0).required()
 })
 
 export const dynamic = "force-dynamic";
@@ -30,8 +31,8 @@ export async function GET() {
 }
 
 export async function POST(req) {
-    const { name, price, description } = await req.json();
-    const { error } = schema.validate({ name, price, description });
+    const { name, price, description, amount } = await req.json();
+    const { error } = schema.validate({ name, price, description, amount });
     if (error) {
         return NextResponse.json({
             success: false,
@@ -49,7 +50,7 @@ export async function POST(req) {
             }, { status: 409 })
         }
 
-        const newPlan = await MembershipPlan.create({ name, price, description });
+        const newPlan = await MembershipPlan.create({ name, price, description, amount });
         if (newPlan) {
             return NextResponse.json({
                 success: true,

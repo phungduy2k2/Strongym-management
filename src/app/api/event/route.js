@@ -17,19 +17,8 @@ export const dynamic = "force-dynamic";
 
 // add new event
 export async function POST(req) {
-  await connectToDB();
-
-  const { title, description, banner, creatorId, startDate, endDate } =
-    await req.json();
-
-  const { error } = schema.validate({
-    title,
-    description,
-    banner,
-    creatorId,
-    startDate,
-    endDate,
-  });
+  const { title, description, banner, creatorId, startDate, endDate } = await req.json();
+  const { error } = schema.validate({ title, description, banner, creatorId, startDate, endDate });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -38,31 +27,24 @@ export async function POST(req) {
   }
 
   try {
-    const newEvent = await Event.create({
-      title,
-      description,
-      banner,
-      creatorId,
-      startDate,
-      endDate,
-    });
-
+    await connectToDB();
+    const newEvent = await Event.create({ title, description, banner, creatorId, startDate, endDate });
     if (newEvent) {
       return NextResponse.json({
         success: true,
         message: messages.addEvent.SUCCESS,
-      });
+      }, { status: 201 });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({
       success: false,
       message: messages.addEvent.ERROR,
-    });
+    }, { status: 500 });
   }
 }
 
-// search active event
+// get active event
 export async function GET(req) {
   await connectToDB();
 
@@ -77,6 +59,12 @@ export async function GET(req) {
         { endDate: { $gte: currentDate } },
       ],
     });
+    if (!events) {
+      return NextResponse.json({
+        success: false,
+        message: messages.getActiveEvent.NOT_FOUND,
+      });
+    }
 
     return NextResponse.json({
       success: true,
@@ -86,40 +74,7 @@ export async function GET(req) {
     console.log(err);
     return NextResponse.json({
       success: false,
-      message: messages.activeEvent.ERROR,
-    });
-  }
-}
-
-// update event
-export async function PUT(req) {
-  try {
-    await connectToDB();
-
-    const { _id, title, description, banner, creatorId, startDate, endDate } =
-      await req.json();
-
-    const updatedEvent = await Event.findOneAndUpdate(
-      { _id: _id },
-      { title, description, banner, creatorId, startDate, endDate },
-      { new: true }
-    );
-
-    if (updatedEvent) {
-      return NextResponse.json({
-        success: true,
-        message: messages.updateEvent.SUCCESS,
-      });
-    } else {
-      return NextResponse.json({
-        success: false,
-        message: messages.updateEvent.ERROR,
-      });
-    }
-  } catch (err) {
-    return NextResponse.json({
-      success: false,
-      message: messages.updateEvent.ERROR,
-    });
+      message: messages.getActiveEvent.ERROR,
+    }, { status: 500 });
   }
 }

@@ -4,7 +4,7 @@ const MemberSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, index: true },
     birth: { type: Date, required: true },
-    gender: { type: String, enum: ["Nam", "Nữ"], required: true },
+    gender: { type: String, enum: ["male", "female"], required: true },
     phone: {
       type: String,
       required: true,
@@ -22,7 +22,6 @@ const MemberSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required : true,
     }
   },
   { timestamps: true }

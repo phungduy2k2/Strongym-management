@@ -5,12 +5,11 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+// get member by ID
 export async function GET(req, { params }) {
   try {
     await connectToDB();
-    const member = await Member.findById(params.id).populate(
-      "membershipPlanId"
-    );
+    const member = await Member.findById(params.id).populate("membershipPlanId", "name");
     if (!member) {
       return NextResponse.json({
         success: false,
@@ -31,22 +30,23 @@ export async function GET(req, { params }) {
   }
 }
 
+//  update member
 export async function PUT(req, { params }) {
   try {
     await connectToDB();
     const body = await req.json();
     const updateMember = await Member.findByIdAndUpdate(params.id, body, { new: true, runValidators: true });
     if (!updateMember) {
-        return NextResponse.json({
-            success: false,
-            message: messages.updateMember.NOT_FOUND,
-        }, { status: 404 });
+      return NextResponse.json({
+        success: false,
+        message: messages.updateMember.NOT_FOUND,
+      }, { status: 404 });
     }
     
     return NextResponse.json({
-        success: true,
-        message: messages.updateMember.SUCCESS,
-        data: updateMember
+      success: true,
+      message: messages.updateMember.SUCCESS,
+      data: updateMember
     }, { status: 200 });
   } catch (err) {
     console.error(err);
@@ -57,26 +57,27 @@ export async function PUT(req, { params }) {
   }
 }
 
+// delete member
 export async function DELETE(req, { params }) {
-    try {
-        await connectToDB();
-        const deleteMember = await Member.findByIdAndDelete(params.id);
-        if (!deleteMember) {
-            return NextResponse.json({
-                success: false,
-                message: messages.deleteMember.NOT_FOUND,
-            }, { status: 404 });
-        }
-
-        return NextResponse.json({
-            success: true,
-            message: messages.deleteMember.SUCCESS,
-        });
-    } catch (err) {
-        console.error(err);
-        return NextResponse.json({
-          success: false,
-          message: messages.deleteMember.ERROR,
-        }, { status: 500 });
+  try {
+    await connectToDB();
+    const deleteMember = await Member.findByIdAndDelete(params.id);
+    if (!deleteMember) {
+      return NextResponse.json({
+        success: false,
+        message: messages.deleteMember.NOT_FOUND,
+      }, { status: 404 });
     }
+
+    return NextResponse.json({
+      success: true,
+      message: messages.deleteMember.SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({
+      success: false,
+      message: messages.deleteMember.ERROR,
+    }, { status: 500 });
+  }
 }

@@ -5,7 +5,7 @@ const ClassSchema = new mongoose.Schema(
     name: { type: String, required: true, index: true },
     trainerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Member",
+      ref: "Employee",
     },
     price: { type: Number, required: true },
     description: { type: String, required: true },
