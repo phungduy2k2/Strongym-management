@@ -6,11 +6,19 @@ const ClassSchema = new mongoose.Schema(
     trainerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employee",
+      required: true,
     },
-    price: { type: Number, required: true },
+    price: { type: Number, required: true, min: 0 },
+    currency: {
+      type: String,
+      enum: ["USD", "EUR", "VND"],
+      required: true,
+      default: "VND",
+    },
     description: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
+    status: { type: String, enum: ["active", "expired"], default: "expired" },
+    startDate: { type: Date, required: true, index: true },
+    endDate: { type: Date, required: true, index: true },
   },
   { timestamps: true }
 );

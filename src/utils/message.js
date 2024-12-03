@@ -1,15 +1,15 @@
 export const messages = {
     /// authen
     login: {
-        SUCCESS: "Login successfully!",
-        USER_NOT_FOUND: "Account not found with this email.",
-        INCORRECT_PASSWORD: "Incorrect password. Please try again!",
-        ERROR: "Something went wrong ! Please try again."
+        SUCCESS: "Đăng nhập thành công!",
+        USER_NOT_FOUND: "Không tồn tại tài khoản này.",
+        INCORRECT_PASSWORD: "Sai mật khẩu. Xin thử lại.",
+        ERROR: "Có lỗi xảy ra khi đăng nhập. Xin thử lại."
     },
     register: {
-        SUCCESS: "Account created successfully!",
-        EMAIL_EXIST: "Email is already exist. Please try with different email.",
-        ERROR: "Something went wrong! Please try again."
+        SUCCESS: "Đăng ký thành công!",
+        USERNAME_EXIST: "Tên tài khoản đã tồn tại. Vui lòng sử dụng tên tài khoản khác.",
+        ERROR: "Có lỗi xảy ra khi đăng ký. Xin thử lại."
     },
 
     /// member

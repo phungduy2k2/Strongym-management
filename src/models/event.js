@@ -2,20 +2,28 @@ import mongoose from "mongoose";
 
 const EventSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, index: true },
     description: { type: String, required: true },
     banner: { type: String, required: true },
     creatorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
-},
+    endDate: {
+      type: Date,
+      required: true,
+      validate: {
+        validator: function (value) {
+          return value > this.startDate;
+        },
+        message: "Ngày kết thúc phải sau ngày bắt đầu.",
+      },
+    },
+  },
   { timestamps: true }
 );
 
-const Event =
-  mongoose.models.Event || mongoose.model("Event", EventSchema);
+const Event = mongoose.models.Event || mongoose.model("Event", EventSchema);
 
 export default Event;

@@ -7,7 +7,7 @@ const MembershipPlanSchema = new mongoose.Schema(
     description: { type: String, required: true },
     amount: { type: Number, required: true }, //số lượng thành viên đăng ký
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const MembershipPlan = mongoose.models.MembershipPlan || mongoose.model("MembershipPlan", MembershipPlanSchema);
