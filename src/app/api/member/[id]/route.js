@@ -34,8 +34,10 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   try {
     await connectToDB();
-    const body = await req.json();
-    const updateMember = await Member.findByIdAndUpdate(params.id, body, { new: true, runValidators: true });
+    const body = await req.json();    
+    const updateMember = await Member.findByIdAndUpdate(params.id, body, {
+      new: true,
+    }).populate("membershipPlanId", "name");
     if (!updateMember) {
       return NextResponse.json({
         success: false,

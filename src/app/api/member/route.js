@@ -36,6 +36,7 @@ export async function GET() {
   }
 }
 
+// create member
 export async function POST(req) {
   const {
     name,
@@ -54,7 +55,6 @@ export async function POST(req) {
     birth,
     gender,
     phone,
-    imageUrl,
     address,
     membershipPlanId,
     status,
@@ -92,6 +92,7 @@ export async function POST(req) {
       return NextResponse.json({
         success: true,
         message: messages.addMember.SUCCESS,
+        data: newMember,
       }, { status: 201 });
     }
   } catch (err) {

@@ -8,7 +8,6 @@ import { useContext } from "react";
 export default function Home() {
 
   const { isAuthUser } = useContext(GlobalContext)
-  console.log('isAuthUser', isAuthUser);
   
   return (
     <div className="flex flex-col w-full items-center">

@@ -14,7 +14,7 @@ export default function ClassCard({ classItem, onClick }) {
         <div className="flex">
           <div className="flex-shrink-0 relative overflow-hidden">
             <img
-              src={classItem.image}
+              src={classItem.imageUrl}
               alt={classItem.name}
               className="h-32 w-32 object-cover rounded-md transition-trransform duration-300 group-hover:scale-110"
             />
@@ -35,7 +35,7 @@ export default function ClassCard({ classItem, onClick }) {
                 </Tooltip>
               </TooltipProvider>
               <p className="text-sm text-gray-600 mb-2 group-hover:text-gray-800 transition-colors duration-300">
-                {classItem.trainerId}
+                {classItem.trainerId.name}
               </p>
             </div>
             <div className="text-sm text-gray-700 italic group-hover:text-gray-900 transition-colors duration-300">

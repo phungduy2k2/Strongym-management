@@ -71,7 +71,7 @@ export async function GET(req) {
       data: events,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({
       success: false,
       message: messages.getActiveEvent.ERROR,

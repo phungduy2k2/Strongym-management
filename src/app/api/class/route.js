@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 
 const schema = Joi.object({
   name: Joi.string().required(),
+  imageUrl: Joi.string().optional(),
   trainerId: Joi.string().required(),
   price: Joi.number().integer().min(0).required(),
   description: Joi.string().required(),
@@ -17,8 +18,8 @@ export const dynamic = "force-dynamic";
 
 // add new class
 export async function POST(req) {
-  const { name, trainerId, price, description, startDate, endDate } = await req.json();
-  const { error } = schema.validate({ name, trainerId, price, description, startDate, endDate });
+  const { name, imageUrl, trainerId, price, description, startDate, endDate } = await req.json();
+  const { error } = schema.validate({ name, imageUrl, trainerId, price, description, startDate, endDate });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -36,11 +37,12 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    const newClass = await Class.create({ name, trainerId, price, description, startDate, endDate });
+    const newClass = await Class.create({ name, imageUrl, trainerId, price, description, startDate, endDate });
     if (newClass) {
       return NextResponse.json({
         success: true,
         message: messages.addClass.SUCCESS,
+        data: newClass
       }, { status: 201 });
     }
   } catch (err) {
@@ -56,7 +58,7 @@ export async function POST(req) {
 export async function GET() {
   try {
     await connectToDB();
-    const allClasses = await Class.find({}).populate("trainerId", "name phone"); //// populate  "creatorId"
+    const allClasses = await Class.find({}).populate("trainerId", "name") //// populate  "creatorId"
     return NextResponse.json({
       success: true,
       data: allClasses

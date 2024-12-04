@@ -1,17 +1,7 @@
 import connectToDB from "@/database";
 import Class from "@/models/class";
 import { messages } from "@/utils/message";
-import Joi from "joi";
 import { NextResponse } from "next/server";
-
-const schema = Joi.object({
-  name: Joi.string().required(),
-  trainerId: Joi.string().required(),
-  price: Joi.number().integer().min(0).required(),
-  description: Joi.string().required(),
-  startDate: Joi.date().required(),
-  endDate: Joi.date().greater(Joi.ref("startDate")).required(),
-});
 
 //  update class
 export async function PUT(req, { params }) {
@@ -19,18 +9,10 @@ export async function PUT(req, { params }) {
     await connectToDB();
 
     const classData = await req.json();
-    const { error } = schema.validate(classData);
-    if (error) {
-      return NextResponse.json({
-        success: false,
-        message: error.details[0].message,
-      }, { status: 400 });
-    }
-
-    const updatedClass = await Class.findByIdAndUpdate(params.id, classData,{
+    const updatedClass = await Class.findByIdAndUpdate(params.id, classData, {
       new: true,
-      runValidators: true,
-    });
+      runValidators: true
+    }).populate("trainerId", "name");
     if (!updatedClass) {
       return NextResponse.json({
         success: false,
@@ -40,6 +22,7 @@ export async function PUT(req, { params }) {
     return NextResponse.json({
       success: true,
       message: messages.updateClass.SUCCESS,
+      data: updatedClass
     });
   } catch (err) {
     console.error(err);
@@ -65,7 +48,7 @@ export async function DELETE(req, { params }) {
     }
     return NextResponse.json({
       success: true,
-      message: messages.deleteClass.ERROR,
+      message: messages.deleteClass.SUCCESS ,
     });
   } catch (err) {
     console.error(err);

@@ -10,13 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { uploadImageToFirebase } from "@/utils";
 import { modalMessages } from "@/utils/message";
 import { X } from "lucide-react";
 import { useState } from "react";
 
-export function AddMemberModal({ isOpen, onClose, onSave }) {
-  const [memberData, setMemberData] = useState({
-    image: "",
+export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
+  const defaultData = {
+    imageUrl: "",
     name: "",
     birth: "",
     gender: "",
@@ -24,10 +25,12 @@ export function AddMemberModal({ isOpen, onClose, onSave }) {
     address: "",
     membershipPlanId: "",
     expiredDate: "",
-  });
+    status: "active"
+  }
+  
+  const [memberData, setMemberData] = useState(defaultData);
 
-  const handleInputChange = (e) => {
-    const {name, value} = e.target
+  const handleInputChange = ({ target: { name, value } }) => {
     setMemberData(prev => ({ ...prev, [name]: value }))
   }
 
@@ -35,10 +38,24 @@ export function AddMemberModal({ isOpen, onClose, onSave }) {
     setMemberData(prev => ({ ...prev, [name]: value }))
   }
 
+  async function handleImageModal(event) {
+    const extractImageUrl = await uploadImageToFirebase(event.target.files[0]);
+    
+    if (extractImageUrl !== "") {
+      console.log(extractImageUrl, 'extractImage modal');
+      
+      setMemberData({
+        ...memberData,
+        imageUrl: extractImageUrl,
+      });
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     onSave(memberData)
-    onClose()
+    setMemberData(defaultData)
+    // onClose()
   }
 
   return (
@@ -62,13 +79,27 @@ export function AddMemberModal({ isOpen, onClose, onSave }) {
           onSubmit={handleSubmit}
           className="space-y-4 flex-grow overflow-y-auto"
         >
-          <div>
-            <Label htmlFor="image">{modalMessages.addMember.IMAGE}</Label>
+          <div className="flex justify-center">
+            <Label htmlFor="imageUrl" className="cursor-pointer">
+              <div className="border-2 border-dashed border-gray-400 rounded-lg h-32 w-32 flex items-center justify-center">
+                  {memberData.imageUrl ? (
+                    <img
+                      src={memberData.imageUrl}
+                      alt="Ảnh minh họa"
+                      className="h-full w-full object-cover rounded-lg"
+                    />
+                  ) : (
+                    <span className="text-5xl text-gray-400">+</span>
+                  )}
+              </div>
+            </Label>
             <Input
-              id="image"
-              name="name"
-              value={memberData.image}
-              onChange={handleInputChange}
+              id="imageUrl"
+              name="imageUrl"
+              accept="image/*"
+              type="file"
+              className="hidden"
+              onChange={handleImageModal}
             />
           </div>
           <div>
@@ -147,11 +178,9 @@ export function AddMemberModal({ isOpen, onClose, onSave }) {
                 />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Gói 1 tháng</SelectItem>
-                <SelectItem value="2">Gói 4 tháng</SelectItem>
-                <SelectItem value="3">Gói 6 tháng</SelectItem>
-                <SelectItem value="4">Gói 1 năm</SelectItem>
-                <SelectItem value="5">Gói 2 năm</SelectItem>
+                {plans.map((plan) => (
+                  <SelectItem key={plan._id} value={plan._id}>{plan.name}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -168,14 +197,30 @@ export function AddMemberModal({ isOpen, onClose, onSave }) {
               required
             />
           </div>
-        </form>
-
-        {/* ----- footer ----- */}
-        <div className="mt-6">
-            <Button onClick={handleSubmit} className="w-full bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out">
+          <div>
+            <Label htmlFor="status">
+              {modalMessages.addMember.STATUS}
+            </Label>
+            <Select
+              name="status"
+              defaultValue="active"
+              onValueChange={(value) => handleSelectChange("status", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={modalMessages.addMember.STATUS_PLACEHOLDER}/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="expired">Expired</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* ----- footer ----- */}
+          <Button type="submit" className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out">
                 {modalMessages.addMember.SAVE}
-            </Button>
-        </div>
+          </Button>
+        </form>
       </div>
     </div>
   );

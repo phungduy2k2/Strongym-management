@@ -26,8 +26,7 @@ export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave }) {
     }
   }, [employee]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = ({ target: { name, value } }) => {
     setEditedEmployee((prev) => ({ ...prev, [name]: value }));
     setIsChanged(true);
   };

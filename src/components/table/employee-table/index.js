@@ -113,14 +113,12 @@ export default function EmployeeTable() {
   };
 
   const handleRowClick = (employee) => {
-    console.log(employee, 'selectedEmployee');
-    
     setSelectedEmployee({ ...employee })
     setIsDialogOpen(true)
   }
 
   const handleSave = (updatedEmployee) => {
-    console.log('Saving updated employee:', updatedEmployee);
+    // service update employee
     setIsDialogOpen(false)
   }
 
