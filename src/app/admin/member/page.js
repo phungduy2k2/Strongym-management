@@ -9,6 +9,7 @@ import { AddMemberModal } from "@/components/modal/add-member-modal";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { getAllPlans } from "@/services/membershipPlan";
+import { HashLoader } from "react-spinners";
 
 export default function MemberPage() {
   const [members, setMembers] = useState([]);
@@ -96,8 +97,6 @@ export default function MemberPage() {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
-
   return (
     <div className="flex flex-col">
       <div className="min-w-screen flex space-between">
@@ -113,12 +112,22 @@ export default function MemberPage() {
       </div>
 
       {/* ----- Members Table ----- */}
-      <MemberTable
-        members={members}
-        plans={allPlans}
-        onUpdateMember={handleUpdateMember}
-        onDeleteMember={handleDeleteMember}
-      />
+      {isLoading ? (
+        <div className="flex mt-10 justify-center items-center">
+          <HashLoader
+            loading={isLoading}
+            color="#1e293b"
+            size={50}
+          />
+        </div>
+      ) : (
+        <MemberTable
+          members={members}
+          plans={allPlans}
+          onUpdateMember={handleUpdateMember}
+          onDeleteMember={handleDeleteMember}
+        />
+      )}
 
       {/* ----- Add New Member Modal -----  */}
       <AddMemberModal

@@ -12,6 +12,7 @@ import { createClass, deleteClass, getClasses, updateClass } from "@/services/cl
 import { showToast } from "@/utils";
 import { getEmployees } from "@/services/employee";
 import Notification from "@/components/Notification";
+import { HashLoader } from "react-spinners";
 
 
 export default function ClassPage() {
@@ -20,6 +21,7 @@ export default function ClassPage() {
   const [ selectedClass, setSelectedClass ] = useState(null);
   const [ filterValue, setFilterValue ] = useState("");
   const [ isDialogOpen, setIsDialogOpen ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +32,7 @@ export default function ClassPage() {
 
   const fetchClasses = async () => {
     try {
+      setIsLoading(true)
       const res = await getClasses();
       if (res.success) {
         setClasses(res.data);
@@ -38,11 +41,14 @@ export default function ClassPage() {
       }
     } catch (err) {
       showToast("error", "Có lỗi xảy ra khi lấy thông tin lớp.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   const fetchTrainers = async () => {
     try {
+      setIsLoading(true);
       const res = await getEmployees();
       if (res.success) {
         setTrainers(res.data.filter((item) => item.position.toLowerCase() === "trainer"));
@@ -51,6 +57,8 @@ export default function ClassPage() {
       }
     } catch (err) {
       showToast("error", "Có lỗi xảy ra khi lấy thông tin trainer.")
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -132,20 +140,30 @@ export default function ClassPage() {
         </div>
       </div>
 
-      {filteredClasses.length === 0 ? (
-        <p className="text-center text-gray-500 mt-4">
-          Không có lớp học
-        </p>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredClasses.map((classItem) => (
-            <ClassCard
-              key={classItem._id}
-              classItem={classItem}
-              onClick={cardClick}
-            />
-          ))}
+      {isLoading ? (
+        <div className="flex justify-center items-center">
+          <HashLoader
+            loading={isLoading}
+            color="#1e293b"
+            size={50}
+          />
         </div>
+      ) : (
+        filteredClasses.length === 0 ? (
+          <p className="text-center text-gray-500 mt-4">
+            Không có lớp học
+          </p>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {filteredClasses.map((classItem) => (
+              <ClassCard
+                key={classItem._id}
+                classItem={classItem}
+                onClick={cardClick}
+              />
+            ))}
+          </div>
+        )
       )}
 
       <ClassDialog
