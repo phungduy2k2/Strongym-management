@@ -12,49 +12,10 @@ import { Label } from "../../ui/label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { format } from "date-fns";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { firebaseConfig, firebaseStorageUrl } from "@/utils";
-import { initializeApp } from 'firebase/app';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app, firebaseStorageUrl);
 
-const createUniqueFileName = (getFile) => {
-  const timeStamp = Date.now();
-  const randomStringValue = Math.random().toString(36).substring(2, 12);
-
-  return `${getFile.name}-${timeStamp}-${randomStringValue}`;
-}
-
-async function UploadImageToFirebase(file) {
-  const getFileName = createUniqueFileName(file);
-  const storageReference = ref(storage, `strongym/${getFileName}`);
-  const uploadImage = uploadBytesResumable(storageReference, file);
-
-  return new Promise((resolve, reject) => {
-    uploadImage.on(
-      "state_changed",
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-        reject(error);
-      },
-      () => {
-        getDownloadURL(uploadImage.snapshot.ref)
-          .then((downloadUrl) => resolve(downloadUrl))
-          .catch((error) => reject(error));
-      }
-    );
-  });
-}
 
 export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, onDelete }) {
   const [editedMember, setEditedMember] = useState(null);
@@ -62,13 +23,10 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   useEffect(() => {
-    setEditedMember({
-      ...member,
-      birth: member?.birth ? format(new Date(member.birth), 'yyyy-MM-dd') : '',
-      createdAt: member?.createdAt ? format(new Date(member.createdAt), 'yyyy-MM-dd') : '',
-      expiredDate: member?.expiredDate ? format(new Date(member.expiredDate), 'yyyy-MM-dd') : '',
-    });
-    setIsChanged(false);
+    if(member) {
+      setEditedMember(member);
+      setIsChanged(false);
+    }
   }, [member]);
 
   const handleInputChange = ({ target: { name, value } }) => {
@@ -80,22 +38,6 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
     setEditedMember((prev) => ({ ...prev, [name]: value }));
     setIsChanged(true);
   };
-
-  async function handleImage(e) {
-    console.log(e.target, 'event target');
-    
-    const extractImageUrl = await UploadImageToFirebase(e.target.files[0]);
-    
-    if (extractImageUrl !== "") {
-      console.log(extractImageUrl, 'extractImage member');
-      
-      setEditedMember({
-        ...editedMember,
-        imageUrl: extractImageUrl,
-      });
-      setIsChanged(true);
-    }
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,6 +51,54 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
     onClose()
   }
 
+  const fields = [
+    { label: "Họ và tên", name: "name", type: "text" },
+    {
+      label: "Ngày sinh",
+      name: "birth",
+      type: "date",
+      format: (value) => format(new Date(value), "yyyy-MM-dd"),
+    },
+    {
+      label: "Giới tính",
+      name: "gender",
+      type: "select",
+      options: [
+        { value: true, label: "Nam" },
+        { value: false, label: "Nữ" },
+      ],
+    },
+    { label: "Số điện thoại", name: "phone", type: "text" },
+    { label: "Địa chỉ", name: "address", type: "text" },
+    {
+      label: "Gói tập đăng ký",
+      name: "membershipPlanId",
+      type: "select",
+      options: plans.map(plan => ({ value: plan._id, label: plan.name })),
+    },
+    {
+      label: "Ngày đăng ký",
+      name: "createdAt",
+      type: "date",
+      format: (value) => format(new Date(value), "yyyy-MM-dd"),
+    },
+    {
+      label: "Ngày kết thúc",
+      name: "expiredDate",
+      type: "date",
+      format: (value) => format(new Date(value), "yyyy-MM-dd"),
+    },
+    {
+      label: "Trạng thái",
+      name: "status",
+      type: "select",
+      options: [
+        { value: "active", label: "Active" },
+        { value: "expired", label: "Expired" },
+      ],
+    },
+  ]
+
   if (!editedMember) return null;
 
   return (
@@ -120,6 +110,7 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Member Image */}
             <div className="flex justify-center items-start md:col-span-1">
               <img
                 src={editedMember.imageUrl || "/default-avatar.jpg"}
@@ -127,144 +118,66 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
                 className="w-full max-w-[200px] h-auto rounded-lg object-cover"
               />
             </div>
+
+            {/* Member Details Form */}
             <div className="md:col-span-2 space-y-4">
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Họ và tên:
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={editedMember.name}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="birth" className="text-right">
-                  Ngày sinh:
-                </Label>
-                <Input
-                  id="birth"
-                  name="birth"
-                  type="date"
-                  value={editedMember.birth}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="gender" className="text-right">
-                  Giới tính:
-                </Label>
-                <Select
-                  name="gender"
-                  value={editedMember.gender}
-                  onValueChange={(value) => handleSelectChange("gender", value)}
-                >
-                  <SelectTrigger className="col-span-2">
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Nam</SelectItem>
-                    <SelectItem value="female">Nữ</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="phone" className="text-right">
-                  Số điện thoại:
-                </Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  value={editedMember.phone}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="address" className="text-right">
-                  Địa chỉ:
-                </Label>
-                <Input
-                  id="address"
-                  name="address"
-                  value={editedMember.address}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="membershipPlanId" className="text-right">
-                  Gói tập đăng ký:
-                </Label>
-                <Select
-                  name="membershipPlanId"
-                  defaultValue={editedMember.membershipPlanId?._id}
-                  onValueChange={(value) =>
-                    handleSelectChange("membershipPlanId", value)
-                  }
-                >
-                  <SelectTrigger className="col-span-2">
-                    <SelectValue
-                      placeholder="Chọn gói tập"
+              {fields.map(({ label, name, type, options, format }) => (
+                <div key={name} className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor={name} className="text-right">
+                    {label}:
+                  </Label>
+                  {type === 'select' ? (
+                    name !== "membershipPlanId" ? (
+                      <Select
+                        name={name}
+                        value={editedMember[name] !== null ? editedMember[name].toString() : ""}
+                        onValueChange={(value) => handleSelectChange(name, value)}
+                      >
+                        <SelectTrigger className="col-span-2">
+                          <SelectValue placeholder={`Chọn ${label.toLowerCase()}`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {options.map((option) => (
+                            <SelectItem key={option.value} value={option.value.toString()}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Select
+                        name={name}
+                        defaultValue={editedMember[name]._id}
+                        onValueChange={(value) => handleSelectChange(name, value)}
+                      >
+                        <SelectTrigger className="col-span-2">
+                          <SelectValue placeholder={`Chọn ${label.toLowerCase()}`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {options.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )
+                  ) : (
+                    <Input
+                      id={name}
+                      name={name}
+                      type={type}
+                      value={format ? format(editedMember[name]) : editedMember[name] || ""}
+                      onChange={handleInputChange}
+                      className="col-span-2"
                     />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {plans.map((plan) => (
-                      <SelectItem key={plan._id} value={plan._id}>{plan.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="createdAt" className="text-right">
-                  Ngày đăng ký:
-                </Label>
-                <Input
-                  id="createdAt"
-                  name="createdAt"
-                  type="date"
-                  value={editedMember.createdAt}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="expiredDate" className="text-right">
-                  Ngày kết thúc:
-                </Label>
-                <Input
-                  id="expiredDate"
-                  name="expiredDate"
-                  type="date"
-                  defaultValue={editedMember.expiredDate}
-                  onChange={handleInputChange}
-                  className="col-span-2"
-                />
-              </div>
-              <div className="grid grid-cols-3 items-center gap-4">
-                <Label htmlFor="status" className="text-right">
-                  Trạng thái:
-                </Label>
-                <Select
-                  name="status"
-                  value={editedMember.status}
-                  onValueChange={(value) => handleSelectChange("status", value)}
-                >
-                  <SelectTrigger className="col-span-2">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="expired">Expired</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
+          {/* Dialog Footer */}
           <DialogFooter className="mt-4">
             <Button type="button" variant="destructive" onClick={() => setIsDeleteDialogOpen(true)}>
               Xóa thành viên

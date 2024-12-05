@@ -4,7 +4,7 @@ const MemberSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     birth: { type: Date, required: true },
-    gender: { type: String, enum: ["male", "female"], required: true },
+    gender: { type: Boolean, required: true }, // true: Nam, false: Nữ
     phone: {
       type: String,
       required: true,

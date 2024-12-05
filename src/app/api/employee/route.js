@@ -64,6 +64,7 @@ export async function POST(req) {
       return NextResponse.json({
         success: true,
         message: messages.addEmployee.SUCCESS,
+        data: newEmployee
       }, { status: 201 });
     }
   } catch (err) {

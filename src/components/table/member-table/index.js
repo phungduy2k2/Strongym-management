@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { Input } from "../../ui/input";
 import {
   DropdownMenu,
@@ -17,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../ui/table";
-import { ChevronDown, ChevronsUpDown, ChevronUp, CirclePlus } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, ChevronUp } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -30,7 +31,7 @@ import { MemberDetailsDialog } from "../../dialog/member-details-dialog";
 import { Label } from "../../ui/label";
 import { format } from "date-fns";
 
-const MemberTable = ({ members, plans, onUpdateMember, onDeleteMember }) => {
+export default function MemberTable({ members, plans, onUpdateMember, onDeleteMember }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortColumn, setSortrColumn] = useState();
@@ -39,13 +40,14 @@ const MemberTable = ({ members, plans, onUpdateMember, onDeleteMember }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedMember, setSelectedMember] = useState(null)
 
+  const [debouncedFilterValue] = useDebounce(filterValue, 500);
   const filterMembers = useCallback((member) => {
-    if (!member || !member.name || !member.phone) return false;
+    // if (!member || !member.name || !member.phone) return false;
     return (
-      member.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-      member.phone.includes(filterValue)
+      member.name.toLowerCase().includes(debouncedFilterValue.toLowerCase()) ||
+      member.phone.includes(debouncedFilterValue)
     )
-  }, [filterValue])
+  }, [debouncedFilterValue])
 
   const filteredMembers = useMemo(() => {
     return members.filter(filterMembers);
@@ -197,7 +199,7 @@ const MemberTable = ({ members, plans, onUpdateMember, onDeleteMember }) => {
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </TableCell>
                 <TableCell>{member.name}</TableCell>
-                <TableCell>{member.gender==="male" ? "Nam" : "Nữ"}</TableCell>
+                <TableCell>{member.gender ? "Nam" : "Nữ"}</TableCell>
                 <TableCell>{member.phone}</TableCell>
                 <TableCell className="text-center">{format(new Date(member.createdAt), "dd-MM-yyyy")}</TableCell>
                 <TableCell className="text-center">{format(new Date(member.expiredDate), "dd-MM-yyyy")}</TableCell>
@@ -270,5 +272,3 @@ const MemberTable = ({ members, plans, onUpdateMember, onDeleteMember }) => {
     </div>
   );
 }
-
-export default React.memo(MemberTable)

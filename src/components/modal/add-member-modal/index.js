@@ -13,37 +13,38 @@ import {
 import { uploadImageToFirebase } from "@/utils";
 import { modalMessages } from "@/utils/message";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
   const defaultData = {
     imageUrl: "",
     name: "",
     birth: "",
-    gender: "",
+    gender: null,
     phone: "",
     address: "",
     membershipPlanId: "",
     expiredDate: "",
-    status: "active"
-  }
-  
+    status: "active",
+  };
+
   const [memberData, setMemberData] = useState(defaultData);
 
+  useEffect(() => {
+    setMemberData(defaultData)
+  }, [isOpen])
+
   const handleInputChange = ({ target: { name, value } }) => {
-    setMemberData(prev => ({ ...prev, [name]: value }))
-  }
+    setMemberData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSelectChange = (name, value) => {
-    setMemberData(prev => ({ ...prev, [name]: value }))
-  }
+    setMemberData((prev) => ({ ...prev, [name]: value }));
+  };
 
   async function handleImageModal(event) {
     const extractImageUrl = await uploadImageToFirebase(event.target.files[0]);
-    
     if (extractImageUrl !== "") {
-      console.log(extractImageUrl, 'extractImage modal');
-      
       setMemberData({
         ...memberData,
         imageUrl: extractImageUrl,
@@ -52,11 +53,51 @@ export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onSave(memberData)
-    setMemberData(defaultData)
-    // onClose()
-  }
+    e.preventDefault();
+    onSave(memberData);
+  };
+
+  const fields = [
+    { label: "Họ và tên", name: "name", type: "text" },
+    {
+      label: "Ngày sinh",
+      name: "birth",
+      type: "date",
+      format: (value) => format(new Date(value), "yyyy-MM-dd"),
+    },
+    {
+      label: "Giới tính",
+      name: "gender",
+      type: "select",
+      options: [
+        { value: true, label: "Nam" },
+        { value: false, label: "Nữ" },
+      ],
+    },
+    { label: "Số điện thoại", name: "phone", type: "text" },
+    { label: "Địa chỉ", name: "address", type: "text" },
+    {
+      label: "Gói tập đăng ký",
+      name: "membershipPlanId",
+      type: "select",
+      options: plans.map((plan) => ({ value: plan._id, label: plan.name })),
+    },
+    {
+      label: "Ngày kết thúc",
+      name: "expiredDate",
+      type: "date",
+      format: (value) => format(new Date(value), "yyyy-MM-dd"),
+    },
+    {
+      label: "Trạng thái",
+      name: "status",
+      type: "select",
+      options: [
+        { value: "active", label: "Active" },
+        { value: "expired", label: "Expired" },
+      ],
+    },
+  ];
 
   return (
     <div
@@ -82,15 +123,15 @@ export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
           <div className="flex justify-center">
             <Label htmlFor="imageUrl" className="cursor-pointer">
               <div className="border-2 border-dashed border-gray-400 rounded-lg h-32 w-32 flex items-center justify-center">
-                  {memberData.imageUrl ? (
-                    <img
-                      src={memberData.imageUrl}
-                      alt="Ảnh minh họa"
-                      className="h-full w-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    <span className="text-5xl text-gray-400">+</span>
-                  )}
+                {memberData.imageUrl ? (
+                  <img
+                    src={memberData.imageUrl}
+                    alt="Ảnh minh họa"
+                    className="h-full w-full object-cover rounded-lg"
+                  />
+                ) : (
+                  <span className="text-5xl text-gray-400">+</span>
+                )}
               </div>
             </Label>
             <Input
@@ -100,125 +141,50 @@ export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
               type="file"
               className="hidden"
               onChange={handleImageModal}
-            />
-          </div>
-          <div>
-            <Label htmlFor="name">{modalMessages.addMember.NAME}</Label>
-            <Input
-              id="name"
-              name="name"
-              value={memberData.name}
-              onChange={handleInputChange}
               required
             />
           </div>
-          <div>
-            <Label htmlFor="birth">{modalMessages.addMember.BIRTH}</Label>
-            <Input
-              id="birth"
-              name="birth"
-              type="date"
-              value={memberData.birth}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="gender">{modalMessages.addMember.GENDER}</Label>
-            <Select
-              name="gender"
-              value={memberData.gender}
-              onValueChange={(value) => handleSelectChange("gender", value)}
-            >
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={modalMessages.addMember.GENDER_PLACEHOLDER}
+
+          {/* Member Details Form */}
+          {fields.map(({ label, name, type, options, format }) => (
+            <div key={name}>
+              <Label htmlFor={name}>{label}</Label>
+              {type === "select" ? (
+                <Select
+                  name={name}
+                  value={memberData[name] !== null ? memberData[name].toString() : ""}
+                  onValueChange={(value) => handleSelectChange(name, value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Chọn ${label.toLowerCase()}`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {options.map((option) => (
+                      <SelectItem key={option.value} value={option.value.toString()}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  id={name}
+                  name={name}
+                  type={type}
+                  value={memberData[name]}
+                  onChange={handleInputChange}
+                  required
                 />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="male">Nam</SelectItem>
-                <SelectItem value="female">Nữ</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="phone">{modalMessages.addMember.PHONE}</Label>
-            <Input
-              id="phone"
-              name="phone"
-              value={memberData.phone}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="address">{modalMessages.addMember.ADDRESS}</Label>
-            <Input
-              id="address"
-              name="address"
-              value={memberData.address}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="membershipPlanId">
-              {modalMessages.addMember.MEMBERSHIP_PLAN}
-            </Label>
-            <Select
-              name="membershipPlanId"
-              value={memberData.membershipPlanId}
-              onValueChange={(value) =>
-                handleSelectChange("membershipPlanId", value)
-              }
-            >
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={modalMessages.addMember.MEMBERSHIP_PLACEHOLDER}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {plans.map((plan) => (
-                  <SelectItem key={plan._id} value={plan._id}>{plan.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="expiredDate">
-              {modalMessages.addMember.EXPIRED_DATE}
-            </Label>
-            <Input
-              id="expiredDate"
-              name="expiredDate"
-              type="date"
-              value={memberData.expiredDate}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="status">
-              {modalMessages.addMember.STATUS}
-            </Label>
-            <Select
-              name="status"
-              defaultValue="active"
-              onValueChange={(value) => handleSelectChange("status", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={modalMessages.addMember.STATUS_PLACEHOLDER}/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="expired">Expired</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
+              )}
+            </div>
+          ))}
+
           {/* ----- footer ----- */}
-          <Button type="submit" className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out">
-                {modalMessages.addMember.SAVE}
+          <Button
+            type="submit"
+            className="w-full !mt-12 bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
+          >
+            {modalMessages.addMember.SAVE}
           </Button>
         </form>
       </div>

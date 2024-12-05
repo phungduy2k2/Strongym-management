@@ -10,7 +10,7 @@ const EmployeeSchema = new mongoose.Schema(
       index: true,
       match: [/^0\d{9}$/, "Số điện thoại không hợp lệ!"],
     },
-    gender: { type: String, enum: ["male", "female"], required: true },
+    gender: { type: Boolean, required: true }, // true: Nam, false: Nữ
     imageUrl: { type: String, required: true },
     idCard: {
       type: String,

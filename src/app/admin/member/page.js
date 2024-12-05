@@ -1,8 +1,8 @@
 "use client";
 
 import MemberTable from "@/components/table/member-table";
-import { useCallback, useEffect, useState } from "react";
-import { firebaseConfig, firebaseStorageUrl, showToast } from "@/utils";
+import { useEffect, useState } from "react";
+import { showToast } from "@/utils";
 import Notification from "@/components/Notification";
 import { createMember, deleteMember, getAllMembers, updateMember } from "@/services/member";
 import { AddMemberModal } from "@/components/modal/add-member-modal";
@@ -17,8 +17,10 @@ export default function MemberPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchMembers();
-    fetchPlans();
+    const fetchData = async () => {
+      await Promise.all([fetchMembers(), fetchPlans()]);
+    };
+    fetchData();
   }, []);
 
   const fetchMembers = async () => {
@@ -66,7 +68,7 @@ export default function MemberPage() {
   }
 
   const handleUpdateMember = async (id, updatedMember) => {
-    try{
+    try {
       const res = await updateMember(id, updatedMember);
       if (res.success) {
         setMembers(prevMembers =>
@@ -110,7 +112,7 @@ export default function MemberPage() {
         </Button>
       </div>
 
-      {/* ----- Details Member ----- */}
+      {/* ----- Members Table ----- */}
       <MemberTable
         members={members}
         plans={allPlans}

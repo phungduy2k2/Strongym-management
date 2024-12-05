@@ -13,11 +13,35 @@ import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { format } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
-export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave }) {
+const fields = [
+  { label: "Họ và tên", name: "name", type: "text" },
+  {
+    label: "Ngày sinh",
+    name: "birth",
+    type: "date",
+    format: (value) => format(new Date(value), "yyyy-MM-dd"),
+  },
+  {
+    label: "Giới tính",
+    name: "gender",
+    type: "select",
+    options: [
+      { value: true, label: "Nam" },
+      { value: false, label: "Nữ" },
+    ],
+  },
+  { label: "Số điện thoại", name: "phone", type: "text" },
+  { label: "CCCD/CMT", name: "idCard", type: "text" },
+  { label: "Vị trí", name: "position", type: "text" },
+  { label: "Địa chỉ", name: "address", type: "text" },
+]
 
+export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave, onDelete }) {
   const [editedEmployee, setEditedEmployee] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     if (employee) {
@@ -39,11 +63,18 @@ export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave }) {
   const handleSave = () => {
     onSave(editedEmployee);
     setIsChanged(false);
-  };
+  }
+
+  const handleDelete = () => {
+    onDelete(editedEmployee._id)
+    setIsDeleteDialogOpen(false)
+    onClose()
+  }
 
   if (!editedEmployee) return null;
 
   return (
+    <>
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[750px]">
         <DialogHeader>
@@ -51,6 +82,7 @@ export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave }) {
         </DialogHeader>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Employee Image */}
           <div className="flex justify-center items-start md:col-span-1">
             <img
               src={editedEmployee.imageUrl || "/default-avatar.jpg"}
@@ -58,109 +90,71 @@ export function EmployeeDetailsDialog({ employee, isOpen, onClose, onSave }) {
               className="w-full max-w-[200px] h-auto rounded-lg object-cover"
             />
           </div>
+
+          {/* Employee Details Form */}
           <div className="md:col-span-2 space-y-4">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Họ và tên:
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={editedEmployee.name}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="birth" className="text-right">
-                Ngày sinh:
-              </Label>
-              <Input
-                id="birth"
-                name="birth"
-                type="date"
-                value={format(new Date(editedEmployee.birth), "yyyy-MM-dd")}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="gender" className="text-right">
-                Giới tính:
-              </Label>
-              <Select
-                name="gender"
-                value={editedEmployee.gender}
-                onValueChange={(value) => handleSelectChange("gender", value)}
-              >
-                <SelectTrigger className="col-span-2">
-                  <SelectValue placeholder="Select gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Nam">Nam</SelectItem>
-                  <SelectItem value="Nữ">Nữ</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="phone" className="text-right">
-                Số điện thoại:
-              </Label>
-              <Input
-                id="phone"
-                name="phone"
-                value={editedEmployee.phone}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="idCard" className="text-right">
-                CCCD/CMT:
-              </Label>
-              <Input
-                id="idCard"
-                name="idCard"
-                value={editedEmployee.idCard}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="position" className="text-right">
-                Vị trí:
-              </Label>
-              <Input
-                id="position"
-                name="position"
-                value={editedEmployee.position}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="address" className="text-right">
-                Địa chỉ:
-              </Label>
-              <Input
-                id="address"
-                name="address"
-                value={editedEmployee.address}
-                onChange={handleInputChange}
-                className="col-span-2"
-              />
-            </div>
-            
-            
+            {fields.map(({ label, name, type, options, format }) => (
+              <div key={name} className="grid grid-cols-3 items-center gap-4">
+                <Label htmlFor={name} className="text-right">
+                  {label}:
+                </Label>
+                {type === 'select' ? (
+                  <Select
+                    name={name}
+                    value={editedEmployee[name]}
+                    onValueChange={(value) => handleSelectChange(name, value)}
+                  >
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder={`Chọn ${label.toLowerCase()}`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {options.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Input
+                    id={name}
+                    name={name}
+                    type={type}
+                    value={format ? format(editedEmployee[name]) : editedEmployee[name] || ""}
+                    onChange={handleInputChange}
+                    className="col-span-2"
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
+        {/* Dialog Footer */}
         <DialogFooter>
-          <Button type="submit" onClick={handleSave} disabled={!isChanged}>
+          <Button type="button" variant="destructive" onClick={() => setIsDeleteDialogOpen(true)}>
+            Xóa nhân viên
+          </Button>
+          <Button type="button" onClick={handleSave} disabled={!isChanged}>
             Lưu thay đổi
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+
+    {/* ----- Alert Dialog Delete ----- */}
+    <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Bạn có chắc muốn xóa nhân viên này?</AlertDialogTitle>
+          <AlertDialogDescription>Hành động này không thể hoàn tác. Nhân viên này sẽ bị xóa vĩnh viễn.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Hủy</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete}>Xóa</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import ClassCard from "@/components/card/class-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,14 +22,15 @@ export default function ClassPage() {
   const [ isDialogOpen, setIsDialogOpen ] = useState(false);
 
   useEffect(() => {
-    fetchClasses()
-    fetchTrainers()
+    const fetchData = async () => {
+      await Promise.all([fetchClasses(), fetchTrainers()]);
+    };
+    fetchData();
   }, [])
 
   const fetchClasses = async () => {
     try {
       const res = await getAllClasses();
-      
       if (res.success) {
         setClasses(res.data);
       } else {
@@ -42,7 +44,6 @@ export default function ClassPage() {
   const fetchTrainers = async () => {
     try {
       const res = await getAllEmployees();
-      
       if (res.success) {
         setTrainers(res.data.filter((item) => item.position.toLowerCase() === "trainer"));
       } else {
@@ -53,8 +54,9 @@ export default function ClassPage() {
     }
   }
 
+  const [debouncedFilterValue] = useDebounce(filterValue, 500);
   const filteredClasses = classes.filter((classItem) =>
-    classItem.name.toLowerCase().includes(filterValue.toLowerCase())
+    classItem.name.toLowerCase().includes(debouncedFilterValue.toLowerCase())
   );
 
   const cardClick = (classItem) => {
@@ -78,13 +80,12 @@ export default function ClassPage() {
       if (response.success) {
         if (selectedClass) {
           setClasses(prevClasses => prevClasses.map(c => c._id === id ? response.data : c));
-          showToast("success", response.message);
         } else {
           setClasses(prevClasses => [...prevClasses, response.data]);
-          showToast("success", response.message);
-          fetchClasses()
         }
+        showToast("success", response.message);
         setIsDialogOpen(false)
+        fetchClasses()
       } else {
         showToast("error", response.message);
       }
@@ -93,12 +94,13 @@ export default function ClassPage() {
     }
   }
 
-  const deleteClass = async (classId) => {
+  const handleDeleteClass = async (classId) => {
     try {
       const response = await deleteClass(classId);
       if (response.success) {
         setClasses(prevClasses => prevClasses.filter(c => c.id !== classId));
         showToast("success", response.message);
+        fetchClasses()
       } else {
         showToast("error", response.message);
       }
@@ -132,7 +134,7 @@ export default function ClassPage() {
 
       {filteredClasses.length === 0 ? (
         <p className="text-center text-gray-500 mt-4">
-          Không có lớp nào tương ứng
+          Không có lớp học
         </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -153,7 +155,7 @@ export default function ClassPage() {
           setSelectedClass(null)
         }}
         onSave={saveClass}
-        onDelete={deleteClass}
+        onDelete={handleDeleteClass}
         classData={selectedClass}
         trainerData={trainers}
         key={selectedClass ? selectedClass.id : 'new'}
