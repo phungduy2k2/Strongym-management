@@ -58,7 +58,7 @@ export async function POST(req) {
 export async function GET() {
   try {
     await connectToDB();
-    const allClasses = await Class.find({}).populate("trainerId", "name") //// populate  "creatorId"
+    const allClasses = await Class.find({}).populate("trainerId", "name")
     return NextResponse.json({
       success: true,
       data: allClasses

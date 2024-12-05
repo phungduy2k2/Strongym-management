@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const MemberSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     birth: { type: Date, required: true },
     gender: { type: Boolean, required: true }, // true: Nam, false: Nữ
     phone: {
