@@ -1,11 +1,12 @@
 "use client";
 
+import { appWithTranslation } from "next-i18next";
 import Banner from "@/components/banner";
 import MemberHeader from "@/components/member-header";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
 
-export default function Home() {
+function Home() {
 
   const { isAuthUser } = useContext(GlobalContext)
   
@@ -20,3 +21,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default appWithTranslation(Home)

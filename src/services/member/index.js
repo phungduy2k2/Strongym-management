@@ -1,4 +1,4 @@
-export const getAllMembers = async () => {
+export const getMembers = async () => {
   try {
     const res = await fetch("/api/member", {
       method: "GET",

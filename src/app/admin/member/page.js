@@ -4,7 +4,7 @@ import MemberTable from "@/components/table/member-table";
 import { useEffect, useState } from "react";
 import { showToast } from "@/utils";
 import Notification from "@/components/Notification";
-import { createMember, deleteMember, getAllMembers, updateMember } from "@/services/member";
+import { createMember, deleteMember, getMembers, updateMember } from "@/services/member";
 import { AddMemberModal } from "@/components/modal/add-member-modal";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
@@ -26,7 +26,7 @@ export default function MemberPage() {
   const fetchMembers = async () => {
     try {
       setIsLoading(true);
-      const response = await getAllMembers();
+      const response = await getMembers();
       if (response.success) {
         setMembers(response.data);
       } else {

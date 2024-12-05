@@ -1,4 +1,4 @@
-export const getAllEquipments = async () => {
+export const getEquipments = async () => {
     try {
         const res = await fetch("/api/equipment", {
             method: "GET",

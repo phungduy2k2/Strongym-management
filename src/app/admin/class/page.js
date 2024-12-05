@@ -8,9 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from "lucide-react";
 import { ClassDialog } from "@/components/dialog/class-dialog";
-import { createClass, deleteClass, getAllClasses, updateClass } from "@/services/class";
+import { createClass, deleteClass, getClasses, updateClass } from "@/services/class";
 import { showToast } from "@/utils";
-import { getAllEmployees } from "@/services/employee";
+import { getEmployees } from "@/services/employee";
 import Notification from "@/components/Notification";
 
 
@@ -30,7 +30,7 @@ export default function ClassPage() {
 
   const fetchClasses = async () => {
     try {
-      const res = await getAllClasses();
+      const res = await getClasses();
       if (res.success) {
         setClasses(res.data);
       } else {
@@ -43,7 +43,7 @@ export default function ClassPage() {
 
   const fetchTrainers = async () => {
     try {
-      const res = await getAllEmployees();
+      const res = await getEmployees();
       if (res.success) {
         setTrainers(res.data.filter((item) => item.position.toLowerCase() === "trainer"));
       } else {

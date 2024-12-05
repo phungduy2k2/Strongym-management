@@ -1,4 +1,4 @@
-export const getAllClasses = async () => {
+export const getClasses = async () => {
   try {
     const res = await fetch("/api/class", {
       method: "GET",

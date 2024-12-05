@@ -1,4 +1,4 @@
-export const getAllEmployees = async () => {
+export const getEmployees = async () => {
   try {
     const res = await fetch("/api/employee", {
       method: "GET",

@@ -1,4 +1,4 @@
-export const getAllBlogs = async () => {
+export const getBlogs = async () => {
     try {
         const res = await fetch("/api/blog", {
             method: "GET",

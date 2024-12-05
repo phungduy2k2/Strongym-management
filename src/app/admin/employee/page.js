@@ -5,7 +5,7 @@ import EmployeeTable from "@/components/table/employee-table";
 import {
   createEmployee,
   deleteEmployee,
-  getAllEmployees,
+  getEmployees,
   updateEmployee,
 } from "@/services/employee";
 import { showToast } from "@/utils";
@@ -22,7 +22,7 @@ export default function EmployeePage() {
   const fetchEmployees = async () => {
     try {
       setIsLoading(true);
-      const response = await getAllEmployees();
+      const response = await getEmployees();
       if (response.success) {
         setEmployees(response.data);
       } else {

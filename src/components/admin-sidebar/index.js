@@ -21,6 +21,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "../ui/sidebar";
+import LanguageSwitcher from "../language-switcher";
 
 export function AdminSidebar({ ...props }) {
   const items = [
@@ -92,6 +93,9 @@ export function AdminSidebar({ ...props }) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {/* <div className="mt-auto p-4">
+          <LanguageSwitcher />
+        </div> */}
       </SidebarContent>
 
       {/* ----- Footer ----- */}
