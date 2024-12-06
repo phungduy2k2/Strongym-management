@@ -2,13 +2,13 @@ export const messages = {
     /// authen
     login: {
         SUCCESS: "Đăng nhập thành công!",
-        USER_NOT_FOUND: "Không tồn tại tài khoản này.",
+        USER_NOT_FOUND: "Không tìm thấy tài khoản này.",
         INCORRECT_PASSWORD: "Sai mật khẩu. Xin thử lại.",
         ERROR: "Có lỗi xảy ra khi đăng nhập. Xin thử lại."
     },
     register: {
         SUCCESS: "Đăng ký thành công!",
-        USERNAME_EXIST: "Tên tài khoản đã tồn tại. Vui lòng sử dụng tên tài khoản khác.",
+        USERNAME_EXIST: "Tên tài khoản này đã tồn tại. Vui lòng dùng tên khác.",
         ERROR: "Có lỗi xảy ra khi đăng ký. Xin thử lại."
     },
 
@@ -170,5 +170,44 @@ export const messages = {
         NOT_FOUND: "Không tìm thấy gói tập.",
         SUCCESS: "Xóa gói tập thành công!",
         ERROR: "Có lỗi khi xóa gói tập. Xin thử lại."
+    }
+}
+
+export const dialogMessages = {
+    class: {
+        ADD_TITLE: "Thêm mới lớp học",
+        DETAILS_TITLE: "Chi tiết lớp học",
+        NAME: "Tên lớp",
+        TRAINER: "Giáo viên",
+        PRICE: "Giá (VNĐ)",
+        DESCRIPTION: "Mô tả",
+        START_DATE: "Ngày bắt đầu",
+        END_DATE: "Ngày kết thúc",
+        SAVE_CHANGE: "Lưu thay đổi",
+        SAVE_BUTTON: "Lưu lớp học",
+        DELETE_BUTTON: "Xóa lớp học",
+        ALERT_DIALOG_TITLE: "Bạn có chắc muốn xóa lớp học này?",
+        ALERT_DIALOG_DESCRIPTION: "Hành động này không thể hoàn tác. Nó sẽ xóa vĩnh viễn lớp học.",
+        DELETE: "Xóa",
+        CANCEL: "Hủy",
+    }
+}
+
+export const modalMessages = {
+    addMember: {
+        TITLE: "Thêm mới thành viên",
+        IMAGE: "Ảnh",
+        NAME: "Họ và tên",
+        BIRTH: "Ngày sinh",
+        GENDER: "Giới tính",
+        GENDER_PLACEHOLDER: "Chọn giới tính",
+        PHONE: "Số điện thoại",
+        ADDRESS: "Địa chỉ",
+        MEMBERSHIP_PLAN: "Gói tập đăng ký",
+        MEMBERSHIP_PLACEHOLDER: "Chọn gói tập",
+        EXPIRED_DATE: "Ngày hết hạn",
+        STATUS: "Trạng thái",
+        STATUS_PLACEHOLDER: "Chọn trạng thái",
+        SAVE: "Lưu",
     }
 }

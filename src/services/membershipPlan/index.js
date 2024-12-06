@@ -6,7 +6,7 @@ export const getAllPlans = async () => {
         });
       
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;
@@ -20,7 +20,7 @@ export const getPlanById = async (id) => {
         })
     
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;

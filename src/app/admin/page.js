@@ -1,6 +1,11 @@
-
-
+"use client"
 
 export default function AdminView() {
-    return <div className="font-bold">Manager Page !</div>
+  return (
+    <div className="felx flex-col w-full">
+      <main>
+        <div className="flex justify-center">ADMIN DASHBOARD</div>
+      </main>
+    </div>
+  );
 }

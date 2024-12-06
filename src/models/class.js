@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const ClassSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, index: true },
+    name: { type: String, required: true },
+    imageUrl: { type: String },
     trainerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employee",
@@ -11,12 +12,12 @@ const ClassSchema = new mongoose.Schema(
     price: { type: Number, required: true, min: 0 },
     currency: {
       type: String,
-      enum: ["USD", "EUR", "VND"],
-      required: true,
+      enum: ["VND", "USD", "EUR"],
       default: "VND",
+      required: true,
     },
     description: { type: String, required: true },
-    status: { type: String, enum: ["active", "expired"], default: "expired" },
+    status: { type: String, enum: ["UPCOMING", "ACTIVE", "EXPIRED"], default: "UPCOMING" },
     startDate: { type: Date, required: true, index: true },
     endDate: { type: Date, required: true, index: true },
   },

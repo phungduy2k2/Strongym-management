@@ -1,4 +1,4 @@
-export const getAllEmployees = async () => {
+export const getEmployees = async () => {
   try {
     const res = await fetch("/api/employee", {
       method: "GET",
@@ -6,7 +6,7 @@ export const getAllEmployees = async () => {
     });
 
     const data = await res.json();
-    return data.data;
+    return data;
   } catch (err) {
     console.error(err);
     throw err;
