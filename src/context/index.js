@@ -9,13 +9,13 @@ export default function GlobalState({ children }) {
   const [isAuthUser, setIsAuthUser] = useState(false);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    if (Cookies.get("token") !== undefined) {
-      setIsAuthUser(true);
-      const userData = JSON.parse(localStorage.getItem("user")) || {};
-      setUser(userData);
-    }
-  }, [Cookies]);
+  // useEffect(() => {
+  //   if (Cookies.get("token") !== undefined) {
+  //     setIsAuthUser(true);
+  //     const userData = JSON.parse(localStorage.getItem("user")) || {};
+  //     setUser(userData);
+  //   }
+  // }, [Cookies]);
 
   return (
     <GlobalContext.Provider

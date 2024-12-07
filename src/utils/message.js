@@ -7,9 +7,15 @@ export const messages = {
         ERROR: "Có lỗi xảy ra khi đăng nhập. Xin thử lại."
     },
     register: {
-        SUCCESS: "Đăng ký thành công!",
-        USERNAME_EXIST: "Tên tài khoản này đã tồn tại. Vui lòng dùng tên khác.",
+        SUCCESS: "Tạo tài khoản thành công!",
+        EMAIL_EXIST: "Email này đã được sử dụng. Vui lòng dùng email khác.",
         ERROR: "Có lỗi xảy ra khi đăng ký. Xin thử lại."
+    },
+
+    /// user
+    getUserById: {
+        USER_NOT_FOUND: "Không tìm thấy người dùng này.",
+        ERROR: "Có lỗi xảy ra khi tìm thông tin người dùng này."
     },
 
     /// member

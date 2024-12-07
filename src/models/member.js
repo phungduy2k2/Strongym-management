@@ -18,11 +18,7 @@ const MemberSchema = new mongoose.Schema(
       ref: "MembershipPlan",
     },
     status: { type: String, enum: ['active', 'expired'], default: 'active' },
-    expiredDate: { type: Date, required: true },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    }
+    expiredDate: { type: Date },
   },
   { timestamps: true }
 );

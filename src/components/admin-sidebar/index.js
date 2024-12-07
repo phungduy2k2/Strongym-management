@@ -21,7 +21,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "../ui/sidebar";
-import LanguageSwitcher from "../language-switcher";
+import { UserButton } from "@clerk/nextjs";
+// import LanguageSwitcher from "../language-switcher";
 
 export function AdminSidebar({ ...props }) {
   const items = [
@@ -99,7 +100,12 @@ export function AdminSidebar({ ...props }) {
       </SidebarContent>
 
       {/* ----- Footer ----- */}
-      <SidebarFooter />
+      <SidebarFooter className="bg-primary text-white">
+        <div className="flex ml-1 mb-4 items-center gap-4">
+          <UserButton afterSignOutUrl="/" />
+          <span>Tài khoản</span>
+        </div>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
