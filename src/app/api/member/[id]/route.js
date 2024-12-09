@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req, { params }) {
   try {
     await connectToDB();
-    const member = await Member.findById(params.id).populate("membershipPlanId", "name");
+    const member = await Member.findById(params.id); // .populate("membershipPlanId", "name")
     if (!member) {
       return NextResponse.json({
         success: false,

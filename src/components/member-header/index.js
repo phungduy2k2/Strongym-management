@@ -23,8 +23,13 @@ function MemberHeader({ user }) {
       show: true,
     },
     {
-      label: "Khóa học",
+      label: "Lớp học",
       path: "/class",
+      show: true,
+    },
+    {
+      label: "Gói tập",
+      path: "/membership",
       show: true,
     },
     {

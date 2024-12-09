@@ -176,6 +176,12 @@ export const messages = {
         NOT_FOUND: "Không tìm thấy gói tập.",
         SUCCESS: "Xóa gói tập thành công!",
         ERROR: "Có lỗi khi xóa gói tập. Xin thử lại."
+    },
+
+    /// payment
+    createPayment: {
+        SUCCESS: "Tạo khoản thanh toán thành công!",
+        ERROR: "Có lỗi khi tạo khoản thanh toán. Xin thử lại"
     }
 }
 

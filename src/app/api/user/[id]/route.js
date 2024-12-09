@@ -3,9 +3,7 @@ import User from "@/models/user";
 import { messages } from "@/utils/message";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
-//get User by ID
+//get User by UserID
 export async function GET(req, { params }) {
     try {
         await connectToDB();

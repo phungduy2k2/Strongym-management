@@ -19,10 +19,6 @@ import Notification from "../Notification";
 export default function OnBoard({ user }) {
   const [formData, setFormData] = useState(initialMemberFormData);
 
-  useEffect(() => {
-    console.log("Form data updated:", formData);
-  }, [formData]);
-
   async function handleImageUpload(event) {
     const extractImageUrl = await uploadImageToFirebase(event.target.files[0]);
     if (extractImageUrl !== "") {
@@ -47,8 +43,6 @@ export default function OnBoard({ user }) {
     try {
       const res = await createMember(formData);
       if (res.success) {
-        console.log(res, 'res');
-        
         const newMember = res.data;
         showToast("success", res.message);
         try {
@@ -60,8 +54,6 @@ export default function OnBoard({ user }) {
             memberId: newMember._id,
           });
           if (response.success) {
-            console.log(response, 'response');
-            
             showToast("success", response.message);
             redirect("/");
           } else {

@@ -12,8 +12,6 @@ const schema = Joi.object({
   memberId: Joi.string().allow(null).optional()
 });
 
-export const dynamic = "force-dynamic";
-
 // create new User (follow Clerk account)
 export async function POST(req) {
   await connectToDB();
