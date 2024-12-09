@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 const schema = Joi.object({
   name: Joi.string().required(),
   price: Joi.number().min(0).required(),
+  duration: Joi.number().min(0).required(),
   description: Joi.string().required(),
   total_member: Joi.number().min(0).required()
 })
@@ -35,8 +36,8 @@ export async function GET(req, { params }) {
 // update membershipPlan
 export async function PUT(req, { params }) {
   try {
-    const { name, price, description, total_member } = await req.json();
-    const { error } = schema.validate({ name, price, description, total_member });
+    const { name, price, duration, description, total_member } = await req.json();
+    const { error } = schema.validate({ name, price, duration, description, total_member });
     if (error) {
       return NextResponse.json({
         success: false,
@@ -47,7 +48,7 @@ export async function PUT(req, { params }) {
     await connectToDB();
     const updatedPlan = await MembershipPlan.findByIdAndUpdate(
       params.id,
-      { name, price, description, total_member },
+      { name, price, duration, description, total_member },
       { new: true, runValidators: true }
     );
     if (!updatedPlan) {

@@ -7,7 +7,8 @@ import {
   Home,
   UserCog,
   UsersRound,
-  Trello
+  Trello,
+  IdCardIcon
 } from "lucide-react";
 import {
   Sidebar,
@@ -50,6 +51,11 @@ export function AdminSidebar({ ...props }) {
       title: "Thiết bị",
       url: "/admin/equipment",
       icon: DumbbellIcon,
+    },
+    {
+      title: "Gói tập",
+      url: "/admin/membership",
+      icon: IdCardIcon,
     },
     {
       title: "Doanh thu",

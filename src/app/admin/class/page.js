@@ -15,7 +15,7 @@ import Notification from "@/components/Notification";
 import { HashLoader } from "react-spinners";
 
 
-export default function ClassPage() {
+export default function AdminClassPage() {
   const [ classes, setClasses ] = useState([]);
   const [ trainers, setTrainers] = useState([]);
   const [ selectedClass, setSelectedClass ] = useState(null);

@@ -141,7 +141,7 @@ export default function Membership({ userInfo }) {
         membershipPlanId: plan._id,
         status: "active",
         expiredDate: format(
-          dateNow.setMonth(dateNow.getMonth() + 1),
+          dateNow.setMonth(dateNow.getMonth() + plan.duration),
           "yyyy-MM-dd"
         ),
       };
@@ -235,7 +235,7 @@ export default function Membership({ userInfo }) {
                   <div>
                     <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                     <span className="text-lg text-gray-600 font-semibold italic">
-                      {plan.price}
+                      {plan.price} ₫
                     </span>
                   </div>
                   <div className="flex justify-between space-x-2 mt-4">

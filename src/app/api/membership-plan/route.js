@@ -7,8 +7,9 @@ import { NextResponse } from 'next/server';
 const schema = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().min(0).required(),
+    duration: Joi.number().min(0).required(),
     description: Joi.string().required(),
-    amount: Joi.number().min(0).required()
+    total_member: Joi.number().min(0).required()
 })
 
 export const dynamic = "force-dynamic";
@@ -31,8 +32,8 @@ export async function GET() {
 }
 
 export async function POST(req) {
-    const { name, price, description, amount } = await req.json();
-    const { error } = schema.validate({ name, price, description, amount });
+    const { name, price, duration, description, total_member } = await req.json();
+    const { error } = schema.validate({ name, price, duration, description, total_member });
     if (error) {
         return NextResponse.json({
             success: false,
@@ -50,11 +51,12 @@ export async function POST(req) {
             }, { status: 409 })
         }
 
-        const newPlan = await MembershipPlan.create({ name, price, description, amount });
+        const newPlan = await MembershipPlan.create({ name, price, duration, description, total_member });
         if (newPlan) {
             return NextResponse.json({
                 success: true,
                 message: messages.addPlan.SUCCESS,
+                data: newPlan
             }, { status: 201 })
         }
     } catch (err) {
