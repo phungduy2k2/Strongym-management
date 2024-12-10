@@ -7,10 +7,8 @@ import Notification from "@/components/Notification";
 
 async function Home() {
   const user = await currentUser();
-  console.log(user, 'currentUser');
   
   const response = await getUserById(user?.id);
-  console.log(response, 'response getUserById');
   
   if (user && !response.success) {
     redirect("/onboard");

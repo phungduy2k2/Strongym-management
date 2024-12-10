@@ -49,7 +49,7 @@ export default function OnBoard({ user }) {
           const response = await createUser({
             userId: user.id,
             username: user.username,
-            email: user.emailAddresses[0].emailAddress,
+            email: user.emailAddresses[0]?.emailAddress,
             role: "member",
             memberId: newMember._id,
           });

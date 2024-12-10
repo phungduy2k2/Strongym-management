@@ -50,7 +50,6 @@ export default function Membership({ userInfo }) {
     try {
       setIsLoading(true);
       const response = await getAllPlans();
-      console.log(response, "response plans");
       if (response.success) {
         setPlans(response.data);
       } else {
@@ -108,8 +107,6 @@ export default function Membership({ userInfo }) {
 
   // hàm tạo bản ghi Payment sau khi đăng ký gói tập thành công
   async function handleCreatePayment(plan) {
-    console.log(userInfo, "userInfo");
-
     try {
       const paymentData = {
         ...initialPaymentData,
@@ -119,8 +116,6 @@ export default function Membership({ userInfo }) {
         amount: plan.price,
         description: `Thanh toán cho ${plan.name}`,
       };
-      console.log(paymentData, "new paymentData");
-
       const response = await createPayment(paymentData);
       if (response.success) {
         showToast("success", response.message);
@@ -145,11 +140,7 @@ export default function Membership({ userInfo }) {
           "yyyy-MM-dd"
         ),
       };
-      console.log(updateMemberData, "updateMemberData");
-
       const response = await updateMember(memberId, updateMemberData);
-      console.log(response, "response updateMember");
-
       if (response.success) {
         showToast("success", response.message);
       } else {
@@ -169,8 +160,6 @@ export default function Membership({ userInfo }) {
         total_member: plan.total_member + 1
       })
       if(response.success) {
-        console.log(response, 'response updatePlan');
-        
         showToast("success", response.message)
       } else {
         showToast("error", response.message)
@@ -182,17 +171,20 @@ export default function Membership({ userInfo }) {
 
   useEffect(() => {
     if (pathname.get("status") === "success") {
-      const currentPlan = JSON.parse(sessionStorage.getItem("currentPlan"));
-      console.log(currentPlan, "currentPlan");
-      const handleData = async () => {
-        await Promise.all([
-          handleCreatePayment(currentPlan),
-          handleUpdateMember(userInfo.memberId, currentPlan),
-          handleUpdateMembership(currentPlan)
-        ]);
+      const isProcessedPayment = sessionStorage.getItem("paymentProcessed")
+      if (!isProcessedPayment) {
+        const currentPlan = JSON.parse(sessionStorage.getItem("currentPlan"));
+        const handleData = async () => {
+          await Promise.all([
+            handleCreatePayment(currentPlan),
+            handleUpdateMember(userInfo.memberId, currentPlan),
+            handleUpdateMembership(currentPlan)
+          ]);
+          //đặt flag là đã hoàn thành cập nhật payment, member, membership; tránh nó chạy lại nếu refresh trang
+          sessionStorage.setItem("paymentProcessed", "true");
+        }
+        handleData();
       }
-      handleData();
-      
     }
   }, [pathname]);
 
@@ -216,7 +208,7 @@ export default function Membership({ userInfo }) {
             <HashLoader loading={isLoading} color="#1e293b" size={50} />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {plans.map((plan) => (
               <div
                 key={plan._id}

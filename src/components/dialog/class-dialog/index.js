@@ -63,8 +63,6 @@ export function ClassDialog({ isOpen, onClose, onSave, onDelete, classData: init
   async function handleImageUpload(e) {
     const extractImageUrl = await uploadImageToFirebase(e.target.files[0]);
     if (extractImageUrl !== "") {
-      console.log(extractImageUrl, "extractImageUrl class");
-      
       setClassData({
         ...classData,
         imageUrl: extractImageUrl,

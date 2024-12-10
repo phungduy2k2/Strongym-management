@@ -1,0 +1,18 @@
+import { getUserById } from "@/services/user";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+
+
+
+export default async function ClassPage() {
+    const user = await currentUser();
+    if(user) {
+      const userInfo = await getUserById(user.id);
+
+      return (
+        <div>Class Page</div>
+      );
+    } else redirect("/")
+    
+    
+}

@@ -23,7 +23,7 @@ export async function GET() {
             data: allPlans,
         })
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json({
             success: false,
             message: messages.getAllPlans.ERROR,

@@ -31,7 +31,6 @@ export default function AdminMembershipPage() {
       const response = await getAllPlans();
       if (response.success) {
         setPlans(response.data);
-        console.log(response, "plans response");
       } else {
         showToast("error", response.message);
       }
@@ -53,8 +52,6 @@ export default function AdminMembershipPage() {
   };
 
   const handleSavePlan = async (updatedPlan) => {
-    console.log(updatedPlan, 'updatedPlan');
-    
     if (updatedPlan._id) { // update membershipPlan
       try {
         const response = await updatePlan(updatedPlan._id, updatedPlan);
@@ -65,7 +62,6 @@ export default function AdminMembershipPage() {
             )
           );
           showToast("success", response.message);
-          console.log(response, "response update plan");
         } else {
           showToast("error", response.message);
         }
@@ -78,7 +74,6 @@ export default function AdminMembershipPage() {
         if (response.success) {
           setPlans((prevPlans) => [...prevPlans, response.data]);
           showToast("success", response.message);
-          console.log(response, "response create plan");
         } else {
           showToast("error", response.message);
         }
