@@ -5,17 +5,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
   try {
-    const { planName, price } = await req.json();
+    const { name, price, currency, url } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
-            currency: "vnd",
+            currency: currency,
             product_data: {
-              name: planName,
-              description: `Thanh toán cho ${planName}`
+              name: name,
+              description: `Thanh toán cho ${name}`
             },
             unit_amount: Math.round(price),
           },
@@ -23,13 +23,13 @@ export async function POST(req) {
         },
       ],
       mode: "payment", // Thanh toán 1 lần
-      success_url: `${req.headers.get("origin")}/membership` + "?status=success",
-      cancel_url: `${req.headers.get("origin")}/membership` + "?status=cancel",
+      success_url: `${req.headers.get("origin")}/${url}` + "?status=success",
+      cancel_url: `${req.headers.get("origin")}/${url}` + "?status=cancel",
     });
 
     return NextResponse.json({ 
-        success: true,
-        sessionId: session.id
+      success: true,
+      sessionId: session.id
     });
   } catch (err) {
     console.error(err);

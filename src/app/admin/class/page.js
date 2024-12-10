@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from "lucide-react";
-import { ClassDialog } from "@/components/dialog/class-dialog";
+import { AdminClassDialog } from "@/components/dialog/admin-class-dialog";
 import { createClass, deleteClass, getClasses, updateClass } from "@/services/class";
 import { showToast } from "@/utils";
 import { getEmployees } from "@/services/employee";
@@ -93,7 +93,7 @@ export default function AdminClassPage() {
         }
         showToast("success", response.message);
         setIsDialogOpen(false)
-        fetchClasses()
+        // fetchClasses()
       } else {
         showToast("error", response.message);
       }
@@ -166,7 +166,7 @@ export default function AdminClassPage() {
         )
       )}
 
-      <ClassDialog
+      <AdminClassDialog
         isOpen={isDialogOpen}
         onClose={() => {
           setIsDialogOpen(false)
@@ -176,7 +176,7 @@ export default function AdminClassPage() {
         onDelete={handleDeleteClass}
         classData={selectedClass}
         trainerData={trainers}
-        key={selectedClass ? selectedClass.id : 'new'}
+        key={selectedClass ? selectedClass._id : 'new'}
       />
       <Notification />
     </div>

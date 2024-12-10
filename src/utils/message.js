@@ -181,7 +181,16 @@ export const messages = {
     /// payment
     createPayment: {
         SUCCESS: "Tạo khoản thanh toán thành công!",
-        ERROR: "Có lỗi khi tạo khoản thanh toán. Xin thử lại"
+        ERROR: "Có lỗi khi tạo khoản thanh toán. Xin thử lại."
+    },
+
+    /// member-class
+    createMemberClass: {
+        SUCCESS: "Đăng ký lớp thành công!",
+        ERROR: "Đăng ký lớp thất bại. Xin thử lại."
+    },
+    getAllMemberClass: {
+        ERROR: "Có lỗi khi lấy thông tin thành viên lớp học. Xin thử lại."
     }
 }
 
@@ -191,13 +200,15 @@ export const dialogMessages = {
         DETAILS_TITLE: "Chi tiết lớp học",
         NAME: "Tên lớp",
         TRAINER: "Giáo viên",
-        PRICE: "Giá (VNĐ)",
+        PRICE: "Giá",
+        CURRENCY: "Đơn vị tiền",
         DESCRIPTION: "Mô tả",
         START_DATE: "Ngày bắt đầu",
         END_DATE: "Ngày kết thúc",
         SAVE_CHANGE: "Lưu thay đổi",
         SAVE_BUTTON: "Lưu lớp học",
         DELETE_BUTTON: "Xóa lớp học",
+        REGISTER_BUTTON: "Đăng ký lớp",
         ALERT_DIALOG_TITLE: "Bạn có chắc muốn xóa lớp học này?",
         ALERT_DIALOG_DESCRIPTION: "Hành động này không thể hoàn tác. Nó sẽ xóa vĩnh viễn lớp học.",
         DELETE: "Xóa",

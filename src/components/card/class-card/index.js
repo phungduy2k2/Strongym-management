@@ -7,16 +7,16 @@ import { format } from "date-fns";
 export default function ClassCard({ classItem, onClick }) {
   return (
     <Card
-      className="overflow-hidden cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:bg-primary-foreground group"
+      className="bg-gradient-to-b from-muted/50 to-muted/20 overflow-hidden cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:bg-primary-foreground group"
       onClick={() => onClick(classItem)}
     >
       <CardContent className="p-1">
         <div className="flex">
-          <div className="flex-shrink-0 relative overflow-hidden">
+          <div className="relative overflow-hidden rounded-md flex-shrink-0">
             <img
               src={classItem.imageUrl}
               alt={classItem.name}
-              className="h-32 w-32 object-cover rounded-md transition-trransform duration-300 group-hover:scale-110"
+              className="h-32 w-32 object-cover rounded-md transition-trransform duration-300 group-hover:scale-110 group-hover:rounded-md"
             />
             <div className="absolute inset-0 rounded-md bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300" />
           </div>

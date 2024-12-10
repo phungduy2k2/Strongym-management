@@ -3,16 +3,16 @@ import mongoose from "mongoose";
 // collection phụ lk 2 collection Member và Class
 const MemberClassSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
     memberId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Member",
+      required: true
     },
     classId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Class",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class",
+      required: true
     },
-    registrationDate: { type: Date, required: true },
   },
   { timestamps: true }
 );
