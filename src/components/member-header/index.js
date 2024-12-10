@@ -4,24 +4,48 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { AlignJustify } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
-function MemberHeader() {
+function MemberHeader({ user }) {
+  const pathname = usePathname()
+  const isAdminRoute = pathname.startsWith('/admin')
+
   const menuItems = [
     {
       label: "Trang chủ",
       path: "/",
+      show: true,
     },
     {
       label: "Bài viết",
       path: "/blog",
+      show: true,
     },
     {
-      label: "Khóa học ",
+      label: "Lớp học",
       path: "/class",
+      show: true,
+    },
+    {
+      label: "Gói tập",
+      path: "/membership",
+      show: true,
+    },
+    {
+      label: "Đăng nhập",
+      path: "/sign-in",
+      show: !user,
+    },
+    {
+      label: "Đăng ký",
+      path: "/sign-up",
+      show: !user,
     },
   ];
 
-  return (
+  
+  return (!isAdminRoute &&
     <div className="w-full">
       <header className="flex h-15 p-3 pl-10 w-full shrink-0 justify-between items-center">
         <Sheet>
@@ -37,13 +61,17 @@ function MemberHeader() {
             </Link>
             <div className="grid gap-2 py-6">
               {menuItems.map((menuItem) => (
-                <Link
-                  href={menuItem.path}
-                  className="flex w-full items-center py-2 text-lg font-semibold"
-                >
-                  {menuItem.label}
-                </Link>
+                menuItem.show ? (
+                  <Link
+                    key={menuItem.label}
+                    href={menuItem.path}
+                    className="flex w-full items-center py-2 text-lg font-semibold"
+                  >
+                    {menuItem.label}
+                  </Link>
+                ) : null
               ))}
+              <UserButton afterSignOutUrl="/"/>
             </div>
           </SheetContent>
         </Sheet>
@@ -57,13 +85,17 @@ function MemberHeader() {
 
         <nav className="ml-auto hidden lg:flex">
           {menuItems.map((menuItem) => (
+            menuItem.show ? (
             <Link
+              key={menuItem.label}
               href={menuItem.path}
               className="group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium"
             >
               {menuItem.label}
             </Link>
+            ) : null
           ))}
+          <UserButton afterSignOutUrl="/"/>
         </nav>
       </header>
     </div>

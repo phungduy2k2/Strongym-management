@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/compat/router";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 export default function LanguageSwitcher() {
   const { t } = useTranslation("common");

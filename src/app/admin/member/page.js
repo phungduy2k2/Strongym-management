@@ -107,7 +107,7 @@ export default function MemberPage() {
           className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
         >
           Thêm
-          <CirclePlus/>    
+          <CirclePlus/>
         </Button>
       </div>
 

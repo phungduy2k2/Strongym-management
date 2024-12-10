@@ -7,11 +7,11 @@ import { NextResponse } from "next/server";
 const schema = Joi.object({
   name: Joi.string().required(),
   birth: Joi.date().required(),
-  gender: Joi.string().required(),
+  gender: Joi.boolean().required(),
   phone: Joi.string().pattern(/^[0]\d{9}$/).required(),
   imageUrl: Joi.string().optional(),
   address: Joi.string().required(),
-  membershipPlanId: Joi.string().optional(),
+  membershipPlanId: Joi.string().allow(null).optional(),
   status: Joi.string().required(),
   expiredDate: Joi.date().required(),
 });

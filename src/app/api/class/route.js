@@ -46,7 +46,7 @@ export async function POST(req) {
       }, { status: 201 });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return NextResponse.json({
       success: false,
       message: messages.addClass.ERROR,
