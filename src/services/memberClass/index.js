@@ -1,3 +1,4 @@
+// create relationship member-class
 export const createMemberClass = async (formData) => {
   try {
     const res = await fetch("/api/member-class", {

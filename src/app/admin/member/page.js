@@ -99,14 +99,14 @@ export default function MemberPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="min-w-screen flex space-between">
-        <span className="text-3xl font-bold">Admin/Trang Thành Viên</span>
+      <div className="min-w-screen mb-6 flex justify-between items-center">
+        <span className="text-3xl font-bold">Bảng danh sách thành viên</span>
         {/* ----- Button "Thêm" ----- */}
         <Button
           onClick={() => setIsAddModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
         >
-          Thêm
+          Thêm thành viên
           <CirclePlus/>
         </Button>
       </div>

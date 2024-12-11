@@ -11,5 +11,5 @@ export default async function MembershipPage() {
     return (
       <Membership userInfo={userInfo.data} />
     );
-  } else redirect("/")
+  } else redirect("/onboard")
 }

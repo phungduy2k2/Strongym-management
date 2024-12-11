@@ -187,6 +187,9 @@ export const messages = {
         SUCCESS: "Tạo khoản thanh toán thành công!",
         ERROR: "Có lỗi khi tạo khoản thanh toán. Xin thử lại."
     },
+    getAllPayment: {
+        ERROR: "Có lỗi khi lấy thông tin các khoản thanh toán. Xin thử lại."
+    },
 
     /// member-class
     createMemberClass: {
@@ -221,6 +224,20 @@ export const dialogMessages = {
         ALERT_DIALOG_DESCRIPTION: "Hành động này không thể hoàn tác. Nó sẽ xóa vĩnh viễn lớp học.",
         DELETE: "Xóa",
         CANCEL: "Hủy",
+    },
+    memberClass: {
+       TITLE: "Đăng ký học viên",
+       MEMBER_NAME: "Tên thành viên",
+       MEMBER_PLC_HOLDER: "Chọn thành viên",
+       CLASS_NAME: "Tên lớp",
+       CLASS_PLC_HOLDERL: "Chọn lớp",
+       PAYMENT: "Thanh toán",
+       AMOUNT: "Số tiền",
+       CURRENCY: "Đơn vị",
+       METHOD: "Phương thức",
+       METHOD_PLC_HOLDER: "Chọn phương thức",
+       CANCEL: "Hủy",
+       REGISTER: "Đăng ký", 
     }
 }
 

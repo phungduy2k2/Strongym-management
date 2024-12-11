@@ -4,8 +4,6 @@ import { messages } from "@/utils/message";
 import Joi from "joi";
 import { NextResponse } from "next/server";
 
-
-
 const schema = Joi.object({
     customer: Joi.string().required(),
     memberId: Joi.string().allow(null).optional(),
@@ -44,4 +42,21 @@ export async function POST(req) {
             message: messages.createPayment.ERROR,
         }, { status: 500 });
     }
+}
+
+export async function GET() {
+    try {
+        await connectToDB();
+        const allPayments = await Payment.find({});
+        return NextResponse.json({
+            success: true,
+            data: allPayments
+        }, { status: 200 })
+    } catch(err) {
+        console.error(err);
+        return NextResponse.json({
+            success: false,
+            message: messages.getAllPayment.ERROR,
+        }, { status: 500 });
+    } 
 }
