@@ -8,17 +8,17 @@ import { format } from "date-fns";
 import { useState } from "react";
 
 const defaultClass ={
-    name: "",
-    imageUrl: null,
-    trainerId: { _id: "", name: "" },
-    price: 0,
-    currency: "",
-    description: "",
-    status: "",
-    startDate: "",
-    endDate: ""
+  name: "",
+  imageUrl: null,
+  trainerId: { _id: "", name: "" },
+  price: 0,
+  currency: "",
+  description: "",
+  status: "",
+  startDate: "",
+  endDate: ""
 }
-export default function ClassDialog({ isOpen, onClose, register, class: selectedClass }) {
+export default function ClassDialog({ isOpen, onClose, register, class: selectedClass, allowRegister }) {
   const [classData, setClassData] = useState(selectedClass || defaultClass);
 
   const handleRegister = () => {
@@ -79,7 +79,7 @@ export default function ClassDialog({ isOpen, onClose, register, class: selected
 
         {/* ----- Footer ----- */}
         <DialogFooter>
-          <Button type="button" onClick={handleRegister}
+          <Button type="button" onClick={handleRegister} disabled={!allowRegister}
             className="bg-gradient-to-b from-green-500 to-green-600 text-white shadow hover:from-green-600 hover:to-green-700 hover:text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 ease-in-out">
             {dialogMessages.class.REGISTER_BUTTON}
           </Button>

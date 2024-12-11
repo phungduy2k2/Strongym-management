@@ -15,3 +15,18 @@ export const createMemberClass = async (formData) => {
     throw err;
   }
 };
+
+//getMemberClassByMemberId
+export const getClassesByMemberId = async (memberId) => {
+  try {
+    const res = await fetch(`/api/member-class/${memberId}`, {
+      method: "GET"
+    })
+
+    const data = await res.json();
+    return data;
+  } catch(err) {
+    console.error(err);
+    throw err;
+  }
+}

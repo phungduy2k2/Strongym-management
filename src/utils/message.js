@@ -124,6 +124,10 @@ export const messages = {
     getAllClass: {
         ERROR: "Có lỗi khi lấy dữ liệu lớp học. Xin thử lại."
     },
+    getClassById: {
+        NOT_FOUND: "Không tìm thấy lớp học.",
+        ERROR: "Có lỗi khi tìm lớp học. Xin thử lại."
+    },
     updateClass: {
         NOT_FOUND: "Không tìm thấy lớp học.",
         SUCCESS: "Cập nhật lớp học thành công!",
@@ -191,6 +195,10 @@ export const messages = {
     },
     getAllMemberClass: {
         ERROR: "Có lỗi khi lấy thông tin thành viên lớp học. Xin thử lại."
+    },
+    getMemberClassByMemberId: {
+        NOT_FOUND: "Bạn không tham gia lớp học nào.",
+        ERROR: "Có lỗi khi tìm lớp học của bạn."
     }
 }
 

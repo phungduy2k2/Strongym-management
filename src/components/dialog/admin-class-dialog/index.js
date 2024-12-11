@@ -48,9 +48,6 @@ export function AdminClassDialog({ isOpen, onClose, onSave, onDelete, classData:
         endDate: initialClassData.endDate ? format(new Date(initialClassData.endDate), 'yyyy-MM-dd') : '',
       } || defaultData)
     }
-
-    console.log(classData, 'classData');
-    
     setIsChanged(false);
   }, [initialClassData])
 
@@ -77,8 +74,6 @@ export function AdminClassDialog({ isOpen, onClose, onSave, onDelete, classData:
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(classData);
-    
     onSave(classData._id, classData);
     setIsChanged(false)
     onClose();

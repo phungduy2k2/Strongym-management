@@ -25,9 +25,9 @@ export default function ClassCard({ classItem, onClick }) {
               <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                    <h3 className="font-bold text-lg mb-1 truncate group-hover:text-primary transition-colors duration-300">
+                      <h3 className="font-bold text-lg mb-1 truncate group-hover:text-primary transition-colors duration-300">
                         {classItem.name}
-                    </h3>
+                      </h3>
                     </TooltipTrigger>
                     <TooltipContent>
                         <p>{classItem.name}</p>
@@ -37,6 +37,17 @@ export default function ClassCard({ classItem, onClick }) {
               <p className="text-sm text-gray-600 mb-2 group-hover:text-gray-800 transition-colors duration-300">
                 {classItem.trainerId.name}
               </p>
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
+                  classItem.status === "ACTIVE"
+                    ? "bg-green-100 text-green-800 border-green-800"
+                    : classItem.status === "UPCOMING"
+                    ? "bg-yellow-100 text-yellow-800 border-yellow-800"
+                    : "bg-red-100 text-red-800 border-red-800"
+                }`}
+              >
+                {classItem.status}
+              </span>
             </div>
             <div className="text-sm text-gray-700 italic group-hover:text-gray-900 transition-colors duration-300">
               {format(new Date(classItem.startDate), "dd-MM-yyyy")} -{" "}
