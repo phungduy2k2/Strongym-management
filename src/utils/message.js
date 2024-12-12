@@ -238,6 +238,14 @@ export const dialogMessages = {
        METHOD_PLC_HOLDER: "Chọn phương thức",
        CANCEL: "Hủy",
        REGISTER: "Đăng ký", 
+    },
+    eqm: {
+        NAME: "Tên",
+        QUANTITY: "Số lượng",
+        NEXT_MAINTENANCE: "Ngày bảo trì tới",
+        SAVE: "Lưu",
+        DELETE: "Xóa",
+        CANCEL: "Hủy",
     }
 }
 

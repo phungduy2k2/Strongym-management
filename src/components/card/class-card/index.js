@@ -14,8 +14,8 @@ export default function ClassCard({ classItem, onClick }) {
         <div className="flex">
           <div className="relative overflow-hidden rounded-md flex-shrink-0">
             <img
-              src={classItem.imageUrl}
-              alt={classItem.name}
+              src={classItem?.imageUrl}
+              alt={classItem?.name}
               className="h-32 w-32 object-cover rounded-md transition-trransform duration-300 group-hover:scale-110 group-hover:rounded-md"
             />
             <div className="absolute inset-0 rounded-md bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300" />

@@ -150,9 +150,7 @@ export default function AdminClassPage() {
         description: `Thanh toán cho ${cls.name}`,
         paymentMethod: method
       };
-      const response = await createPayment(paymentData);
-      console.log(response, 'response createPayment');
-      
+      const response = await createPayment(paymentData);      
       if (response.success) {
         showToast("success", response.message);
       } else {
@@ -167,7 +165,6 @@ export default function AdminClassPage() {
     try {
       const formData = { memberId: memberId, classId: classId }
       const response = await createMemberClass(formData);
-      console.log(response, 'response createMemberClass');
       if (response.success) {
         showToast("success", response.message)
       } else {
@@ -179,7 +176,6 @@ export default function AdminClassPage() {
   }
 
   const handleRegister = (registrationData) => {
-    console.log(registrationData, 'registrationData');
     const member = registrationData.member;
     const cls = registrationData.class
     // tạo Payment

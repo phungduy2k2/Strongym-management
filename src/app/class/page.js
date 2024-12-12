@@ -11,5 +11,5 @@ export default async function ClassPage() {
     return (
         <Class userInfo={userInfo.data} />
     );
-  } else redirect("/");
+  } else redirect("/onboard");
 }

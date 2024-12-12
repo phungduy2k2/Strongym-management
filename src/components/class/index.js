@@ -210,7 +210,7 @@ export default function Class({ userInfo }) {
             <div className="grid mt-6 mb-10 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {myClasses.map((classItem) => (
                 <ClassCard
-                  key={classItem._id}
+                  key={classItem?._id}
                   classItem={classItem}
                   onClick={cardClick}
                 />

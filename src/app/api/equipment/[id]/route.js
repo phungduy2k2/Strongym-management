@@ -8,7 +8,7 @@ const schema = Joi.object({
   name: Joi.string().required(),
   quantity: Joi.number().integer().min(0).required(),
   creatorId: Joi.string().required(),
-  nextMaintenanceDate: Joi.date().optional(),
+  nextMaintenanceDate: Joi.date().allow("").optional(),
 });
 
 // get equipment by ID
@@ -39,8 +39,8 @@ export async function GET(req, { params }) {
 // update equipment
 export async function PUT(req, { params }) {
   try {
-    const equipmentData = await req.json();
-    const { error } = schema.validate(equipmentData);
+    const { name, quantity, creatorId, nextMaintenanceDate } = await req.json();
+    const { error } = schema.validate({ name, quantity, creatorId, nextMaintenanceDate });
     if (error) {
       return NextResponse.json({
         success: false,
@@ -49,7 +49,9 @@ export async function PUT(req, { params }) {
     }
 
     await connectToDB();
-    const updatedEquipment = await Equipment.findByIdAndUpdate(params.id, equipmentData,{
+    const updatedEquipment = await Equipment.findByIdAndUpdate(params.id, 
+      { name, quantity, creatorId, nextMaintenanceDate },
+      {
         new: true,
         runValidators: true
     });
@@ -78,11 +80,11 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
   try {
     await connectToDB();
-    const deletedEquipment = await Equipment.findByIdAndDelete(params.id);
+    const deleteEquipment = await Equipment.findByIdAndDelete(params.id);
 
-    if (!deletedEquipment) {
+    if (!deleteEquipment) {
       return NextResponse.json({
-        success: true,
+        success: false,
         message: messages.deleteEquipment.NOT_FOUND,
       }, { status: 404 });
     }

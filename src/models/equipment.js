@@ -15,7 +15,6 @@ const EquipmentSchema = new mongoose.Schema(
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      index: true,
     },
     nextMaintenanceDate: { type: Date },
   },
