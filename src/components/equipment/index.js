@@ -9,8 +9,6 @@ import {
 import { showToast } from "@/utils";
 import Notification from "../Notification";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { CirclePlus } from "lucide-react";
 import { HashLoader } from "react-spinners";
 import EquipmentTable from "../table/equipment-table";
 

@@ -50,8 +50,8 @@ export default function ClassCard({ classItem, onClick }) {
               </span>
             </div>
             <div className="text-sm text-gray-700 italic group-hover:text-gray-900 transition-colors duration-300">
-              {format(new Date(classItem.startDate), "dd-MM-yyyy")} -{" "}
-              {format(new Date(classItem.endDate), "dd-MM-yyyy")}
+              {new Date(classItem.startDate).toLocaleDateString("vi-VN")} -{" "}
+              {new Date(classItem.endDate).toLocaleDateString("vi-VN")}
             </div>
           </div>
         </div>
