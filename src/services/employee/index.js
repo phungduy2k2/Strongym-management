@@ -1,6 +1,6 @@
 export const getEmployees = async () => {
   try {
-    const res = await fetch("/api/employee", {
+    const res = await fetch(`/api/employee`, {
       method: "GET",
       cache: "no-store",
     });

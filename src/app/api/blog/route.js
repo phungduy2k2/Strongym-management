@@ -7,18 +7,13 @@ import { NextResponse } from "next/server";
 const contentSchema = Joi.object({
   type: Joi.string().valid('text', 'image', 'video').required(),
   data: Joi.string().required(),
-  metadata: Joi.object({
-    caption: Joi.string().allow('').optional(),
-    resolution: Joi.string().allow('').optional(),
-    size: Joi.number().min(0).optional()
-  })
 })
 
 const schema = Joi.object({
   title: Joi.string().required(),
   content: Joi.array().items(contentSchema).min(1).required(),
   category: Joi.array().items(Joi.string().max(20)).optional(),
-  creatorId: Joi.string().required(),
+  authorId: Joi.string().required(),
 });
 
 export const dynamic = "force-dynamic";
@@ -27,7 +22,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     await connectToDB();
-    const allBlogs = await Blog.find({}); //// populate  "creatorId"
+    const allBlogs = await Blog.find({}).populate("authorId", "name");
     return NextResponse.json({
       success: true,
       data: allBlogs
@@ -43,9 +38,9 @@ export async function GET() {
 
 // add new blog
 export async function POST(req) {
-  const { title, content, category, creatorId } = await req.json();
+  const { title, content, category, authorId } = await req.json();
 
-  const { error } = schema.validate({ title, content, category, creatorId });
+  const { error } = schema.validate({ title, content, category, authorId });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -63,11 +58,12 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    const newBlog = await Blog.create({ title, content, category, creatorId });
+    const newBlog = await Blog.create({ title, content, category, authorId });
     if (newBlog) {
       return NextResponse.json({
         success: true,
         message: messages.addBlog.SUCCESS,
+        data: newBlog
       }, { status: 201 });
     }
   } catch (err) {

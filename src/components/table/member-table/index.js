@@ -157,7 +157,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button varian="outline" className="ml-auto bg-primary">
-                Số dòng mỗi trang: {itemsPerPage}
+                Số dòng: {itemsPerPage}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
