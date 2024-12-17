@@ -136,7 +136,7 @@ export default function PaymentTable({ payments }) {
         </div>
         <div className="flex space-x-2 items-center">
           <Label className="mr-3 italic font-bold text-gray-600">
-            Tổng: {paginatedPayments.length}
+            Tổng: {payments.length}
           </Label>
           <Button
             onClick={handleExportExcel}
@@ -152,7 +152,7 @@ export default function PaymentTable({ payments }) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {[10, 15, 20, 30, 40].map((pageSize) => (
+              {[10, 15, 20, 30].map((pageSize) => (
                 <DropdownMenuCheckboxItem
                   key={pageSize}
                   className="capitalize"

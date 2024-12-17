@@ -36,8 +36,6 @@ export default function BlogEditPage({ params }) {
   const handleSubmit = async (updatedBlog) => {
     try {
       const response = await updateBlog(params.id, updatedBlog);
-      console.log(response, "response update");
-
       if (response.success) {
         // setBlogs(blogs.map(b => b._id === params_id ? { ...b, ...updatedBlog } : b))
         showToast("success", response.message);
@@ -53,7 +51,6 @@ export default function BlogEditPage({ params }) {
   const handleDelete = async () => {
     try {
       const response = await deleteBlog(params_id)
-      console.log(response, 'response delete');
       if (response.success) {
         showToast("success", response.message)
         router.push("/admin/blog")
@@ -64,8 +61,6 @@ export default function BlogEditPage({ params }) {
       showToast("error", "Có lỗi khi xóa bài viết.");
     }
   }
-
-  console.log(blog, "blog now");
 
   return (
     <div className="container mx-auto mb-6">

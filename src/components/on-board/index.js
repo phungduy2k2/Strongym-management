@@ -78,7 +78,7 @@ export default function OnBoard({ user }) {
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: "url('/bg_onboard.jpg')" }}
     >
-      <div className="bg-white bg-opacity-75 p-8 rounded-lg shadow-xl w-full max-w-md">
+      <div className="bg-white bg-opacity-75 mt-16 p-8 rounded-lg shadow-xl w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">
           Thông tin chi tiết
         </h1>

@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Payment from "@/models/payment";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -16,6 +17,9 @@ const schema = Joi.object({
 })
 
 export async function POST(req) {
+    const authError = await authorize(["manager", "member"]);
+    if (authError) return authError;
+
     await connectToDB();
     const { customer, memberId, membershipPlanId, classId, amount, currency, description, paymentMethod } = await req.json()
     const { error } = schema.validate({ customer, memberId, membershipPlanId, classId, amount, currency, description, paymentMethod });
@@ -45,6 +49,9 @@ export async function POST(req) {
 }
 
 export async function GET() {
+    const authError = await authorize(["manager"]);
+    if (authError) return authError;
+
     try {
         await connectToDB();
         const allPayments = await Payment.find({});

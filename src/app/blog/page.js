@@ -34,7 +34,6 @@ export default function BlogPage() {
     try {
       setIsLoading(true);
       const res = await getBlogs();
-      console.log(res, "res blogs");
       if (res.success) {
         setBlogs(res.data);
       } else {
@@ -75,11 +74,11 @@ export default function BlogPage() {
   const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
 
   return isLoading ? (
-    <div className="flex mt-10 justify-center items-center">
+    <div className="flex mt-32 justify-center items-center">
       <HashLoader loading={isLoading} color="#1e293b" size={50} />
     </div>
   ) : (
-    <div className="container mx-auto px-24 py-8">
+    <div className="container mx-auto px-24 py-8 mt-16">
       <div className="max-w-xl mx-auto mb-8">
         <Input
           placeholder='Tìm kiếm theo từ khóa, ví dụ "ngực", "lưng", "cardio"... (cách nhau bởi dấu phẩy)'

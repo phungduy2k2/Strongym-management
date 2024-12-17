@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import MemberClass from "@/models/memberClass";
 import { messages } from "@/utils/message";
 import { NextResponse } from "next/server";
@@ -12,6 +13,9 @@ const schema = Joi.object({
 
 //add new relationship member-class
 export async function POST(req) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   const { memberId, classId, registrationDate } = await req.json();
   const { error } = schema.validate({ memberId, classId });
   if (error) {
@@ -43,6 +47,9 @@ export async function POST(req) {
 
 // get all relationship
 export async function GET() {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+  
     try {
       await connectToDB();
       const allRelationship = await MemberClass.find({}).populate("memberId", "name").populate("classId", "name");

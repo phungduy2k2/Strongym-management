@@ -42,11 +42,7 @@ export default function EmployeePage() {
 
   const handleAddEmployee = async (newEmployee) => {
     try {
-      console.log(newEmployee, 'newEmployee');
-      
-      const res = await createEmployee(newEmployee);
-      console.log(res, 'res add new emp');
-      
+      const res = await createEmployee(newEmployee);      
       if (res.success) {
         setEmployees((prev) => [...prev, res.data]);
         showToast("success", res.message);

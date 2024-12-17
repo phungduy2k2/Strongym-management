@@ -156,6 +156,7 @@ export default function AdminMembershipPage() {
       )}
 
       <AdminMembershipDetailModal
+        key={selectedPlan ? selectedPlan._id : "new"}
         isOpen={isModalOpen}
         plan={selectedPlan}
         onClose={() => setIsModalOpen(false)}

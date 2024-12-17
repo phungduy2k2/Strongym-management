@@ -19,8 +19,6 @@ export default function PaymentPage() {
     try {
       setIsLoading(true);
       const response = await getPayments();
-      console.log(response, "response payment");
-
       if (response.success) {
         setPayments(response.data);
       } else {

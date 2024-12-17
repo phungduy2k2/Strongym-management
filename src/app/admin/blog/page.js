@@ -27,7 +27,6 @@ export default function BlogPage() {
     try {
       setIsLoading(true);
       const response = await getBlogs();
-      console.log(response, "res Blogs");
 
       if (response.success) {
         setBlogs(response.data);
@@ -44,7 +43,6 @@ export default function BlogPage() {
   const fetchEmployees = async () => {
     try {
       const response = await getEmployees();
-      console.log(response, "res Employees");
 
       if (response.success) {
         setEmployees(response.data);

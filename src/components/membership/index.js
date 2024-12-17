@@ -187,7 +187,7 @@ export default function Membership({ userInfo }) {
 
   return (
     <Elements stripe={stripePromise}>
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4 mt-16">
         {isRegistered ? (
           <div className="flex mb-8 items-center justify-between">
             <h1 className="text-3xl font-bold">Bạn đang là thành viên phòng tập!</h1>

@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Event from "@/models/event";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -15,6 +16,9 @@ const schema = Joi.object({
 
 // get event by id
 export async function GET(req, { params }) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
     try {
       await connectToDB();
       const event = await Event.findById(params.id);
@@ -36,9 +40,12 @@ export async function GET(req, { params }) {
 
 // update event
 export async function PUT(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   try {
-    const eventData = await req.json();
-    const { error } = schema.validate(eventData);
+    const { title, description, banner, creatorId, startDate, endDate } = await req.json();
+    const { error } = schema.validate({ title, description, banner, creatorId, startDate, endDate });
     if(error) {
       return NextResponse.json({
         success: false,
@@ -47,7 +54,7 @@ export async function PUT(req, { params }) {
     }
 
     await connectToDB();
-    const updatedEvent = await Event.findByIdAndUpdate(params.id, eventData,{ 
+    const updatedEvent = await Event.findByIdAndUpdate(params.id, { title, description, banner, creatorId, startDate, endDate },{ 
       new: true,
       runValidators: true,
     });

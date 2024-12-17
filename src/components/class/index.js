@@ -219,7 +219,7 @@ export default function Class({ userInfo }) {
 
   return (
     <Elements stripe={stripePromise}>
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4 mt-16">
         {myClasses && myClasses.length ? (
           <div>
             <Label className="text-lg font-bold text-gray-700">

@@ -252,6 +252,15 @@ export const dialogMessages = {
         SAVE: "Lưu",
         DELETE: "Xóa",
         CANCEL: "Hủy",
+    },
+    event: {
+        TITLE: "Tiêu đề",
+        DESCRIPTION: "Mô tả",
+        START_DATE: "Ngày bắt đầu",
+        END_DATE: "Ngày kết thúc",
+        SAVE: "Lưu",
+        DELETE: "Xóa",
+        CANCEL: "Hủy",
     }
 }
 

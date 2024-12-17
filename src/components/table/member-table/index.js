@@ -136,7 +136,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mb-8">
       {/* ----- Filter Input and ItemsPerPage -----  */}
       <div className="flex items-center justify-between">
         <Input

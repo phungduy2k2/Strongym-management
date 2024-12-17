@@ -1,10 +1,14 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import MemberClass from "@/models/memberClass";
 import { messages } from "@/utils/message";
 import { NextResponse } from "next/server";
 
 // find MemberClass by memberId
 export async function GET(req, { params }) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const memberId = params.id;

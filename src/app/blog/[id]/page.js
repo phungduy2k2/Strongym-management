@@ -12,8 +12,6 @@ import { HashLoader } from "react-spinners";
 
 export default function BlogDetailPage({ params }) {
   const params_id = params.id;
-  console.log(params_id, "params_id");
-
   const [blog, setBlog] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,8 +20,6 @@ export default function BlogDetailPage({ params }) {
       try {
         setIsLoading(true);
         const response = await getBlogById(params_id);
-        console.log(response, "response blog");
-
         if (response.success) {
           setBlog(response.data);
         } else {
@@ -39,11 +35,11 @@ export default function BlogDetailPage({ params }) {
   }, [params_id]);
 
   return isLoading ? (
-    <div className="flex mt-10 justify-center items-center">
+    <div className="flex mt-32 justify-center items-center">
       <HashLoader loading={isLoading} color="#1e293b" size={50} />
     </div>
   ) : (
-    <div className="container mx-auto px-28 py-8">
+    <div className="container mx-auto px-28 py-8 mt-16">
       <Link href="/blog" passHref>
         <Button variant="ghost" className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4"/> Quay lại

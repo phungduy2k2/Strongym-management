@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Event from "@/models/event";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -17,6 +18,9 @@ export const dynamic = "force-dynamic";
 
 // add new event
 export async function POST(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   const { title, description, banner, creatorId, startDate, endDate } = await req.json();
   const { error } = schema.validate({ title, description, banner, creatorId, startDate, endDate });
   if (error) {
@@ -33,6 +37,7 @@ export async function POST(req) {
       return NextResponse.json({
         success: true,
         message: messages.addEvent.SUCCESS,
+        data: newEvent
       }, { status: 201 });
     }
   } catch (err) {
@@ -44,21 +49,24 @@ export async function POST(req) {
   }
 }
 
-// get active event
+// get all events
 export async function GET(req) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   await connectToDB();
 
   try {
-    const currentDate = new Date();
-    const upcomingDate = new Date(currentDate);
-    upcomingDate.setDate(currentDate.getDate() + 10); // 10 ngày tới
+    // const currentDate = new Date();
+    // const upcomingDate = new Date(currentDate);
+    // upcomingDate.setDate(currentDate.getDate() + 10); // 10 ngày tới
 
-    const events = await Event.find({
-      $and: [
-        { startDate: { $lte: upcomingDate } },
-        { endDate: { $gte: currentDate } },
-      ],
-    });
+    const events = await Event.find({});
+    //   $and: [
+    //     { startDate: { $lte: upcomingDate } },
+    //     { endDate: { $gte: currentDate } },
+    //   ],
+    // });
     if (!events) {
       return NextResponse.json({
         success: false,

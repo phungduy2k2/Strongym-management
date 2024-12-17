@@ -9,7 +9,6 @@ async function Home() {
   const user = await currentUser();
   
   const response = await getUserById(user?.id);
-  
   if (user && !response.success) {
     redirect("/onboard");
   } else {
@@ -19,7 +18,7 @@ async function Home() {
   return (
     <Fragment>
       <section>
-        <div className="flex flex-col w-full items-center">
+        <div className="flex flex-col w-full mt-16 items-center">
           <Banner />
           <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start"></main>
         </div>

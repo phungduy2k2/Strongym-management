@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Equipment from "@/models/equipment";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -15,6 +16,9 @@ export const dynamic = "force-dynamic";
 
 // add new equipment
 export async function POST(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   await connectToDB();
 
   const { name, quantity, creatorId, nextMaintenanceDate } = await req.json();
@@ -45,6 +49,9 @@ export async function POST(req) {
 
 // get all equipment
 export async function GET(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
     const allEquipments = await Equipment.find({});
