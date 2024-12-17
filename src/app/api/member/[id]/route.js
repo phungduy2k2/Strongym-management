@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Member from "@/models/member";
 import { messages } from "@/utils/message";
 import { NextResponse } from "next/server";
@@ -7,6 +8,9 @@ export const dynamic = "force-dynamic";
 
 // get member by ID
 export async function GET(req, { params }) {
+  const authError = await authorize(req, ["manager", "member"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const member = await Member.findById(params.id); // .populate("membershipPlanId", "name")
@@ -32,6 +36,9 @@ export async function GET(req, { params }) {
 
 //  update member
 export async function PUT(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const body = await req.json();    
@@ -61,6 +68,9 @@ export async function PUT(req, { params }) {
 
 // delete member
 export async function DELETE(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const deleteMember = await Member.findByIdAndDelete(params.id);

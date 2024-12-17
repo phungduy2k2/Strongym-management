@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Member from "@/models/member";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -20,6 +21,11 @@ export const dynamic = "force-dynamic";
 
 // get all members
 export async function GET() {
+  const authError = await authorize(["manager"]);
+  console.log(authError, 'authError');
+  
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const allMembers = await Member.find({}).populate("membershipPlanId", "name");
@@ -38,6 +44,9 @@ export async function GET() {
 
 // create member
 export async function POST(req) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+  
   const {
     name,
     birth,

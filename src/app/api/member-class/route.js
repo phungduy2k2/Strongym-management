@@ -8,7 +8,6 @@ const Joi = require("joi");
 const schema = Joi.object({
   memberId: Joi.string().required(),
   classId: Joi.string().required(),
-//   registrationDate: Joi.date().required(),
 });
 
 //add new relationship member-class

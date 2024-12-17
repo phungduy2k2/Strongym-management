@@ -15,8 +15,6 @@ import { format } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
-
-
 export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, onDelete }) {
   const [editedMember, setEditedMember] = useState(null);
   const [isChanged, setIsChanged] = useState(false);
@@ -147,7 +145,7 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
                     ) : (
                       <Select
                         name={name}
-                        defaultValue={editedMember[name]._id}
+                        defaultValue={editedMember[name]?._id}
                         onValueChange={(value) => handleSelectChange(name, value)}
                       >
                         <SelectTrigger className="col-span-2">

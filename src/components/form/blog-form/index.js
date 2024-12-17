@@ -145,7 +145,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
             <Button
               type="button"
               onClick={() => handleAddContent("image")}
-              className="bg-white text-primary hover:bg-gray-200"
+              className="bg-white text-primary hover:bg-gray-200 border border-gray-300"
             >
               <CirclePlus />
               Ảnh
@@ -153,7 +153,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
             <Button
               type="button"
               onClick={() => handleAddContent("video")}
-              className="bg-white text-primary hover:bg-gray-200"
+              className="bg-white text-primary hover:bg-gray-200 border border-gray-300"
             >
               <CirclePlus />
               Video

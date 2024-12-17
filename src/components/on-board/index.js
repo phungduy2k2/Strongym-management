@@ -13,11 +13,12 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { createMember } from "@/services/member";
 import { createUser } from "@/services/user";
 import { Button } from "../ui/button";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Notification from "../Notification";
 
 export default function OnBoard({ user }) {
   const [formData, setFormData] = useState(initialMemberFormData);
+  const router = useRouter()
 
   async function handleImageUpload(event) {
     const extractImageUrl = await uploadImageToFirebase(event.target.files[0]);
@@ -55,7 +56,7 @@ export default function OnBoard({ user }) {
           });
           if (response.success) {
             showToast("success", response.message);
-            redirect("/");
+            router.push("/");
           } else {
             showToast("error", response.message);
           }

@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Blog from "@/models/blog";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -19,6 +20,9 @@ const schema = Joi.object({
 
 // get blog by id
 export async function GET(req, { params }) {
+  const authError = await authorize(req, ["member", "manager"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const blog = await Blog.findById(params.id).populate("authorId", "name"); ///populate creatorId (User)
@@ -40,6 +44,9 @@ export async function GET(req, { params }) {
 
 // update blog
 export async function PUT(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+
   try {
     const { title, content, category, authorId } = await req.json();
     const { error } = schema.validate({ title, content, category, authorId });
@@ -77,6 +84,9 @@ export async function PUT(req, { params }) {
 
 // delete blog
 export async function DELETE(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
     const deletedBlog = await Blog.findByIdAndDelete(params.id);

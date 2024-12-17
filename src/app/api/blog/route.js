@@ -3,6 +3,8 @@ import Blog from "@/models/blog";
 import { messages } from "@/utils/message";
 import Joi from "joi";
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { authorize } from "@/lib/middleware";
 
 const contentSchema = Joi.object({
   type: Joi.string().valid('text', 'image', 'video').required(),
@@ -20,6 +22,9 @@ export const dynamic = "force-dynamic";
 
 //get all blogs
 export async function GET() {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
     const allBlogs = await Blog.find({}).populate("authorId", "name");
@@ -38,6 +43,9 @@ export async function GET() {
 
 // add new blog
 export async function POST(req) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+
   const { title, content, category, authorId } = await req.json();
 
   const { error } = schema.validate({ title, content, category, authorId });

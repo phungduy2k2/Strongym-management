@@ -89,7 +89,8 @@ function MemberHeader({ user }) {
             <Link
               key={menuItem.label}
               href={menuItem.path}
-              className="group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium"
+              className={`group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium
+                ${pathname.endsWith(menuItem.path) ? 'text-blue-700 border-b-2 border-blue-700' : 'hover:text-blue-500'}`}
             >
               {menuItem.label}
             </Link>

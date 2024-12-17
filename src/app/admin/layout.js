@@ -2,9 +2,11 @@ import { AdminSidebar } from "@/components/admin-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getUserById } from "@/services/user";
 import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Layout({ children }) {
   const user = await currentUser();
+  if(!user) redirect("/")
   const userInfo = await getUserById(user.id);
   
   return (

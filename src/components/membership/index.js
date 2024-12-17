@@ -196,11 +196,6 @@ export default function Membership({ userInfo }) {
         ) : (
           <h1 className="text-3xl font-bold mb-8">Bạn hãy đăng ký gói tập phù hợp nhé!</h1>
         )}
-        {/* <h1 className="text-3xl font-bold mb-8">
-          {isRegistered
-            ? ("Bạn đang là thành viên phòng tập!")
-            : "Bạn hãy đăng ký gói tập phù hợp nhé!"}
-        </h1> */}
         {isLoading ? (
           <div className="flex mt-10 justify-center items-center">
             <HashLoader loading={isLoading} color="#1e293b" size={50} />

@@ -92,12 +92,12 @@ export default function EmployeePage() {
   return (
     <div className="flex flex-col">
       <div className="min-w-screen mb-6 flex justify-between items-center">
-        <span className="text-3xl font-bold">Admin/Trang Nhân Viên</span>
+        <span className="text-3xl font-bold">Danh sách nhân viên</span>
         <Button
           onClick={() => setIsAddModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
         >
-          Thêm thành viên
+          Thêm nhân viên
         <CirclePlus/>
         </Button>
       </div>
