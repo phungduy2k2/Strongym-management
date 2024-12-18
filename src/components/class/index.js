@@ -43,58 +43,36 @@ export default function Class({ userInfo }) {
 
       // Fetch user's classes
       const userClassesResponse = await getClassesByMemberId(userInfo.memberId);
-      if (!userClassesResponse.success) throw new Error("Failed to fetch user classes.")
-      // if (userClassesResponse.success) {
-        const userClasses = userClassesResponse.data;
-        // If user is enrolled in any classes, fetch details for those classes
-        const enrolledClasses = userClasses.length ? await Promise.all(userClasses.map((item) => getClassById(item.classId))) : []
-        setMyClasses(enrolledClasses)
+      if (!userClassesResponse.success)
+        throw new Error("Failed to fetch user classes.");
 
-        // Fetch all classes
-        const allClassesResponse = await getClasses()
-        if (!allClassesResponse.success) throw new Error("Failed to fetch all classes.");
-        const allClasses = allClassesResponse.data;
+      const userClasses = userClassesResponse.data;
+      // If user is enrolled in any classes, fetch details for those classes
+      const enrolledClasses = userClasses.length
+        ? await Promise.all(
+            userClasses.map((item) => getClassById(item.classId))
+          )
+        : [];
+      setMyClasses(enrolledClasses);
 
-        // Filter remaining classes that the user is not enrolled in
-        const remainingClasses = allClasses.filter((classItem) => 
-          !enrolledClasses.some((myClass) => myClass._id === classItem._id)
-          && classItem.status !== "EXPIRED")
-        setClasses(remainingClasses);
+      // Fetch all classes
+      const allClassesResponse = await getClasses();
+      if (!allClassesResponse.success)
+        throw new Error("Failed to fetch all classes.");
+      const allClasses = allClassesResponse.data;
 
-        // if (userClasses.length) { // nếu người dùng có tham gia lớp học nào đó
-        //   const classDetailsPromises = data.map((item) =>
-        //     getClassById(item.classId)
-        //   );
-        //   const classDetails = await Promise.all(classDetailsPromises);
-        //   setMyClasses(classDetails);
-
-        //   try {
-        //     const res = await getClasses();
-        //     if (res.success) {
-        //       const allClasses = res.data;
-        //       const remainingClasses = allClasses.filter(
-        //         (classItem) =>
-        //           !classDetails.some((myClass) => myClass._id === classItem._id)
-        //       );
-        //       setClasses(remainingClasses);
-        //     }
-        //   } catch (err) {
-        //     showToast("error", "Có lỗi xảy ra khi lấy thông tin lớp học.");
-        //   }
-        // } else {
-        //   try {
-        //     const res = await getClasses();
-        //     if (res.success) {
-        //       const allClasses = res.data;
-        //       setClasses(allClasses);
-        //     }
-        //   } catch (err) {
-        //     showToast("error", "Có lỗi xảy ra khi lấy thông tin lớp học.");
-        //   }
-        // }
-      // }
+      // Filter remaining classes that the user is not enrolled in
+      const remainingClasses = allClasses.filter(
+        (classItem) =>
+          !enrolledClasses.some((myClass) => myClass._id === classItem._id) &&
+          classItem.status !== "EXPIRED"
+      );
+      setClasses(remainingClasses);
     } catch (err) {
-      showToast("error", err.message || "Có lỗi xảy ra khi lấy thông tin lớp học của bạn.");
+      showToast(
+        "error",
+        err.message || "Có lỗi xảy ra khi lấy thông tin lớp học của bạn."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -207,7 +185,7 @@ export default function Class({ userInfo }) {
   const cardClick = (classItem) => {
     setSelectedClass(classItem);
     setIsOpenDialog(true);
-    if(myClasses.length) {
+    if (myClasses.length) {
       const isRegistered = myClasses.some(
         (registeredClass) => registeredClass._id === classItem._id
       );

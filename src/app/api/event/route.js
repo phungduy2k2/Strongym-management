@@ -57,16 +57,7 @@ export async function GET(req) {
   await connectToDB();
 
   try {
-    // const currentDate = new Date();
-    // const upcomingDate = new Date(currentDate);
-    // upcomingDate.setDate(currentDate.getDate() + 10); // 10 ngày tới
-
     const events = await Event.find({});
-    //   $and: [
-    //     { startDate: { $lte: upcomingDate } },
-    //     { endDate: { $gte: currentDate } },
-    //   ],
-    // });
     if (!events) {
       return NextResponse.json({
         success: false,

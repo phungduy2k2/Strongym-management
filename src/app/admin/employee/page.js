@@ -17,7 +17,7 @@ import { HashLoader } from "react-spinners";
 
 export default function EmployeePage() {
   const [employees, setEmployees] = useState([]);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -115,8 +115,8 @@ export default function EmployeePage() {
       )}
 
       <AddEmployeeModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onSave={handleAddEmployee}
       />
       <Notification />

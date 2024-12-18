@@ -1,7 +1,6 @@
 "use client";
 
 import BlogForm from "@/components/form/blog-form";
-import { useBlogContext } from "@/context";
 import { deleteBlog, getBlogById, updateBlog } from "@/services/blog";
 import { getEmployees } from "@/services/employee";
 import { showToast } from "@/utils";
@@ -13,11 +12,8 @@ export default function BlogEditPage({ params }) {
   const [blog, setBlog] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const { blogs, employees, setBlogs } = useBlogContext()
   const router = useRouter();
   const params_id = params.id;
-
-  // const blog = blogs.find(b => b._id === params_id)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +33,6 @@ export default function BlogEditPage({ params }) {
     try {
       const response = await updateBlog(params.id, updatedBlog);
       if (response.success) {
-        // setBlogs(blogs.map(b => b._id === params_id ? { ...b, ...updatedBlog } : b))
         showToast("success", response.message);
         router.push("/admin/blog");
       } else {

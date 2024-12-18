@@ -114,7 +114,6 @@ export default function AdminClassPage() {
         }
         showToast("success", response.message);
         setIsDialogOpen(false)
-        // fetchClasses()
       } else {
         showToast("error", response.message);
       }
@@ -138,16 +137,16 @@ export default function AdminClassPage() {
     }
   }
 
-  const handleCreatePayment = async (member, cls, method) => {
+  const handleCreatePayment = async (member, classId, className, price, currency, method) => {
     try {
       const paymentData = {
         customer: member.name,
         memberId: member._id,
         membershipPlanId: null,
-        classId: cls._id,
-        amount: cls.price,
-        currency: cls.currency,
-        description: `Thanh toán cho ${cls.name}`,
+        classId: classId,
+        amount: price,
+        currency: currency,
+        description: `Thanh toán cho ${className}`,
         paymentMethod: method
       };
       const response = await createPayment(paymentData);      
@@ -176,11 +175,10 @@ export default function AdminClassPage() {
   }
 
   const handleRegister = (registrationData) => {
+    console.log(registrationData, 'registrationData');
     const member = registrationData.member;
-    const cls = registrationData.class
-    // tạo Payment
-    handleCreatePayment(member, cls, registrationData.paymentMethod);
-    // tạo memberClass
+    const { _id: classId, name: className, price, currency } = registrationData.class
+    handleCreatePayment(member, classId, className, price, currency, registrationData.paymentMethod);
     handleCreateMemberClass(member._id, cls._id);
     setIsPaymentDialogOpen(false)
   }
