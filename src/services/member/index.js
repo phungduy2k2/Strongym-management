@@ -2,7 +2,6 @@ export const getMembers = async () => {
   try {
     const res = await fetch("/api/member", {
       method: "GET",
-      cache: "no-store",
     });
     
     const data = await res.json();

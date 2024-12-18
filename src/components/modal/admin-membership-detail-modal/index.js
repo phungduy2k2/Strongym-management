@@ -27,11 +27,10 @@ export default function AdminMembershipDetailModal({ plan, isOpen, onClose, onSa
         name: plan.name,
         price: plan.price.toString(),
         duration: plan.duration.toString(),
-        description: plan.description
+        description: plan.description,
+        total_member: plan.total_member
       });
-    } else {
-      setFormData(initialFormData);
-    }
+    } 
     setIsFormEdited(false)
   }, [plan]);
 

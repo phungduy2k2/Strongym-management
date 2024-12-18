@@ -1,4 +1,4 @@
-import Membership from "@/components/card/membership-card";
+import Membership from "@/components/membership";
 import { getUserById } from "@/services/user";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -11,5 +11,5 @@ export default async function MembershipPage() {
     return (
       <Membership userInfo={userInfo.data} />
     );
-  } else redirect("/")
+  } else redirect("/onboard")
 }

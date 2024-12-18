@@ -7,10 +7,9 @@ import { getMemberById, updateMember } from "@/services/member";
 import { getAllPlans, updatePlan } from "@/services/membershipPlan";
 import { createPayment } from "@/services/payment";
 import { showToast } from "@/utils";
-import { Elements, useStripe } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { format } from "date-fns";
-import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,17 +18,6 @@ import { HashLoader } from "react-spinners";
 const stripePromise = loadStripe(
   "pk_test_51QFAkUK75TYYGOvNTKpUDWmECZve6RrLFFKddJFlA1tfJqUmcWvmimz2RaP0jPKs6XF1rdzKeeZ3GHJjxRkBGOSo00gWa399z0"
 );
-
-const initialPaymentData = {
-  customer: "",
-  memberId: null,
-  membershipPlanId: null,
-  classId: null,
-  amount: 0,
-  currency: "VND",
-  description: "",
-  paymentMethod: "stripe",
-};
 
 export default function Membership({ userInfo }) {
   const pathname = useSearchParams();
@@ -41,7 +29,7 @@ export default function Membership({ userInfo }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchPlans(), checkActiveMember()])
+      await Promise.all([checkActiveMember(), fetchPlans()])
     }
     fetchData()
   }, []);
@@ -88,7 +76,7 @@ export default function Membership({ userInfo }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ planName: plan.name, price: plan.price }),
+        body: JSON.stringify({ name: plan.name, price: plan.price, currency: "vnd", url: "membership" }),
       });
 
       const data = await response.json();
@@ -109,12 +97,14 @@ export default function Membership({ userInfo }) {
   async function handleCreatePayment(plan) {
     try {
       const paymentData = {
-        ...initialPaymentData,
         customer: userInfo.username,
         memberId: userInfo.memberId,
         membershipPlanId: plan._id,
+        classId: null,
         amount: plan.price,
+        currency: "VND",
         description: `Thanh toán cho ${plan.name}`,
+        paymentMethod: "stripe"
       };
       const response = await createPayment(paymentData);
       if (response.success) {
@@ -171,7 +161,7 @@ export default function Membership({ userInfo }) {
 
   useEffect(() => {
     if (pathname.get("status") === "success") {
-      const isProcessedPayment = sessionStorage.getItem("paymentProcessed")
+      const isProcessedPayment = sessionStorage.getItem("paymentPlanProcessed")
       if (!isProcessedPayment) {
         const currentPlan = JSON.parse(sessionStorage.getItem("currentPlan"));
         const handleData = async () => {
@@ -180,10 +170,10 @@ export default function Membership({ userInfo }) {
             handleUpdateMember(userInfo.memberId, currentPlan),
             handleUpdateMembership(currentPlan)
           ]);
-          //đặt flag là đã hoàn thành cập nhật payment, member, membership; tránh nó chạy lại nếu refresh trang
-          sessionStorage.setItem("paymentProcessed", "true");
         }
         handleData();
+        //đặt flag là đã hoàn thành cập nhật payment, member, membership; tránh nó chạy lại nếu refresh trang
+        sessionStorage.setItem("paymentPlanProcessed", "true");
       }
     }
   }, [pathname]);
@@ -198,11 +188,19 @@ export default function Membership({ userInfo }) {
   return (
     <Elements stripe={stripePromise}>
       <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold mb-8">
+        {isRegistered ? (
+          <div className="flex mb-8 items-center justify-between">
+            <h1 className="text-3xl font-bold">Bạn đang là thành viên phòng tập!</h1>
+            <span className="text-lg italic text-gray-700 font-bold">Ngày kết thúc gói tập của bạn: {format(new Date(currentMember.expiredDate), "dd-MM-yyyy")}</span>
+          </div>
+        ) : (
+          <h1 className="text-3xl font-bold mb-8">Bạn hãy đăng ký gói tập phù hợp nhé!</h1>
+        )}
+        {/* <h1 className="text-3xl font-bold mb-8">
           {isRegistered
-            ? "Bạn đang là thành viên phòng tập!"
+            ? ("Bạn đang là thành viên phòng tập!")
             : "Bạn hãy đăng ký gói tập phù hợp nhé!"}
-        </h1>
+        </h1> */}
         {isLoading ? (
           <div className="flex mt-10 justify-center items-center">
             <HashLoader loading={isLoading} color="#1e293b" size={50} />
@@ -227,7 +225,7 @@ export default function Membership({ userInfo }) {
                   <div>
                     <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                     <span className="text-lg text-gray-600 font-semibold italic">
-                      {plan.price} ₫
+                      {plan.price.toLocaleString("vi-VN")} ₫
                     </span>
                   </div>
                   <div className="flex justify-between space-x-2 mt-4">

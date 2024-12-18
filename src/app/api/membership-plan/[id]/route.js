@@ -20,7 +20,7 @@ export async function GET(req, { params }) {
     if (!plan) {
       return NextResponse.json({ 
         success: false, 
-        message: messages.getPlanById.NOT_FOUND 
+        message: messages.getPlanById.NOT_FOUND
       }, { status: 404 });
     }
     return NextResponse.json({ success: true, data: plan });

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 const schema = Joi.object({
   name: Joi.string().required(),
   birth: Joi.date().required(),
-  gender: Joi.string().required(),
+  gender: Joi.boolean().required(),
   phone: Joi.string().pattern(/^[0]\d{9}$/).required(),
   imageUrl: Joi.string().required(),
   idCard: Joi.string().pattern(/^[0-9]{12}$/).required(),

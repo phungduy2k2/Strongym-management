@@ -139,7 +139,7 @@ export default function AdminMembershipPage() {
                 <div>
                   <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                   <span className="text-lg text-gray-600 font-semibold italic">
-                    {plan.price} ₫
+                    {plan.price.toLocaleString("vi-VN")} ₫
                   </span>
                 </div>
 

@@ -6,7 +6,7 @@ export const getEquipments = async () => {
         })
 
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;
@@ -20,7 +20,7 @@ export const getEquipmentById = async (id) => {
         })
     
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;

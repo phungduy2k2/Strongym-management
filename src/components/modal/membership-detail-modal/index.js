@@ -30,7 +30,7 @@ export default function MembershipDetailModal({ plan, isOpen, onClose }) {
                 <X size={24} />
               </button>
             </div>
-            <p className="text-gray-600 mb-4">{plan.price} ₫</p>
+            <p className="text-gray-600 mb-4">{plan.price.toLocaleString("vi-VN")} ₫</p>
             <div className="prose whitespace-pre-wrap">{plan.description}</div>
           </motion.div>
         </motion.div>

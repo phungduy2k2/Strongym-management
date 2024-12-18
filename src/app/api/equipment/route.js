@@ -8,7 +8,7 @@ const schema = Joi.object({
   name: Joi.string().required(),
   quantity: Joi.number().integer().min(0).required(),
   creatorId: Joi.string().required(),
-  nextMaintenanceDate: Joi.date().optional(),
+  nextMaintenanceDate: Joi.date().allow("").optional(),
 });
 
 export const dynamic = "force-dynamic";
@@ -17,14 +17,13 @@ export const dynamic = "force-dynamic";
 export async function POST(req) {
   await connectToDB();
 
-  const { name, quantity, creatorId, nextMaintenanceDate } = req.json();
-
+  const { name, quantity, creatorId, nextMaintenanceDate } = await req.json();
   const { error } = schema.validate({ name, quantity, creatorId, nextMaintenanceDate });
   if (error) {
     return NextResponse.json({
       success: false,
       message: error.details[0].message,
-    });
+    }, { status: 400 });
   }
 
   try {
@@ -33,6 +32,7 @@ export async function POST(req) {
       return NextResponse.json({
         success: true,
         message: messages.addEquipment.SUCCESS,
+        data: newEquipment
       }, { status: 201 });
     }
   } catch (err) {
@@ -53,7 +53,7 @@ export async function GET(req) {
       return NextResponse.json({
         success: false,
         message: messages.getAllEquipment.NOT_FOUND,
-      });
+      }, { status: 404 });
     } 
     return NextResponse.json({
       success: true,
@@ -64,6 +64,6 @@ export async function GET(req) {
     return NextResponse.json({
       success: false,
       message: messages.getAllEquipment.ERROR,
-    });
+    }, { status: 500 });
   }
 }

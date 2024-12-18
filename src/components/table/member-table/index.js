@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../ui/table";
-import { ChevronDown, ChevronsUpDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, ChevronUp, Upload } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -29,6 +29,7 @@ import {
 } from "../../ui/pagination";
 import { MemberDetailsDialog } from "../../dialog/member-details-dialog";
 import { Label } from "../../ui/label";
+import * as XLSX from "xlsx";
 import { format } from "date-fns";
 
 export default function MemberTable({ members, plans, onUpdateMember, onDeleteMember }) {
@@ -100,6 +101,40 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
     setIsDialogOpen(false)
   }
 
+  const handleExportExcel = () => {
+    const columns = [
+      { header: 'STT', key: 'index' },
+      { header: "Họ và tên", key: "name" },
+      { header: 'Ngày sinh', key: 'birth' },
+      { header: 'Giới tính', key: 'gender' },
+      { header: 'Số điện thoại', key: 'phone' },
+      { header: 'Địa chỉ', key: 'address' },
+      { header: 'Ngày đăng ký', key: 'createdAt' },
+      { header: 'Ngày kết thúc', key: 'expiredDate' },
+      { header: 'Gói tập', key: 'membershipPlanId' },
+      { header: 'Trạng thái', key: 'status' },
+    ]
+
+    const data = members.map((member, index) => ({
+      index: index + 1,
+      name: member.name,
+      birth: member.birth ? format(new Date(member.birth), "dd-MM-yyyy") : "",
+      gender: member.gender === true ? "Nam" : "Nữ",
+      phone: member.phone,
+      address: member.address,
+      createdAt: member.createdAt ? format(new Date(member.createdAt), "dd-MM-yyyy") : "",
+      expiredDate: member.expiredDate ? format(new Date(member.expiredDate), "dd-MM-yyyy") : "",
+      membershipPlanId: member.membershipPlanId?.name || "",
+      status: member.status
+    }))
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.sheet_add_aoa(worksheet, [columns.map(col => col.header)], { origin: "A1" })
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Thành viên")
+    XLSX.writeFile(workbook, "DS_Thanhvien.xlsx")
+  }
+
   return (
     <div className="space-y-4">
       {/* ----- Filter Input and ItemsPerPage -----  */}
@@ -112,6 +147,13 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
         />
         <div className="flex space-x-2 items-center">
           <Label className="mr-3 italic font-bold text-gray-600">Tổng: {members.length}</Label>
+          <Button 
+            onClick={handleExportExcel}
+            className="mr-3 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold shadow"
+          >
+            Xuất Excel
+            <Upload/>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button varian="outline" className="ml-auto bg-primary">
@@ -142,7 +184,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
           <TableHeader className="bg-primary">
             <TableRow className="hover:bg-primary">
               <TableHead className="max-w-[5%] text-center text-white">STT</TableHead>
-              <TableHead className="max-w-[25%] text-white">
+              <TableHead className="max-w-[30%] text-white">
                 <Button
                   variant="ghost"
                   onClick={() => handleSort("name")}
@@ -153,6 +195,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
                 </Button>
               </TableHead>
               <TableHead className="max-w-[10%] text-white">Giới tính</TableHead>
+              <TableHead className="max-w-[15%] text-white">Ngày sinh</TableHead>
               <TableHead className="max-w-[15%] text-white">Số điện thoại</TableHead>
               <TableHead className="max-w-[15%] text-white">
                 <Button
@@ -200,6 +243,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
                 </TableCell>
                 <TableCell>{member.name}</TableCell>
                 <TableCell>{member.gender ? "Nam" : "Nữ"}</TableCell>
+                <TableCell>{format(new Date(member.birth), "dd-MM-yyyy")}</TableCell>
                 <TableCell>{member.phone}</TableCell>
                 <TableCell className="text-center">{format(new Date(member.createdAt), "dd-MM-yyyy")}</TableCell>
                 <TableCell className="text-center">{format(new Date(member.expiredDate), "dd-MM-yyyy")}</TableCell>

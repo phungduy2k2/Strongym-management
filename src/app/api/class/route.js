@@ -9,7 +9,9 @@ const schema = Joi.object({
   imageUrl: Joi.string().optional(),
   trainerId: Joi.string().required(),
   price: Joi.number().integer().min(0).required(),
+  currency: Joi.string().required(),
   description: Joi.string().required(),
+  status: Joi.string().required(),
   startDate: Joi.date().required(),
   endDate: Joi.date().greater(Joi.ref("startDate")).required(),
 });
@@ -18,8 +20,8 @@ export const dynamic = "force-dynamic";
 
 // add new class
 export async function POST(req) {
-  const { name, imageUrl, trainerId, price, description, startDate, endDate } = await req.json();
-  const { error } = schema.validate({ name, imageUrl, trainerId, price, description, startDate, endDate });
+  const { name, imageUrl, trainerId, price, currency, description, status, startDate, endDate } = await req.json();
+  const { error } = schema.validate({ name, imageUrl, trainerId, price, currency, description, status, startDate, endDate });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -37,7 +39,7 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    const newClass = await Class.create({ name, imageUrl, trainerId, price, description, startDate, endDate });
+    const newClass = await Class.create({ name, imageUrl, trainerId, price, currency, description, status, startDate, endDate });
     if (newClass) {
       return NextResponse.json({
         success: true,
