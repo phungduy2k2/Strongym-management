@@ -1,10 +1,14 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Class from "@/models/class";
 import { messages } from "@/utils/message";
 import { NextResponse } from "next/server";
 
 // get class by ID
 export async function GET(req, { params }) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const thisClass = await Class.findById(params.id).populate("trainerId", "name");
@@ -30,6 +34,8 @@ export async function GET(req, { params }) {
 
 //  update class
 export async function PUT(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
   try {
     await connectToDB();
 
@@ -60,6 +66,9 @@ export async function PUT(req, { params }) {
 
 // delete class
 export async function DELETE(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
 

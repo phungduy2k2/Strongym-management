@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Class from "@/models/class";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -20,6 +21,9 @@ export const dynamic = "force-dynamic";
 
 // add new class
 export async function POST(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   const { name, imageUrl, trainerId, price, currency, description, status, startDate, endDate } = await req.json();
   const { error } = schema.validate({ name, imageUrl, trainerId, price, currency, description, status, startDate, endDate });
   if (error) {
@@ -58,6 +62,9 @@ export async function POST(req) {
 
 //get all classes
 export async function GET() {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const allClasses = await Class.find({}).populate("trainerId", "name")

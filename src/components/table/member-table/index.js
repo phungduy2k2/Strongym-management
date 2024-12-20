@@ -115,7 +115,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
       { header: 'Trạng thái', key: 'status' },
     ]
 
-    const data = members.map((member, index) => ({
+    const data = paginatedMembers.map((member, index) => ({
       index: index + 1,
       name: member.name,
       birth: member.birth ? format(new Date(member.birth), "dd-MM-yyyy") : "",
@@ -136,7 +136,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mb-8">
       {/* ----- Filter Input and ItemsPerPage -----  */}
       <div className="flex items-center justify-between">
         <Input
@@ -146,7 +146,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
           className="max-w-sm shadow-sm hover:shadow-md focus:shadow-lg focus:outline-none transition-shadow"
         />
         <div className="flex space-x-2 items-center">
-          <Label className="mr-3 italic font-bold text-gray-600">Tổng: {members.length}</Label>
+          <Label className="mr-3 italic font-bold text-gray-600">Tổng: {paginatedMembers.length}</Label>
           <Button 
             onClick={handleExportExcel}
             className="mr-3 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold shadow"
@@ -157,7 +157,7 @@ export default function MemberTable({ members, plans, onUpdateMember, onDeleteMe
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button varian="outline" className="ml-auto bg-primary">
-                Số dòng mỗi trang: {itemsPerPage}
+                Số dòng: {itemsPerPage}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

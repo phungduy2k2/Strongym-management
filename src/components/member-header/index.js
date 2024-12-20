@@ -44,10 +44,9 @@ function MemberHeader({ user }) {
     },
   ];
 
-  
   return (!isAdminRoute &&
-    <div className="w-full">
-      <header className="flex h-15 p-3 pl-10 w-full shrink-0 justify-between items-center">
+    <div className="w-full ">
+      <header className="flex fixed top-0 left-0 z-50 shadow-md backdrop-blur-md bg-white/30 h-15 p-3 pl-10 w-full shrink-0 justify-between items-center">
         <Sheet>
           <SheetTrigger asChild>
             <Button className="lg:hidden">
@@ -89,13 +88,14 @@ function MemberHeader({ user }) {
             <Link
               key={menuItem.label}
               href={menuItem.path}
-              className="group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium"
+              className={`group inline-flex h-9 w-max items-center rounded-md px-4 py-2 text-sm font-medium
+                ${pathname.endsWith(menuItem.path) ? 'text-blue-700 border-b-2 border-blue-700' : 'hover:text-blue-500'}`}
             >
               {menuItem.label}
             </Link>
             ) : null
           ))}
-          <UserButton afterSignOutUrl="/"/>
+          <UserButton afterSignOutUrl="/" showName />
         </nav>
       </header>
     </div>

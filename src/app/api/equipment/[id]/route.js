@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Equipment from "@/models/equipment";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -13,6 +14,8 @@ const schema = Joi.object({
 
 // get equipment by ID
 export async function GET(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
     try {
       await connectToDB();
       const equipment = await Member.findById(params.id);
@@ -38,6 +41,9 @@ export async function GET(req, { params }) {
 
 // update equipment
 export async function PUT(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   try {
     const { name, quantity, creatorId, nextMaintenanceDate } = await req.json();
     const { error } = schema.validate({ name, quantity, creatorId, nextMaintenanceDate });
@@ -78,6 +84,8 @@ export async function PUT(req, { params }) {
 
 // delete quipment
 export async function DELETE(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
   try {
     await connectToDB();
     const deleteEquipment = await Equipment.findByIdAndDelete(params.id);

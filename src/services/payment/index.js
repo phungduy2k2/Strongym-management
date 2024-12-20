@@ -12,5 +12,20 @@ export const createPayment = async (formData) => {
     return data;
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
+
+export const getPayments = async () => {
+  try {
+    const res = await fetch("/api/payment", {
+      method: "GET",
+    })
+
+    const data = await res.json();
+    return data;
+  } catch(err) {
+    console.error(err);
+    throw err;
+  }
+}

@@ -30,7 +30,7 @@ export default function AdminClassPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchClasses(), fetchTrainers(), fetchMembers()]);
+      await Promise.all([fetchClasses(), fetchTrainers(), fetchActiveMembers()]);
     };
     fetchData();
   }, [])
@@ -56,7 +56,7 @@ export default function AdminClassPage() {
       setIsLoading(true);
       const res = await getEmployees();
       if (res.success) {
-        setTrainers(res.data.filter((item) => item.position.toLowerCase() === "trainer"));
+        setTrainers(res.data.filter(emp => emp.position.toLowerCase() === "trainer"));
       } else {
         showToast("error", res.message)
       }
@@ -67,12 +67,12 @@ export default function AdminClassPage() {
     }
   }
 
-  const fetchMembers = async () => {
+  const fetchActiveMembers = async () => {
     try {
       setIsLoading(true);
       const res = await getMembers();
       if (res.success) {
-        setMembers(res.data);
+        setMembers(res.data.filter(mem => mem.status === "active"));
       } else {
         showToast("error", res.message)
       }
@@ -114,7 +114,6 @@ export default function AdminClassPage() {
         }
         showToast("success", response.message);
         setIsDialogOpen(false)
-        // fetchClasses()
       } else {
         showToast("error", response.message);
       }
@@ -138,16 +137,16 @@ export default function AdminClassPage() {
     }
   }
 
-  const handleCreatePayment = async (member, cls, method) => {
+  const handleCreatePayment = async (member, classId, className, price, currency, method) => {
     try {
       const paymentData = {
         customer: member.name,
         memberId: member._id,
         membershipPlanId: null,
-        classId: cls._id,
-        amount: cls.price,
-        currency: cls.currency,
-        description: `Thanh toán cho ${cls.name}`,
+        classId: classId,
+        amount: price,
+        currency: currency,
+        description: `Thanh toán cho ${className}`,
         paymentMethod: method
       };
       const response = await createPayment(paymentData);      
@@ -176,18 +175,17 @@ export default function AdminClassPage() {
   }
 
   const handleRegister = (registrationData) => {
+    console.log(registrationData, 'registrationData');
     const member = registrationData.member;
-    const cls = registrationData.class
-    // tạo Payment
-    handleCreatePayment(member, cls, registrationData.paymentMethod);
-    // tạo memberClass
+    const { _id: classId, name: className, price, currency } = registrationData.class
+    handleCreatePayment(member, classId, className, price, currency, registrationData.paymentMethod);
     handleCreateMemberClass(member._id, cls._id);
     setIsPaymentDialogOpen(false)
   }
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Admin/Trang lop hoc</h1>
+      <h1 className="text-3xl font-bold mb-6">Danh sách lớp học</h1>
       <div className="mb-6 flex items-center justify-between">
         <Input
           type="text"
@@ -229,7 +227,7 @@ export default function AdminClassPage() {
             Không có lớp học
           </p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredClasses.map((classItem) => (
               <ClassCard
                 key={classItem._id}
@@ -260,7 +258,7 @@ export default function AdminClassPage() {
         isOpen={isPaymentDialogOpen}
         onClose={() => setIsPaymentDialogOpen(false)}
         members={members}
-        classes={classes}
+        classes={classes.filter(cls => cls.status.toLowerCase() !== "expired")}
         onRegister={handleRegister}
       />
 

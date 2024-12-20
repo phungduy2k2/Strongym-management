@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Employee from "@/models/employee";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -19,6 +20,9 @@ export const dynamic = "force-dynamic";
 
 // create employee
 export async function POST(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+
   await connectToDB();
 
   const { name, birth, gender, phone, imageUrl, idCard, address, position } = await req.json();
@@ -78,6 +82,9 @@ export async function POST(req) {
 
 // get all employee
 export async function GET(req) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
     const allEmployees = await Employee.find({});

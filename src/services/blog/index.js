@@ -6,7 +6,7 @@ export const getBlogs = async () => {
         })
 
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;
@@ -20,7 +20,7 @@ export const getBlogById = async (id) => {
         })
     
         const data = await res.json();
-        return data.data;
+        return data;
     } catch (err) {
         console.error(err);
         throw err;

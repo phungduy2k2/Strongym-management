@@ -102,7 +102,7 @@ export default function AdminMembershipPage() {
       <div className="flex justify-between items-center mb-6 ">
         <h1 className="text-2xl font-semibold">Danh sách các gói tập</h1>
         <div>
-          <span className="mr-3 italic font-bold text-gray-600 mr-2">
+          <span className="mr-3 italic font-bold text-gray-600">
             Tổng: {plans.length} gói tập
           </span>
           <Button
@@ -156,6 +156,7 @@ export default function AdminMembershipPage() {
       )}
 
       <AdminMembershipDetailModal
+        key={selectedPlan ? selectedPlan._id : "new"}
         isOpen={isModalOpen}
         plan={selectedPlan}
         onClose={() => setIsModalOpen(false)}

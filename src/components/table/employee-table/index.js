@@ -143,7 +143,7 @@ export default function EmployeeTable({ employees, onUpdate, onDelete }) {
           className="max-w-sm shadow-sm hover:shadow-md focus:shadow-lg focus:outline-none transition-shadow"
         />
         <div>
-          <Label className="italic mr-3 font-bold text-gray-600">Tổng: {employees.length}</Label>
+          <Label className="italic mr-3 font-bold text-gray-600">Tổng: {paginatedEmployees.length}</Label>
           <Button 
             onClick={handleExportExcel}
             className="mr-3 bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold shadow"
@@ -154,7 +154,7 @@ export default function EmployeeTable({ employees, onUpdate, onDelete }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button varian="outline" className="ml-auto bg-primary">
-                Số dòng mỗi trang: {itemsPerPage}
+                Số dòng: {itemsPerPage}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

@@ -10,16 +10,7 @@ const EventSchema = new mongoose.Schema(
       ref: "User",
     },
     startDate: { type: Date, required: true },
-    endDate: {
-      type: Date,
-      required: true,
-      validate: {
-        validator: function (value) {
-          return value > this.startDate;
-        },
-        message: "Ngày kết thúc phải sau ngày bắt đầu.",
-      },
-    },
+    endDate: { type: Date, required: true },
   },
   { timestamps: true }
 );

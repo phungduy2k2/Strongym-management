@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Blog from "@/models/blog";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -7,25 +8,24 @@ import { NextResponse } from "next/server";
 const contentSchema = Joi.object({
   type: Joi.string().valid("text", "image", "video").required(),
   data: Joi.string().required(),
-  metadata: Joi.object({
-    caption: Joi.string().allow("").optional(),
-    resolution: Joi.string().allow("").optional(),
-    size: Joi.number().min(0).optional(),
-  }),
+  _id: Joi.string(),
 });
 
 const schema = Joi.object({
   title: Joi.string().required(),
   content: Joi.array().items(contentSchema).min(1).required(),
   category: Joi.array().items(Joi.string().max(20)).optional(),
-  creatorId: Joi.string().required(),
+  authorId: Joi.string().required(),
 });
 
 // get blog by id
 export async function GET(req, { params }) {
+  const authError = await authorize(req, ["member", "manager"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
-    const blog = await Blog.findById(params.id); ///populate creatorId (User)
+    const blog = await Blog.findById(params.id).populate("authorId", "name"); ///populate creatorId (User)
     if (!blog) {
       return NextResponse.json({
         success: false,
@@ -44,9 +44,12 @@ export async function GET(req, { params }) {
 
 // update blog
 export async function PUT(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+
   try {
-    const blogData = await req.json();
-    const { error } = schema.validate(blogData);
+    const { title, content, category, authorId } = await req.json();
+    const { error } = schema.validate({ title, content, category, authorId });
     if (error) {
       return NextResponse.json({
         success: false,
@@ -55,7 +58,7 @@ export async function PUT(req, { params }) {
     }
 
     await connectToDB();
-    const updatedBlog = await Blog.findByIdAndUpdate(params.id, blogData, {
+    const updatedBlog = await Blog.findByIdAndUpdate(params.id, { title, content, category, authorId}, {
       new: true,
       runValidators: true,
     });
@@ -81,6 +84,9 @@ export async function PUT(req, { params }) {
 
 // delete blog
 export async function DELETE(req, { params }) {
+  const authError = await authorize(req, ["manager"]);
+  if (authError) return authError;
+  
   try {
     await connectToDB();
     const deletedBlog = await Blog.findByIdAndDelete(params.id);

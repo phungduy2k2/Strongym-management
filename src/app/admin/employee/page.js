@@ -1,7 +1,9 @@
 "use client";
 
+import AddEmployeeModal from "@/components/modal/add-employee-modal";
 import Notification from "@/components/Notification";
 import EmployeeTable from "@/components/table/employee-table";
+import { Button } from "@/components/ui/button";
 import {
   createEmployee,
   deleteEmployee,
@@ -9,11 +11,13 @@ import {
   updateEmployee,
 } from "@/services/employee";
 import { showToast } from "@/utils";
+import { CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 
 export default function EmployeePage() {
   const [employees, setEmployees] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,11 +42,11 @@ export default function EmployeePage() {
 
   const handleAddEmployee = async (newEmployee) => {
     try {
-      const res = await createEmployee(newEmployee);
+      const res = await createEmployee(newEmployee);      
       if (res.success) {
         setEmployees((prev) => [...prev, res.data]);
         showToast("success", res.message);
-        //close modal add
+        setIsAddModalOpen(false);
       } else {
         showToast("error", res.message);
       }
@@ -81,13 +85,19 @@ export default function EmployeePage() {
     }
   }
 
-  // if (isLoading) return <div className="flex justify-center items-center">
-  //   <HashLoader loading={isLoading}/>
-  // </div>
-
   return (
     <div className="flex flex-col">
-      <span className="text-3xl font-bold">Admin/Trang Nhân Viên</span>
+      <div className="min-w-screen mb-6 flex justify-between items-center">
+        <span className="text-3xl font-bold">Danh sách nhân viên</span>
+        <Button
+          onClick={() => setIsAddModalOpen(true)}
+          className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
+        >
+          Thêm nhân viên
+        <CirclePlus/>
+        </Button>
+      </div>
+
       {isLoading ? (
         <div className="flex justify-center items-center">
           <HashLoader
@@ -104,6 +114,11 @@ export default function EmployeePage() {
         />
       )}
 
+      <AddEmployeeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddEmployee}
+      />
       <Notification />
     </div>
   );

@@ -206,6 +206,12 @@ export const messages = {
 }
 
 export const dialogMessages = {
+    blog: {
+        ALERT_DIALOG_TITLE: "Bạn có chắc muốn xóa bài viết này?",
+        ALERT_DIALOG_DESCRIPTION: "Hành động này không thể hoàn tác. Nó sẽ xóa vĩnh viễn bài viết.",
+        DELETE: "Xóa",
+        CANCEL: "Hủy",
+    },
     class: {
         ADD_TITLE: "Thêm mới lớp học",
         DETAILS_TITLE: "Chi tiết lớp học",
@@ -243,6 +249,15 @@ export const dialogMessages = {
         NAME: "Tên",
         QUANTITY: "Số lượng",
         NEXT_MAINTENANCE: "Ngày bảo trì tới",
+        SAVE: "Lưu",
+        DELETE: "Xóa",
+        CANCEL: "Hủy",
+    },
+    event: {
+        TITLE: "Tiêu đề",
+        DESCRIPTION: "Mô tả",
+        START_DATE: "Ngày bắt đầu",
+        END_DATE: "Ngày kết thúc",
         SAVE: "Lưu",
         DELETE: "Xóa",
         CANCEL: "Hủy",

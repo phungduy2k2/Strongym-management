@@ -91,7 +91,7 @@ export function EquipmentDialog({ isOpen, onClose, onSave, onDelete, equipment: 
               className="col-span-3"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-3 items-center gap-4">
             <Label htmlFor="nextMaintenanceDate" className="text-right">
               {dialogMessages.eqm.NEXT_MAINTENANCE}
             </Label>
@@ -101,7 +101,7 @@ export function EquipmentDialog({ isOpen, onClose, onSave, onDelete, equipment: 
               type="date"
               value={formData.nextMaintenanceDate ? format(new Date(formData.nextMaintenanceDate), "yyyy-MM-dd") : ""}
               onChange={handleChange}
-              className="col-span-3"
+              className="col-span-2"
             />
           </div>
         </div>

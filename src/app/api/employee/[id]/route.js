@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import { authorize } from "@/lib/middleware";
 import Employee from "@/models/employee";
 import { messages } from "@/utils/message";
 import Joi from "joi";
@@ -21,6 +22,9 @@ const schema = Joi.object({
 
 // get employee by id
 export async function GET(req, { params }) {
+  const authError = await authorize(["manager", "member"]);
+  if (authError) return authError;
+
   try {
     await connectToDB();
     const employee = await Employee.findById(params.id);
@@ -46,6 +50,9 @@ export async function GET(req, { params }) {
 
 // update employee
 export async function PUT(req, { params }) {
+  const authError = await authorize(["manager"]);
+  if (authError) return authError;
+  
   try {
     const { name, birth, gender, phone, imageUrl, idCard, address, position } = await req.json();
 

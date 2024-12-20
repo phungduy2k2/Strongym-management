@@ -1,4 +1,5 @@
 import connectToDB from '@/database';
+import { authorize } from '@/lib/middleware';
 import MembershipPlan from '@/models/membershipPlan';
 import { messages } from '@/utils/message';
 import Joi from 'joi';
@@ -15,6 +16,9 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+    const authError = await authorize(["manager", "member"]);
+    if (authError) return authError;
+    
     try {
         await connectToDB();
         const allPlans = await MembershipPlan.find({});
@@ -32,6 +36,9 @@ export async function GET() {
 }
 
 export async function POST(req) {
+    const authError = await authorize(["manager"]);
+    if (authError) return authError;
+
     const { name, price, duration, description, total_member } = await req.json();
     const { error } = schema.validate({ name, price, duration, description, total_member });
     if (error) {
