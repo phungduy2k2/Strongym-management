@@ -99,7 +99,7 @@ export default function BlogPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredBlogs.map((blog) => (
-            <BlogCard key={blog._id} blog={blog} isAdminView={true} />
+            <BlogCard key={blog._id} blog={blog} />
           ))}
           </div>
         )}

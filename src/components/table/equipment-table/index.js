@@ -196,7 +196,7 @@ export default function EquipmentTable({ eqms, onSave, onDelete }) {
                   {renderSortIcon("name")}
                 </Button>
               </TableHead>
-              <TableHead className="max-w-[10%] text-white">Số lượng</TableHead>
+              <TableHead className="max-w-[10%] text-white text-center">Số lượng</TableHead>
               <TableHead className="max-w-[30%] text-white">
                 <Button
                   variant="ghost"

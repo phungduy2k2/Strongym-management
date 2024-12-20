@@ -130,7 +130,7 @@ export default function OnBoard({ user }) {
                     required
                   >
                     {options.map((option) => (
-                      <div className="flex items-center space-x-2">
+                      <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem
                           value={option.value}
                           id={option.value}

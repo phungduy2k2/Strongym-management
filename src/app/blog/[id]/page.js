@@ -55,7 +55,7 @@ export default function BlogDetailPage({ params }) {
 
       <div className="flex flex-wrap gap-2 mb-6">
         {blog.category.map((categoryItem, index) => (
-          <Badge key={index}>{categoryItem}</Badge>
+          <Badge key={index} className="bg-blue-800 hover:bg-blue-900 text-white">{categoryItem}</Badge>
         ))}
       </div>
 
@@ -63,9 +63,11 @@ export default function BlogDetailPage({ params }) {
         switch (item.type) {
           case "text":
             return (
-              <p key={index} className="mb-6">
-                {item.data}
-              </p>
+              <div key={index} className="mb-6">
+                {item.data.split('\n').map((paragraph, index) => (
+                  <p key={index} className="mb-2">{paragraph}</p>
+                ))}
+              </div>
             );
           case "image":
             return (
@@ -73,7 +75,7 @@ export default function BlogDetailPage({ params }) {
                 key={index}
                 src={item.data}
                 alt="Ảnh minh họa"
-                className="mb-6 max-w-full m-auto h-auto"
+                className="mb-6 max-w-[60%] m-auto h-auto"
               />
             );
           case "video":

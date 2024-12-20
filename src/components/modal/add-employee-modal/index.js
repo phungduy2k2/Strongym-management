@@ -183,7 +183,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onSave }) {
               type="submit"
               className="w-full !mt-12 bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
             >
-              Lưu thành viên
+              Lưu nhân viên
             </Button>
           </form>
         </motion.div>

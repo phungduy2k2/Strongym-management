@@ -4,8 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function BlogCard({ blog, isAdminView = false }) {
-  
+export default function BlogCard({ blog }) {
   return <Card className="w-full max-w-lg justify-between bg-gray-100 hover:bg-gray-200 transition-colors duration-200 ease-in-out hover:shadow-lg hover:scale-105">
     <CardHeader>
         <CardTitle className="text-xl font-bold truncate">

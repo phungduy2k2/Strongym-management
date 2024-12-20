@@ -138,7 +138,7 @@ export default function AdminClassPage() {
   }
 
   const handleCreatePayment = async (member, classId, className, price, currency, method) => {
-    try {
+    try { 
       const paymentData = {
         customer: member.name,
         memberId: member._id,
@@ -179,7 +179,7 @@ export default function AdminClassPage() {
     const member = registrationData.member;
     const { _id: classId, name: className, price, currency } = registrationData.class
     handleCreatePayment(member, classId, className, price, currency, registrationData.paymentMethod);
-    handleCreateMemberClass(member._id, cls._id);
+    handleCreateMemberClass(member._id, classId);
     setIsPaymentDialogOpen(false)
   }
 

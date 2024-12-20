@@ -36,7 +36,7 @@ export default function PaymentTable({ payments }) {
 
   const filteredPayments = useMemo(() => {
     return payments.filter(filterPayments);
-  }, [payments, filterPayments, dateRange]);
+  }, [payments, filterPayments]);
 
   const sortedPayments = useMemo(() => {
     if (!sortColumn) return filteredPayments;
