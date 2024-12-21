@@ -1,6 +1,6 @@
 "use client";
 
-import { createEvent, getAllEvent, updateEvent } from "@/services/event";
+import { createEvent, getAllEvents, updateEvent } from "@/services/event";
 import { showToast } from "@/utils";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
@@ -20,8 +20,7 @@ export default function Event({ userInfo }) {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await getAllEvent();
-        
+        const response = await getAllEvents();        
         if (response.success) {
           setEvents(response.data);
         } else {

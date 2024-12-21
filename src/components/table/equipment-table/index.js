@@ -147,7 +147,7 @@ export default function EquipmentTable({ eqms, onSave, onDelete }) {
         />
         <div className="flex space-x-2 items-center">
           <Label className="mr-3 italic font-bold text-gray-600">
-            Tổng: {eqms.length}
+            Tổng: {filteredEqms.length}
           </Label>
           <Button
             onClick={handleExportExcel}
@@ -159,7 +159,7 @@ export default function EquipmentTable({ eqms, onSave, onDelete }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button varian="outline" className="ml-auto bg-primary">
-                Số dòng mỗi trang: {itemsPerPage}
+                Số dòng: {itemsPerPage}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

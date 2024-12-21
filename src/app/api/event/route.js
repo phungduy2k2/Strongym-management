@@ -51,9 +51,6 @@ export async function POST(req) {
 
 // get all events
 export async function GET(req) {
-  const authError = await authorize(["manager", "member"]);
-  if (authError) return authError;
-
   await connectToDB();
 
   try {

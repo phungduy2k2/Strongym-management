@@ -11,7 +11,7 @@ export default async function Layout({ children }) {
   
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen min-w-[90%]">
+      <div className="flex min-h-screen min-w-[95%]">
         <AdminSidebar userInfo={userInfo.data} />
         <div className="flex-1">
           <div className="py-2 px-1 sm:px-1 lg:px-2">
