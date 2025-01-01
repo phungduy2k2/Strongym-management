@@ -96,7 +96,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
 
         <div>
           <Label htmlFor="category">
-            Từ khóa tìm kiếm (cách nhau bởi dấu phẩy ",")
+            Từ khóa tìm kiếm (cách nhau bởi dấu phẩy)
           </Label>
           <Input
             id="category"
@@ -114,6 +114,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
                   value={item.data}
                   onChange={(e) => handleContentChange(index, e.target.value)}
                   placeholder="Nhập văn bản..."
+                  rows={6}
                 />
               ) : (
                 <Input

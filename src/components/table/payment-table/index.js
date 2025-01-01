@@ -36,7 +36,7 @@ export default function PaymentTable({ payments }) {
 
   const filteredPayments = useMemo(() => {
     return payments.filter(filterPayments);
-  }, [payments, filterPayments, dateRange]);
+  }, [payments, filterPayments]);
 
   const sortedPayments = useMemo(() => {
     if (!sortColumn) return filteredPayments;
@@ -136,7 +136,7 @@ export default function PaymentTable({ payments }) {
         </div>
         <div className="flex space-x-2 items-center">
           <Label className="mr-3 italic font-bold text-gray-600">
-            Tổng: {payments.length}
+            Tổng: {filteredPayments.length}
           </Label>
           <Button
             onClick={handleExportExcel}

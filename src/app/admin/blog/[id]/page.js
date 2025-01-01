@@ -1,9 +1,12 @@
 "use client";
 
 import BlogForm from "@/components/form/blog-form";
+import { Button } from "@/components/ui/button";
 import { deleteBlog, getBlogById, updateBlog } from "@/services/blog";
 import { getEmployees } from "@/services/employee";
 import { showToast } from "@/utils";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
@@ -59,7 +62,14 @@ export default function BlogEditPage({ params }) {
 
   return (
     <div className="container mx-auto mb-6">
-      <h1 className="text-2xl font-bold mb-8">Chi tiết bài viết</h1>
+      <div className="flex">
+        <Link href="/admin/blog" passHref>
+          <Button variant="ghost" className="mr-6">
+            <ArrowLeft className="mr-2 h-4 w-4"/> Quay lại
+          </Button>
+        </Link>
+        <h1 className="text-2xl font-bold mb-8">Chi tiết bài viết</h1>
+      </div>
       {isLoading ? (
         <div className="flex mt-10 justify-center items-center">
           <HashLoader loading={isLoading} color="#1e293b" size={50} />

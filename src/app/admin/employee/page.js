@@ -46,7 +46,7 @@ export default function EmployeePage() {
       if (res.success) {
         setEmployees((prev) => [...prev, res.data]);
         showToast("success", res.message);
-        setIsAddModalOpen(false);
+        setIsModalOpen(false);
       } else {
         showToast("error", res.message);
       }
@@ -90,7 +90,7 @@ export default function EmployeePage() {
       <div className="min-w-screen mb-6 flex justify-between items-center">
         <span className="text-3xl font-bold">Danh sách nhân viên</span>
         <Button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={() => setIsModalOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
         >
           Thêm nhân viên

@@ -1,4 +1,4 @@
-export const getAllEvent = async () => {
+export const getAllEvents = async () => {
     try {
         const res = await fetch("/api/event", {
             method: "GET",

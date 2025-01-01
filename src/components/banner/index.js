@@ -9,9 +9,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { getAllEvents } from "@/services/event";
+import { showToast } from "@/utils";
 
 function Banner() {
-  
+  const [events, setEvents] = React.useState([])
+
+  React.useEffect(() => {
+    fetchEvents()
+  }, [])
+
     const banners = [
     {
       id: 1,
@@ -33,20 +40,33 @@ function Banner() {
     },
   ];
 
+  const fetchEvents = async () => {
+    try {
+      const response = await getAllEvents()
+      if(response.success) {
+        setEvents(response.data)
+      } else {
+        showToast("error", response.message)
+      }
+    } catch(err) {
+      showToast("error", "Có lỗi khi lấy hình ảnh banner.")
+    }
+  }
+
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: false })
   );
 
   return (
-    <div className="">
+    <div className="flex w-[70%] max-h-52 justify-center ">
       <Carousel
         plugins={[plugin.current]}
-        className="w-full max-w-xs"
+        className="w-full"
       >
         <CarouselContent>
-          {banners.map((banner) => (
-            <CarouselItem key={banner.id}>
-              <img src={banner.image} alt={banner.alt} className="" />
+          {events.map((event) => (
+            <CarouselItem key={event.id}>
+              <img src={event.banner} alt={event.title} className="h-52 w-full object-cover" />
             </CarouselItem>
           ))}
         </CarouselContent>
