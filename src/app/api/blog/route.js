@@ -16,13 +16,14 @@ const schema = Joi.object({
   content: Joi.array().items(contentSchema).min(1).required(),
   category: Joi.array().items(Joi.string().max(20)).optional(),
   authorId: Joi.string().required(),
+  approvalStatus: Joi.string().required(),
 });
 
 export const dynamic = "force-dynamic";
 
 //get all blogs
 export async function GET() {
-  const authError = await authorize(["manager", "member"]);
+  const authError = await authorize(["manager", "trainer", "member"]);
   if (authError) return authError;
   
   try {
@@ -43,12 +44,12 @@ export async function GET() {
 
 // add new blog
 export async function POST(req) {
-  const authError = await authorize(req, ["manager"]);
+  const authError = await authorize(req, ["manager", "trainer"]);
   if (authError) return authError;
 
-  const { title, content, category, authorId } = await req.json();
+  const { title, content, category, authorId, approvalStatus } = await req.json();
 
-  const { error } = schema.validate({ title, content, category, authorId });
+  const { error } = schema.validate({ title, content, category, authorId, approvalStatus });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -66,7 +67,7 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    const newBlog = await Blog.create({ title, content, category, authorId });
+    const newBlog = await Blog.create({ title, content, category, authorId, approvalStatus });
     if (newBlog) {
       return NextResponse.json({
         success: true,

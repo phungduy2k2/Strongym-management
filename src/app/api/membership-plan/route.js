@@ -16,7 +16,7 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-    const authError = await authorize(["manager", "member"]);
+    const authError = await authorize(["manager", "trainer", "member"]);
     if (authError) return authError;
     
     try {

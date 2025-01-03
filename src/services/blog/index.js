@@ -76,3 +76,37 @@ export const deleteBlog = async (id) => {
         throw err;
     }
 }
+
+export const acceptBlog = async (id) => {
+    try {
+        const response = await fetch(`/api/blog/${id}/accept`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+              },
+        })
+
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error(`Error accepting blog with id ${id}:`, err);
+        throw err;
+    }
+}
+
+export const rejectBlog = async (id) => {
+    try {
+        const response = await fetch(`/api/blog/${id}/reject`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+              },
+        })
+
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error(`Error rejecting blog with id ${id}:`, err);
+        throw err;
+    }
+}

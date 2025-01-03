@@ -13,7 +13,7 @@ async function Home() {
     redirect("/onboard");
   } else {
     const userInfo = response.data;
-    if (userInfo?.role === "manager") redirect("/admin");
+    if (userInfo?.role === "manager" || userInfo?.role === "trainer") redirect("/admin");
   }
   return (
     <Fragment>

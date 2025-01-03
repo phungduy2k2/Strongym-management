@@ -6,7 +6,6 @@ import { getBlogById } from "@/services/blog";
 import { showToast } from "@/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 

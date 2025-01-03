@@ -13,7 +13,8 @@ const BlogSchema = new mongoose.Schema(
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Employee"
-    }
+    },
+    approvalStatus: { type: String, enum: ["PENDING", "ACCEPTED", "REJECTED"], default: "PENDING" },
   },
   { timestamps: true }
 );

@@ -16,7 +16,7 @@ import { dialogMessages } from "@/utils/message";
 import { CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function BlogForm({ initialData, employees, onSubmit, onDelete }) {
+export default function BlogForm({ initialData, employees, onSubmit, onDelete, author }) {
   const [title, setTitle] = useState("");
   const [authorId, setAuthorId] = useState("");
   const [category, setCategory] = useState("");
@@ -54,9 +54,10 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
     e.preventDefault();
     onSubmit({
       title,
-      authorId,
+      authorId: author?.employeeId || authorId,
       category: category.split(",").map((cat) => cat.trim()),
       content,
+      approvalStatus: "PENDING"
     });
   };
 
@@ -78,7 +79,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
           />
         </div>
 
-        <div>
+        {/* <div>
           <Label htmlFor="authorId">Tác giả</Label>
           <Select value={authorId} onValueChange={setAuthorId} required>
             <SelectTrigger>
@@ -92,7 +93,7 @@ export default function BlogForm({ initialData, employees, onSubmit, onDelete })
               ))}
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
 
         <div>
           <Label htmlFor="category">

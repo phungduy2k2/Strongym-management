@@ -114,6 +114,16 @@ export const messages = {
         SUCCESS: "Xóa bài viết thành công!",
         ERROR: "Có lỗi khi xóa bài viết. Xin thử lại."
     },
+    acceptBlog: {
+        NOT_FOUND: "Không tìm thấy bài viết.",
+        SUCCESS: "Đã duyệt bài viết.",
+        ERROR: "Có lỗi xảy ra khi duyệt chấp nhận bài viết."
+    },
+    rejectBlog: {
+        NOT_FOUND: "Không tìm thấy bài viết.",
+        SUCCESS: "Đã từ chối bài viết.",
+        ERROR: "Có lỗi xảy ra khi duyệt từ chối bài viết."
+    },
 
     /// class
     addClass: {
@@ -130,13 +140,26 @@ export const messages = {
     },
     updateClass: {
         NOT_FOUND: "Không tìm thấy lớp học.",
+        REGISTERED: "Thành viên này đã đăng ký lớp này.",
         SUCCESS: "Cập nhật lớp học thành công!",
-        ERROR: "Có lỗi khi cập nhật lớp học. Xin thử lại."
+        REGISTER_SUCCESS: "Đăng ký lớp học thành công!",
+        ERROR: "Có lỗi khi cập nhật lớp học. Xin thử lại.",
+        REGISTER_ERROR: "Có lỗi khi đăng ký lớp học. Xin thử lại",
     },
     deleteClass: {
         NOT_FOUND: "Không tìm thấy lớp học.",
         SUCCESS: "Xóa lớp học thành công!",
         ERROR: "Có lỗi khi xóa lớp học. Xin thử lại.",
+    },
+    acceptClass: {
+        NOT_FOUND: "Không tìm thấy lớp học.",
+        SUCCESS: "Đã duyệt lớp học.",
+        ERROR: "Có lỗi xảy ra khi duyệt chấp nhận lớp học."
+    },
+    rejectClass: {
+        NOT_FOUND: "Không tìm thấy lớp học.",
+        SUCCESS: "Đã từ chối lớp học.",
+        ERROR: "Có lỗi xảy ra khi duyệt từ chối lớp học."
     },
 
     /// event
@@ -216,20 +239,26 @@ export const dialogMessages = {
         ADD_TITLE: "Thêm mới lớp học",
         DETAILS_TITLE: "Chi tiết lớp học",
         NAME: "Tên lớp",
-        TRAINER: "Giáo viên",
+        TRAINER: "Huấn luyện viên",
         PRICE: "Giá",
         CURRENCY: "Đơn vị tiền",
+        NUMBER: "Sĩ số",
+        LIST_MEMBERS: "Danh sách học viên",
         DESCRIPTION: "Mô tả",
         START_DATE: "Ngày bắt đầu",
         END_DATE: "Ngày kết thúc",
+        SCHEDULE: "Lịch học",
         SAVE_CHANGE: "Lưu thay đổi",
         SAVE_BUTTON: "Lưu lớp học",
         DELETE_BUTTON: "Xóa lớp học",
         REGISTER_BUTTON: "Đăng ký lớp",
+        ACCEPT: "Duyệt",
+        REJECT: "Từ chối",
         ALERT_DIALOG_TITLE: "Bạn có chắc muốn xóa lớp học này?",
         ALERT_DIALOG_DESCRIPTION: "Hành động này không thể hoàn tác. Nó sẽ xóa vĩnh viễn lớp học.",
         DELETE: "Xóa",
         CANCEL: "Hủy",
+        ADD: "Thêm"
     },
     memberClass: {
        TITLE: "Đăng ký học viên",

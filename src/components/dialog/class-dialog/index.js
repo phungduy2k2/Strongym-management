@@ -57,12 +57,16 @@ export default function ClassDialog({ isOpen, onClose, register, class: selected
                 <Label>{dialogMessages.class.PRICE}: </Label>
                 <Label className="text-xl">{classData.price.toLocaleString("vi-VN")} {classData.currency}</Label>
               </div>
+              <div>
+                <Label>{dialogMessages.class.NUMBER}: </Label>
+                <Label className="text-md">{classData.maxStudent}</Label>
+              </div>
             </div>
           </div>
 
           <div className="border-2 rounded-lg p-1">
             <Label>{dialogMessages.class.DESCRIPTION}:</Label>
-            <div className="prose whitespace-pre-wrap">{classData.description}</div>
+            <div className="prose whitespace-pre-wrap overflow-y-auto max-h-[6rem]">{classData.description}</div>
           </div>
 
           <div className="flex gap-4">
@@ -75,6 +79,19 @@ export default function ClassDialog({ isOpen, onClose, register, class: selected
               <span>{classData.endDate ? format(new Date(classData.endDate), "dd-MM-yyyy") : null}</span>
             </div>
           </div>
+
+          <div>
+              <Label>{dialogMessages.class.SCHEDULE}:</Label>
+              <div className="overflow-x-auto mt-2">
+                <div className="flex space-x-2">
+                  {classData.schedule?.map((item, index) => (
+                    <div key={index} className="flex-shrink-0 bg-gray-100 p-2 rounded flex items-center">
+                      <span>{new Date(item.date).toLocaleDateString()} {item.startTime} - {item.endTime}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
         </div>
 
         {/* ----- Footer ----- */}

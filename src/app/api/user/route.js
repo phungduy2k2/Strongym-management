@@ -9,15 +9,16 @@ const schema = Joi.object({
   username: Joi.string().required(),
   email: Joi.string().required(),
   role: Joi.string().required(),
-  memberId: Joi.string().allow(null).optional()
+  memberId: Joi.string().allow(null).optional(),
+  employeeId: Joi.string().allow(null).optional()
 });
 
 // create new User (follow Clerk account)
 export async function POST(req) {
   await connectToDB();
 
-  const { userId, username, email, role, memberId } = await req.json();
-  const { error } = schema.validate({ userId, username, email, role, memberId });
+  const { userId, username, email, role, memberId, employeeId } = await req.json();
+  const { error } = schema.validate({ userId, username, email, role, memberId, employeeId });
   if (error) {
     return NextResponse.json({
       success: false,
@@ -34,7 +35,7 @@ export async function POST(req) {
       }, { status: 409 });
     }
 
-    const newUser = await User.create({ userId, username, email, role, memberId });
+    const newUser = await User.create({ userId, username, email, role, memberId, employeeId });
     if (newUser) {
       return NextResponse.json({
         success: true,

@@ -13,7 +13,7 @@ const schema = Joi.object({
 
 //add new relationship member-class
 export async function POST(req) {
-  const authError = await authorize(["manager", "member"]);
+  const authError = await authorize(["manager", "trainer", "member"]);
   if (authError) return authError;
 
   const { memberId, classId, registrationDate } = await req.json();
@@ -47,7 +47,7 @@ export async function POST(req) {
 
 // get all relationship
 export async function GET() {
-  const authError = await authorize(["manager"]);
+  const authError = await authorize(["manager", "trainer"]);
   if (authError) return authError;
   
     try {

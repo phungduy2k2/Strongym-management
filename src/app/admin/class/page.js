@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from "lucide-react";
-import { AdminClassDialog } from "@/components/dialog/admin-class-dialog";
-import { createClass, deleteClass, getClasses, updateClass } from "@/services/class";
+import { acceptClass, createClass, deleteClass, getClasses, registerClass, rejectClass, updateClass } from "@/services/class";
 import { showToast } from "@/utils";
 import { getEmployees } from "@/services/employee";
 import Notification from "@/components/Notification";
@@ -17,10 +16,13 @@ import { getMembers } from "@/services/member";
 import CreateMemberClassDialog from "@/components/dialog/create-member-class";
 import { createPayment } from "@/services/payment";
 import { createMemberClass } from "@/services/memberClass";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AdminClassDialog from "@/components/dialog/admin-class-dialog";
 
 export default function AdminClassPage() {
   const [ classes, setClasses ] = useState([]);
-  const [ trainers, setTrainers] = useState([]);
+  const [ trainers, setTrainers ] = useState([]);
+  const [ activeTab, setActiveTab ] = useState("ACCEPTED");
   const [ members, setMembers ] = useState([]);
   const [ selectedClass, setSelectedClass ] = useState(null);
   const [ filterValue, setFilterValue ] = useState("");
@@ -88,15 +90,21 @@ export default function AdminClassPage() {
     classItem.name.toLowerCase().includes(debouncedFilterValue.toLowerCase())
   );
 
+  const classesFollowStatus = filteredClasses.filter(cls => cls.approvalStatus === activeTab);
+  const counts = {
+    PENDING: filteredClasses.filter(cls => cls.approvalStatus === "PENDING").length,
+    ACCEPTED: filteredClasses.filter(cls => cls.approvalStatus === "ACCEPTED").length,
+    REJECTED: filteredClasses.filter(cls => cls.approvalStatus === "REJECTED").length,
+  };
+
+  function handleTabChange(value) {
+    setActiveTab(value);
+  }
+
   const cardClick = (classItem) => {
     setSelectedClass(classItem);
     setIsDialogOpen(true)
   };
-
-  const addClick = () => {
-    setSelectedClass(null)
-    setIsDialogOpen(true)
-  }
 
   const saveClass = async (id, updatedClass) => {
     try {
@@ -137,6 +145,43 @@ export default function AdminClassPage() {
     }
   }
 
+  const handleAcceptClass = async (classId) => {
+    try {
+      const response = await acceptClass(classId);
+      console.log(response, 'res accept class');
+          
+      if(response.success) {
+        setIsDialogOpen(false);
+        setClasses((prevClasses) =>
+          prevClasses.map((c) => (c._id === classId ? response.data : c))
+        );
+        showToast("success", response.message);
+      } else {
+        showToast("error", response.message)
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi khi duyệt lớp học.");
+    }
+  }
+
+  const handleRejectClass = async (classId) => {
+    try {
+      const response = await rejectClass(classId);
+          
+      if(response.success) {
+        setIsDialogOpen(false);
+        setClasses((prevClasses) =>
+          prevClasses.map((c) => (c._id === classId ? response.data : c))
+        );
+        showToast("success", response.message);
+      } else {
+        showToast("error", response.message);
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi khi từ chối lớp học.");
+    }
+  }
+
   const handleCreatePayment = async (member, classId, className, price, currency, method) => {
     try { 
       const paymentData = {
@@ -154,6 +199,7 @@ export default function AdminClassPage() {
         showToast("success", response.message);
       } else {
         showToast("error", response.message);
+        throw new Error(response.message);
       }
     } catch (err) {
       console.error(err);
@@ -168,6 +214,21 @@ export default function AdminClassPage() {
         showToast("success", response.message)
       } else {
         showToast("error", response.message)
+        throw new Error(response.message);
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
+  const handleUpdateClass = async (classId, memberId) => {
+    try {
+      const response = await registerClass(classId, memberId)
+      if (response.success) {
+        showToast("success", response.message)
+      } else {
+        showToast("error", response.message)
+        throw new Error(response.message);
       }
     } catch(err) {
       console.error(err)
@@ -175,17 +236,22 @@ export default function AdminClassPage() {
   }
 
   const handleRegister = (registrationData) => {
-    console.log(registrationData, 'registrationData');
     const member = registrationData.member;
     const { _id: classId, name: className, price, currency } = registrationData.class
-    handleCreatePayment(member, classId, className, price, currency, registrationData.paymentMethod);
-    handleCreateMemberClass(member._id, classId);
+    const handleData = async () => {
+      await Promise.all([
+        handleCreatePayment(member, classId, className, price, currency, registrationData.paymentMethod),
+        handleCreateMemberClass(member._id, classId),
+        handleUpdateClass(classId, member._id),
+      ]);
+    };
+    handleData();
     setIsPaymentDialogOpen(false)
   }
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Danh sách lớp học</h1>
+    <div className="container mx-auto mb-8">
+      <h1 className="text-3xl font-bold mb-6">Quản lý lớp học</h1>
       <div className="mb-6 flex items-center justify-between">
         <Input
           type="text"
@@ -203,13 +269,13 @@ export default function AdminClassPage() {
             Thêm học viên
             <CirclePlus/>
           </Button>
-          <Button
+          {/* <Button
             onClick={addClick}
             className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
           >
             Thêm lớp học
             <CirclePlus/>
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -227,15 +293,55 @@ export default function AdminClassPage() {
             Không có lớp học
           </p>
         ) : (
-          <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredClasses.map((classItem) => (
-              <ClassCard
-                key={classItem._id}
-                classItem={classItem}
-                onClick={cardClick}
-              />
-            ))}
+          <Tabs value={activeTab} onValueChange={handleTabChange}>
+          <div className="flex justify-end">
+            <TabsList className="grid grid-cols-3 bg-gray-200 p-1">
+              <TabsTrigger value="PENDING" className={`rounded-md transition-colors ${activeTab === "PENDING" ? "" : "bg-gray-200 hover:bg-gray-300"}`}>
+                Đang chờ ({counts.PENDING})
+              </TabsTrigger>
+              <TabsTrigger value="ACCEPTED" className={`rounded-md transition-colors ${activeTab === "ACCEPTED" ? "" : "bg-gray-200 hover:bg-gray-300"}`}>
+                Đã duyệt ({counts.ACCEPTED})
+              </TabsTrigger>
+              <TabsTrigger value="REJECTED" className={`rounded-md transition-colors ${activeTab === "REJECTED" ? "" : "bg-gray-200 hover:bg-gray-300"}`}>
+                Từ chối ({counts.REJECTED})
+              </TabsTrigger>
+            </TabsList>
           </div>
+
+          <TabsContent value="PENDING" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {classesFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {classesFollowStatus.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
+          </TabsContent>
+          <TabsContent value="ACCEPTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {classesFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {classesFollowStatus.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
+          </TabsContent>
+          <TabsContent value="REJECTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {classesFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {classesFollowStatus.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
+          </TabsContent>
+        </Tabs>
         )
       )}
 
@@ -246,11 +352,10 @@ export default function AdminClassPage() {
           setIsDialogOpen(false)
           setSelectedClass(null)
         }}
-        onSave={saveClass}
-        onDelete={handleDeleteClass}
-        classData={selectedClass}
-        trainerData={trainers}
-        key={selectedClass ? selectedClass._id : 'new'}
+        class={selectedClass}
+        onAccept={handleAcceptClass}
+        onReject={handleRejectClass}
+        key={selectedClass ? selectedClass._id : "new"}
       />
 
       {/* Dialog thêm thành viên vào lớp học */}
@@ -258,7 +363,7 @@ export default function AdminClassPage() {
         isOpen={isPaymentDialogOpen}
         onClose={() => setIsPaymentDialogOpen(false)}
         members={members}
-        classes={classes.filter(cls => cls.status.toLowerCase() !== "expired")}
+        classes={classes.filter(cls => cls.approvalStatus === "ACCEPTED" && cls.status.toLowerCase() !== "expired")}
         onRegister={handleRegister}
       />
 
