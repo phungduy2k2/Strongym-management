@@ -11,6 +11,7 @@ import MembersOverMembershipChart from "@/components/chart/member-over-membershi
 import { getAllPlans } from "@/services/membershipPlan";
 import { getPayments } from "@/services/payment";
 import PaymentOverTimeChart from "@/components/chart/payment-over-time";
+import PaymentOverMethodChart from "@/components/chart/payment-over-method";
 
 export default function AdminHome() {
   const [memberData, setMemberData] = useState(null);
@@ -88,7 +89,8 @@ export default function AdminHome() {
       .sort((a, b) => a.date.localeCompare(b.date));
   };
 
-  const processPaymentData = (data) => {
+  //Xử lý dữ liệu cho biểu đồ doanh thu theo thời gian
+  const processPaymentOverTimeData = (data) => {
     const dailyPayment = data.reduce((acc, payment) => {
       const day = format(parseISO(payment.createdAt), "yyyy-MM-dd");
       acc[day] = (acc[day] || 0) + payment.amount;
@@ -98,6 +100,17 @@ export default function AdminHome() {
     return Object.entries(dailyPayment)
       .map(([date, amount]) => ({ date, amount }))
       .sort((a, b) => a.date.localeCompare(b.date))
+  }
+
+  //Xử lý dữ liệu cho biểu đồ doanh thu theo phương thức
+  const processPaymentByMethodData = (data) => {
+    const paymentByMethod = data.reduce((acc, payment) => {
+      acc[payment.paymentMethod] = (acc[payment.paymentMethod] || 0) + payment.amount
+      return acc
+    }, {})
+  
+    return Object.entries(paymentByMethod)
+      .map(([method, amount]) => ({ method, amount }))
   }
 
   return (
@@ -112,7 +125,8 @@ export default function AdminHome() {
             <>
               <MemberOverTimeChart data={processMemberOverTimeData(memberData)} />
               <MembersOverMembershipChart data={packageData} />
-              <PaymentOverTimeChart data={processPaymentData(paymentData)} />
+              <PaymentOverTimeChart data={processPaymentOverTimeData(paymentData)} />
+              <PaymentOverMethodChart data={processPaymentByMethodData(paymentData)} />
             </>
           )}
         </div>

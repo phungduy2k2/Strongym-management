@@ -6,10 +6,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 export default function ClassCard({ classItem, onClick }) {
   function getNextSession() {
     const currentDate = new Date();
-
+    const currentDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    
     const upcomingSessions = classItem.schedule.filter((session) => {
       const sessionDate = new Date(session.date);
-      return sessionDate >= currentDate;
+      return sessionDate >= currentDay;
     });
 
     if (upcomingSessions.length === 0) return null;

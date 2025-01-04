@@ -19,8 +19,8 @@ export default function PaymentOverTimeChart({ data }) {
       <CardHeader>
         <CardTitle>Biểu đồ Doanh thu theo thời gian</CardTitle>
         <div className="flex justify-between items-center">
-            <CardDescription>Tổng doanh thu theo ngày</CardDescription>
-            <Label className="mr-6 text-md">Tổng: {totalAmount}</Label>
+          <CardDescription>Tổng doanh thu theo ngày</CardDescription>
+          <Label className="mr-6 text-md">Tổng: {totalAmount}</Label>
         </div>
       </CardHeader>
       <CardContent>

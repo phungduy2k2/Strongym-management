@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { initializeApp } from 'firebase/app';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { format } from "date-fns";
+import { Bike, Dumbbell } from "lucide-react";
 
 export const showToast = (type, message) => {
   const position = {
