@@ -12,6 +12,7 @@ import { getAllPlans } from "@/services/membershipPlan";
 import { getPayments } from "@/services/payment";
 import PaymentOverTimeChart from "@/components/chart/payment-over-time";
 import PaymentOverMethodChart from "@/components/chart/payment-over-method";
+import { HashLoader } from "react-spinners";
 
 export default function AdminHome() {
   const [memberData, setMemberData] = useState(null);
@@ -70,13 +71,16 @@ export default function AdminHome() {
 
   // Xử lý dữ liệu cho biểu đồ thành viên theo thời gian
   const processMemberOverTimeData = (data) => {
-    // Nhóm dữ liệu theo tháng (YYYY-MM)
+    const totalActiveMembers = data.filter(member => member.status === "active").length;
+
+    // Nhóm dữ liệu theo tháng (yyyy-MM)
     const monthCounts = data.reduce((acc, member) => {
       const month = format(parseISO(member.createdAt), "yyyy-MM");
       acc[month] = (acc[month] || 0) + 1;
       return acc;
     }, {});
 
+    // Nhóm dữ liệu theo ngày (yyyy-MM-dd)
     const dayCounts = data.reduce((acc, member) => {
       const day = format(parseISO(member.createdAt), "yyyy-MM-dd");
       acc[day] = (acc[day] || 0) + 1;
@@ -84,9 +88,11 @@ export default function AdminHome() {
     }, {});
   
     // Chuyển đổi sang mảng và sắp xếp theo thời gian
-    return Object.entries(dayCounts)
+    const dailyData = Object.entries(dayCounts)
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date));
+
+    return { dailyData, totalActiveMembers };
   };
 
   //Xử lý dữ liệu cho biểu đồ doanh thu theo thời gian
@@ -120,16 +126,22 @@ export default function AdminHome() {
           <Banner/>
         </div>
 
-        <div className="grid mb-8 grid-cols-1 md:grid-cols-2 gap-4">
-          {memberData && (
-            <>
-              <MemberOverTimeChart data={processMemberOverTimeData(memberData)} />
-              <MembersOverMembershipChart data={packageData} />
-              <PaymentOverTimeChart data={processPaymentOverTimeData(paymentData)} />
-              <PaymentOverMethodChart data={processPaymentByMethodData(paymentData)} />
-            </>
-          )}
-        </div>
+        {isLoading ? (
+          <div className="flex mt-16 justify-center items-center">
+            <HashLoader loading={isLoading} color="#1e293b" size={50} />
+          </div>
+        ) : (
+          <div className="grid mb-8 grid-cols-1 md:grid-cols-2 gap-4">
+            {memberData && (
+              <>
+                <MemberOverTimeChart data={processMemberOverTimeData(memberData)} />
+                <MembersOverMembershipChart data={packageData} />
+                <PaymentOverTimeChart data={processPaymentOverTimeData(paymentData)} />
+                <PaymentOverMethodChart data={processPaymentByMethodData(paymentData)} />
+              </>
+            )}
+          </div>
+        )}
 
         <Notification />
       </main>      

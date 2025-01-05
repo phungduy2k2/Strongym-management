@@ -125,7 +125,7 @@ export default function EquipmentTable({ eqms, onSave, onDelete }) {
   return (
     <div className="space-y-4">
       <div className="min-w-screen mb-6 flex justify-between items-center">
-        <span className="text-3xl font-bold">Bảng danh sách thiết bị</span>
+        <span className="text-3xl font-bold">Quản lý thiết bị</span>
         {/* ----- Button "Thêm" ----- */}
         <Button
           onClick={() => setIsDialogOpen(true)}

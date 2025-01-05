@@ -153,7 +153,7 @@ export default function AdminMembershipDetailModal({ plan, isOpen, onClose, onSa
               </div>
               {plan && (
                 <div>
-                  <Label>Số thành viên đăng ký</Label>
+                  <Label>Số thành viên đã đăng ký</Label>
                   <p className="text-gray-600">{plan.total_member || 0}</p>
                 </div>
               )}

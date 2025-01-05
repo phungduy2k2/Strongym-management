@@ -52,6 +52,7 @@ export default function CreateMemberClassDialog({
 
   const filteredMembers = members.filter((member) =>
     member.name.toLowerCase().includes(memberSearch.toLowerCase())
+    || member.phone.includes(memberSearch)
   );
 
   const filteredClasses = classes.filter((cls) =>

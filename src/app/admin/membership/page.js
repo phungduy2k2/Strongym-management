@@ -98,9 +98,9 @@ export default function AdminMembershipPage() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto px-4">
       <div className="flex justify-between items-center mb-6 ">
-        <h1 className="text-2xl font-semibold">Danh sách các gói tập</h1>
+        <h1 className="text-3xl font-bold">Quản lý gói tập</h1>
         <div>
           <span className="mr-3 italic font-bold text-gray-600">
             Tổng: {plans.length} gói tập

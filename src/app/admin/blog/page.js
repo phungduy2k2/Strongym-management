@@ -73,7 +73,7 @@ export default function BlogPage() {
   return (
     <div className="container mx-auto mb-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Quản lý bài viết</h1>
+        <h1 className="text-3xl font-bold">Quản lý bài viết</h1>
         <div>
           <span className="italic mr-3 font-bold text-gray-600">
             Tổng: {filteredBlogs.length} bài viết

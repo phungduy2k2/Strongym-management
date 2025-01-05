@@ -75,7 +75,7 @@ export default function Event({ userInfo }) {
   ) : (
     <div className="container flex flex-col">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Danh sách sự kiện</h1>
+        <h1 className="text-2xl font-bold">Quản lý sự kiện</h1>
         <Button
           onClick={() => setIsDialogOpen(true)}
           className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
