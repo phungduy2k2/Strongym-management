@@ -58,9 +58,9 @@ export default function ServiceItem() {
     >
     <Label className="text-3xl font-bold mb-6">Dịch vụ</Label>
     <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-14 p-6">
-      {serviceData.map((item) => (
+      {serviceData.map((item, index) => (
         // Hexagon Container with proper hexagon shape
-        <div className="relative w-[250px] group">
+        <div key={index} className="relative w-[250px] group">
           <div className="aspect-[1.15/1] flex items-center">
             <div
               className="w-full h-full bg-gray-300 relative flex items-center justify-center overflow-hidden transition-all duration-500"

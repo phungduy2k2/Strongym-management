@@ -17,6 +17,20 @@ export const messages = {
         USER_NOT_FOUND: "Không tìm thấy người dùng này.",
         ERROR: "Có lỗi xảy ra khi tìm thông tin người dùng này."
     },
+    createClerkAccout: {
+        SUCCESS: "Tạo tài khoản Clerk thành công!",
+        ERROR: "Có lỗi xảy ra khi tạo tài khoản Clerk."
+    },
+    deleteUser: {
+        SUCCESS: "Xóa User thành công!",
+        USER_NOT_FOUND: "Không tìm thấy User này.",
+        ERROR: "Có lỗi xảy ra khi xóa User này."
+    },
+    deleteClerkAccount: {
+        SUCCESS: "Xóa tài khoản Clerk thành công",
+        USER_NOT_FOUND: "Không tìm thấy tài khoản này.",
+        ERROR: "Có lỗi xảy ra khi xóa tài khoản Clerk này."
+    },
 
     /// member
     addMember: {

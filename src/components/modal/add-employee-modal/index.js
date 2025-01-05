@@ -23,6 +23,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onSave }) {
     birth: "",
     gender: null,
     idCard: "",
+    email: "",
     phone: "",
     address: "",
     position: "",
@@ -79,6 +80,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onSave }) {
       name: "idCard",
       type: "text",
     },
+    { label: "Email", name: "email", type: "email" },
     { label: "Số điện thoại", name: "phone", type: "text" },
     { label: "Địa chỉ", name: "address", type: "text" },
     {

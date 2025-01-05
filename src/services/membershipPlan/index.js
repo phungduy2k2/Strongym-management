@@ -76,3 +76,19 @@ export const deletePlan = async (id) => {
         throw err;
     }
 }
+
+export const addMemberIntoPlan = async (id) => {
+    try {
+        const res = await fetch(`/api/membership-plan/${id}/up-total`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        console.error(`Error adding a new member into membership plan with id ${id}:`, err);
+        throw err;
+    }
+}

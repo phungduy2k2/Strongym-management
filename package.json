@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/backend": "^1.21.4",
+    "@clerk/clerk-sdk-node": "^5.1.4",
     "@clerk/nextjs": "^6.7.1",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@radix-ui/react-alert-dialog": "^1.1.2",

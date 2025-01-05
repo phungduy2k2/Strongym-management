@@ -35,7 +35,9 @@ export default function BlogPage() {
       setIsLoading(true);
       const res = await getBlogs();
       if (res.success) {
-        setBlogs(res.data);
+        const data = res.data;
+        const acceptedBlogs = data.filter(blog => blog.approvalStatus?.toUpperCase() === "ACCEPTED")
+        setBlogs(acceptedBlogs);
       } else {
         showToast("error", res.message);
       }

@@ -23,7 +23,9 @@ export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
     gender: null,
     phone: "",
     address: "",
+    email: "",
     membershipPlanId: "",
+    paymentMethod: "",
     expiredDate: "",
     status: "active",
   };
@@ -76,11 +78,21 @@ export function AddMemberModal({ plans, isOpen, onClose, onSave }) {
     },
     { label: "Số điện thoại", name: "phone", type: "text" },
     { label: "Địa chỉ", name: "address", type: "text" },
+    { label: "Email", name: "email", type: "email" },
     {
       label: "Gói tập đăng ký",
       name: "membershipPlanId",
       type: "select",
       options: plans.map((plan) => ({ value: plan._id, label: plan.name })),
+    },
+    {
+      label: "Phương thức thanh toán",
+      name: "paymentMethod",
+      type: "select",
+      options: [
+        { value: "cash", label: "Tiền mặt" },
+        { value: "card", label: "Thẻ" }
+      ]
     },
     {
       label: "Ngày kết thúc",

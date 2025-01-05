@@ -132,16 +132,14 @@ export default function TrainerClass({ userInfo }) {
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <div className="flex justify-end">
             <TabsList className="grid grid-cols-3 bg-gray-200 p-1">
-              <TabsTrigger
-                value="PENDING"
+              <TabsTrigger value="PENDING"
                 className={`rounded-md transition-colors ${
                   activeTab === "PENDING" ? "" : "bg-gray-200 hover:bg-gray-300"
                 }`}
               >
                 Đang chờ ({counts.PENDING})
               </TabsTrigger>
-              <TabsTrigger
-                value="ACCEPTED"
+              <TabsTrigger value="ACCEPTED"
                 className={`rounded-md transition-colors ${
                   activeTab === "ACCEPTED"
                     ? ""
@@ -150,8 +148,7 @@ export default function TrainerClass({ userInfo }) {
               >
                 Đã duyệt ({counts.ACCEPTED})
               </TabsTrigger>
-              <TabsTrigger
-                value="REJECTED"
+              <TabsTrigger value="REJECTED"
                 className={`rounded-md transition-colors ${
                   activeTab === "REJECTED"
                     ? ""
@@ -163,35 +160,38 @@ export default function TrainerClass({ userInfo }) {
             </TabsList>
           </div>
 
-          <TabsContent
-            value="PENDING"
-            className="border border-gray-400 rounded-md p-4 min-h-[400px]"
-          >
-            <div className="grid gap-4 md:grid-cols-2">
-              {filteredClasses.map((cls) => (
-                <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
-              ))}
-            </div>
+          <TabsContent value="PENDING" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {filteredClasses.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {filteredClasses.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
           </TabsContent>
-          <TabsContent
-            value="ACCEPTED"
-            className="border border-gray-400 rounded-md p-4 min-h-[400px]"
-          >
-            <div className="grid gap-4 md:grid-cols-2">
-              {filteredClasses.map((cls) => (
-                <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
-              ))}
-            </div>
+          <TabsContent value="ACCEPTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {filteredClasses.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {filteredClasses.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
           </TabsContent>
-          <TabsContent
-            value="REJECTED"
-            className="border border-gray-400 rounded-md p-4 min-h-[400px]"
-          >
-            <div className="grid gap-4 md:grid-cols-2">
-              {filteredClasses.map((cls) => (
-                <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
-              ))}
-            </div>
+          <TabsContent value="REJECTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
+            {filteredClasses.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {filteredClasses.map((cls) => (
+                  <ClassCard key={cls._id} classItem={cls} onClick={cardClick} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có lớp học</p>
+            )}
           </TabsContent>
         </Tabs>
       )}

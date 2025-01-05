@@ -38,8 +38,8 @@ export default function TrainerItem() {
     >
       <Label className="text-3xl font-bold mb-6">Huấn luyện viên</Label>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-14 p-6">
-        {trainerData.map(item => (
-            <Card className="w-[300px] overflow-hidden bg-white shadow-lg hover:shadow-xl transition-shadow">
+        {trainerData.map((item, index) => (
+          <Card key={index} className="w-[300px] overflow-hidden bg-white shadow-lg hover:shadow-xl transition-shadow">
             <div className="relative aspect-square overflow-hidden">
               <img
                 src={item.image}
