@@ -9,6 +9,13 @@ const ClassSchema = new mongoose.Schema(
       ref: "Employee",
       required: true,
     },
+    maxStudent: { type: Number, required: true, min: 1 },
+    memberIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Member"
+      }
+    ],
     price: { type: Number, required: true, min: 0 },
     currency: {
       type: String,
@@ -20,6 +27,14 @@ const ClassSchema = new mongoose.Schema(
     status: { type: String, enum: ["UPCOMING", "ACTIVE", "EXPIRED"], default: "UPCOMING" },
     startDate: { type: Date, required: true, index: true },
     endDate: { type: Date, required: true, index: true },
+    schedule: [
+      {
+        date: { type: Date },
+        startTime: { type: String },
+        endTime: { type: String },
+      },
+    ],
+    approvalStatus: { type: String, enum: ["PENDING", "ACCEPTED", "REJECTED"], default: "PENDING" },
   },
   { timestamps: true }
 );

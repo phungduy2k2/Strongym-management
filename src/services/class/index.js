@@ -76,3 +76,55 @@ export const deleteClass = async (id) => {
     throw err;
   }
 };
+
+export const acceptClass = async (id) => {
+  try {
+    const response = await fetch(`/api/class/${id}/accept`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+       },
+    })
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(`Error accepting class with id ${id}:`, err);
+    throw err;
+  }
+}
+
+export const rejectClass = async (id) => {
+  try {
+    const response = await fetch(`/api/class/${id}/reject`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(`Error rejecting class with id ${id}:`, err);
+    throw err;
+  }
+}
+
+export const registerClass = async (classId, memberId) => {
+  try {
+    const response = await fetch(`/api/class/${classId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ memberId })
+    })
+
+    const data = await response.json()
+    return data;
+  } catch (err) {
+    console.error(`Error registering class with id ${id}:`, err);
+    throw err;
+  }
+}

@@ -2,7 +2,20 @@ import connectToDB from "@/database";
 import { authorize } from "@/lib/middleware";
 import Member from "@/models/member";
 import { messages } from "@/utils/message";
+import Joi from "joi";
 import { NextResponse } from "next/server";
+
+const schema = Joi.object({
+  name: Joi.string().required(),
+  birth: Joi.date().required(),
+  gender: Joi.boolean().required(),
+  phone: Joi.string().pattern(/^[0]\d{9}$/).required(),
+  imageUrl: Joi.string().optional(),
+  address: Joi.string().required(),
+  membershipPlanId: Joi.string().allow(null).optional(),
+  status: Joi.string().required(),
+  expiredDate: Joi.date().required(),
+});
 
 export const dynamic = "force-dynamic";
 
@@ -41,10 +54,18 @@ export async function PUT(req, { params }) {
 
   try {
     await connectToDB();
-    const body = await req.json();    
-    const updateMember = await Member.findByIdAndUpdate(params.id, body, {
-      new: true,
-    }).populate("membershipPlanId", "name");
+    const { name, birth, gender, phone, address, membershipPlanId, status, expiredDate } = await req.json();   
+    
+    const { error } = schema.validate({ name, birth, gender, phone, address, membershipPlanId, status, expiredDate });
+    if (error) {
+      return NextResponse.json({
+        success: false,
+        message: error.details[0].message,
+      }, { status: 400 });
+    }
+    const updateMember = await Member.findByIdAndUpdate(params.id,
+      { name, birth, gender, phone, address, membershipPlanId, status, expiredDate },
+      { new: true }).populate("membershipPlanId", "name");
     if (!updateMember) {
       return NextResponse.json({
         success: false,

@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 // get all members
 export async function GET() {
-  const authError = await authorize(["manager"]);  
+  const authError = await authorize(["manager", "trainer"]);  
   if (authError) return authError;
 
   try {

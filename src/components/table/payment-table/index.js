@@ -105,16 +105,8 @@ export default function PaymentTable({ payments }) {
     <div className="space-y-4">
       <div className="min-w-screen mb-6 flex justify-between items-center">
         <span className="text-3xl font-bold">
-          Bảng danh sách các khoản thanh toán
-        </span>
-        {/* ----- Button "Thêm" ----- */}
-        <Button
-          //   onClick={() => setIsDialogOpen(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white shadow hover:shadow-lg transition-shadow duration-200 ease-in-out"
-        >
-          Thêm
-          <CirclePlus />
-        </Button>
+          Quản lý các khoản thanh toán
+        </span>        
       </div>
 
       {/* ----- Filter Input and ItemsPerPage -----  */}

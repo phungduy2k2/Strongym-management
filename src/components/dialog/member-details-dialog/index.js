@@ -39,7 +39,7 @@ export function MemberDetailsDialog({ member, plans, isOpen, onClose, onSave, on
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(editedMember);
+    onSave({...editedMember, membershipPlanId: typeof editedMember.membershipPlanId === "string" ? editedMember.membershipPlanId : editedMember.membershipPlanId._id});
     setIsChanged(false);
   };
 

@@ -31,36 +31,42 @@ import {
 import { UserButton } from "@clerk/nextjs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { useEffect, useState } from "react";
-// import LanguageSwitcher from "../language-switcher";
 
 export function AdminSidebar({ userInfo }) {
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const { state } = useSidebar;
+
+  const isManager = userInfo.role === "manager";
 
   const items = [
     {
       title: "Trang chủ",
       url: "/admin",
       icon: ChartPie,
+      show: true,
     },
     {
       title: "Thành viên",
       url: "/admin/member",
       icon: UsersRound,
+      show: isManager,
     },
     {
       title: "Nhân viên",
       url: "/admin/employee",
       icon: UserCog,
+      show: isManager,
     },
     {
       title: "Lớp học",
       url: "/admin/class",
       icon: Trello,
+      show: isManager,
     },
     {
       title: "Quản lý",
       icon: Settings,
+      show: isManager,
       subItems: [
         {
           title: "Gói tập",
@@ -88,7 +94,20 @@ export function AdminSidebar({ userInfo }) {
       title: "Doanh thu",
       url: "/admin/payment",
       icon: HandCoins,
+      show: isManager,
     },
+    {
+      title: "Lớp học",
+      url: "/admin/trainer/class",
+      icon: Trello,
+      show: !isManager,
+    },
+    {
+      title: "Bài viết",
+      url: "/admin/trainer/blog",
+      icon: ScrollText,
+      show: !isManager,
+    }
   ];
 
   useEffect(() => {
@@ -120,6 +139,7 @@ export function AdminSidebar({ userInfo }) {
             <SidebarMenu>
               <div className="flex flex-col mt-5 gap-[1.5rem]">
                 {items.map((item) => (
+                  item.show ? 
                   <SidebarMenuItem key={item.title}>
                     {item.subItems ? (
                       <Collapsible open={isCollapseOpen} onOpenChange={setIsCollapseOpen}>
@@ -156,6 +176,7 @@ export function AdminSidebar({ userInfo }) {
                       </SidebarMenuButton>
                     )}
                   </SidebarMenuItem>
+                  : null
                 ))}
               </div>
             </SidebarMenu>

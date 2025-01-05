@@ -4,6 +4,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function ClassCard({ classItem, onClick }) {
+  function getNextSession() {
+    const currentDate = new Date();
+    const currentDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    
+    const upcomingSessions = classItem.schedule.filter((session) => {
+      const sessionDate = new Date(session.date);
+      return sessionDate >= currentDay;
+    });
+
+    if (upcomingSessions.length === 0) return null;
+    return upcomingSessions[0];
+  }
+
+  const nextSession = getNextSession();
+
   return (
     <Card
       className="bg-gradient-to-b from-muted/50 to-muted/20 overflow-hidden cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:bg-primary-foreground group"
@@ -34,10 +49,10 @@ export default function ClassCard({ classItem, onClick }) {
                 </Tooltip>
               </TooltipProvider>
               <p className="text-sm text-gray-600 mb-2 group-hover:text-gray-800 transition-colors duration-300">
-                {classItem.trainerId.name}
+                {classItem.trainerId?.name}
               </p>
               <span
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 mr-3 text-xs font-medium border ${
                   classItem.status === "ACTIVE"
                     ? "bg-green-100 text-green-800 border-green-800"
                     : classItem.status === "UPCOMING"
@@ -47,10 +62,18 @@ export default function ClassCard({ classItem, onClick }) {
               >
                 {classItem.status}
               </span>
+              <span className="text-sm text-gray-700 italic group-hover:text-gray-900 transition-colors duration-300">
+                {new Date(classItem.startDate).toLocaleDateString("vi-VN")} -{" "}
+                {new Date(classItem.endDate).toLocaleDateString("vi-VN")}
+              </span>
             </div>
             <div className="text-sm text-gray-700 italic group-hover:text-gray-900 transition-colors duration-300">
-              {new Date(classItem.startDate).toLocaleDateString("vi-VN")} -{" "}
-              {new Date(classItem.endDate).toLocaleDateString("vi-VN")}
+              Buổi học tới: { nextSession ? (
+                <>
+                  {new Date(nextSession.date).toLocaleDateString("vi-VN")}{"  "}
+                  {nextSession.startTime} - {nextSession.endTime}
+                </>
+              ) : "___" }
             </div>
           </div>
         </div>

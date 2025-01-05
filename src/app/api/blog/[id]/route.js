@@ -20,7 +20,7 @@ const schema = Joi.object({
 
 // get blog by id
 export async function GET(req, { params }) {
-  const authError = await authorize(req, ["member", "manager"]);
+  const authError = await authorize(req, ["member", "trainer", "manager"]);
   if (authError) return authError;
 
   try {

@@ -6,7 +6,7 @@ import {
   showToast,
   uploadImageToFirebase,
 } from "@/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";

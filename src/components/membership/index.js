@@ -194,7 +194,7 @@ export default function Membership({ userInfo }) {
             <span className="text-lg italic text-gray-700 font-bold">Ngày kết thúc gói tập của bạn: {format(new Date(currentMember.expiredDate), "dd-MM-yyyy")}</span>
           </div>
         ) : (
-          <h1 className="text-3xl font-bold mb-8">Bạn hãy đăng ký gói tập phù hợp nhé!</h1>
+          <h1 className="text-3xl font-bold mb-8">Hãy chọn gói tập phù hợp!</h1>
         )}
         {isLoading ? (
           <div className="flex mt-10 justify-center items-center">

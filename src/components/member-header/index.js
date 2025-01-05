@@ -70,7 +70,7 @@ function MemberHeader({ user }) {
                   </Link>
                 ) : null
               ))}
-              <UserButton afterSignOutUrl="/"/>
+              <UserButton afterSignOutUrl="/" showName />
             </div>
           </SheetContent>
         </Sheet>

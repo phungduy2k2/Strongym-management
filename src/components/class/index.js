@@ -1,6 +1,6 @@
 "use client";
 
-import { getClassById, getClasses } from "@/services/class";
+import { getClassById, getClasses, registerClass } from "@/services/class";
 import { showToast } from "@/utils";
 import { useEffect, useState } from "react";
 import { Label } from "../ui/label";
@@ -54,6 +54,7 @@ export default function Class({ userInfo }) {
           )
         : [];
       setMyClasses(enrolledClasses);
+      console.log(enrolledClasses, 'myClasses');      
 
       // Fetch all classes
       const allClassesResponse = await getClasses();
@@ -65,7 +66,7 @@ export default function Class({ userInfo }) {
       const remainingClasses = allClasses.filter(
         (classItem) =>
           !enrolledClasses.some((myClass) => myClass._id === classItem._id) &&
-          classItem.status !== "EXPIRED"
+          classItem.status !== "EXPIRED" && classItem.approvalStatus === "ACCEPTED"
       );
       setClasses(remainingClasses);
     } catch (err) {
@@ -154,6 +155,19 @@ export default function Class({ userInfo }) {
     }
   }
 
+  async function handleUpdateClass(classId, memberId) {
+    try {
+      const response = await registerClass(classId, memberId);
+      if (response.success) {
+        showToast("success", response.message);
+      } else {
+        showToast("error", response.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
     if (pathname.get("status") === "success") {
       const currentClass = JSON.parse(sessionStorage.getItem("currentClass"));
@@ -168,6 +182,7 @@ export default function Class({ userInfo }) {
           await Promise.all([
             handleCreatePayment(currentClass),
             handleCreateMemberClass(currentClass),
+            handleUpdateClass(currentClass._id, userInfo.memberId)
           ]);
         };
         handleData();
@@ -185,14 +200,13 @@ export default function Class({ userInfo }) {
   const cardClick = (classItem) => {
     setSelectedClass(classItem);
     setIsOpenDialog(true);
-    if (myClasses.length) {
-      const isRegistered = myClasses.some(
-        (registeredClass) => registeredClass._id === classItem._id
-      );
-      if (isRegistered) {
-        setIsAllowRegister(false);
-      }
+    const isRegistered = classItem.memberIds?.some(
+      (mem) => mem._id === userInfo.memberId
+    ) || classItem.memberIds?.length >= classItem.maxStudent;
+    if (isRegistered) {
+      setIsAllowRegister(false);
     }
+    
   };
 
   return (

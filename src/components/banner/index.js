@@ -58,7 +58,7 @@ function Banner() {
   );
 
   return (
-    <div className="flex w-[70%] max-h-52 justify-center ">
+    <div className="flex w-[90%] max-h-56 justify-center">
       <Carousel
         plugins={[plugin.current]}
         className="w-full"

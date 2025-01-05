@@ -8,8 +8,10 @@ import { createMember, deleteMember, getMembers, updateMember } from "@/services
 import { AddMemberModal } from "@/components/modal/add-member-modal";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
-import { getAllPlans } from "@/services/membershipPlan";
+import { addMemberIntoPlan, getAllPlans } from "@/services/membershipPlan";
 import { HashLoader } from "react-spinners";
+import { createClerkAccount, createUser } from "@/services/user";
+import { createPayment } from "@/services/payment";
 
 export default function MemberPage() {
   const [members, setMembers] = useState([]);
@@ -32,7 +34,7 @@ export default function MemberPage() {
         setMembers(response.data);
       } else {
         showToast("error", response.message);
-      }
+      }      
     } catch (err) {
       showToast("error", "Có lỗi xảy ra khi lấy thông tin thành viên.");
     } finally {
@@ -55,17 +57,113 @@ export default function MemberPage() {
 
   const handleAddMember = async (newMember) => {
     try {
-      const res = await createMember(newMember);
+      const res = await createMember(newMember);      
       if (res.success) {
         setMembers(prevMembers => [...prevMembers, res.data])
         showToast("success", res.message);
         setIsAddModalOpen(false);
+        return res;
       } else {
         showToast("error", res.message)
+        return res;
       }
     } catch (err) {
       showToast("error", "Có lỗi xảy ra khi thêm thành viên.")
     }
+  }
+
+  // Tạo tài khoản Clerk
+  const handleCreateClerk = async (clerkData) => {
+    try {
+      const res = await createClerkAccount(clerkData)
+      if (res.success) {
+        showToast("success", res.message);
+        return res;
+      } else {
+        showToast("error", res.message)
+        return res;
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi xảy ra khi tạo tài khoản Clerk.")
+    }
+  }
+
+  // Cập nhật total_member của gói tập tăng thêm 1
+  const handleAddMemberIntoPlan = async (planId) => {
+    try {
+      const res = await addMemberIntoPlan(planId);
+      if (res.success) {
+        showToast("success", res.message)
+        return res;
+      } else {
+        showToast("error", res.message)
+        return res;
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi xảy ra khi tăng giá trị tổng thành viên của gói tập.")
+    }
+  }
+
+  // Tạo bản ghi Payment cho thanh toán gói tập
+  const handleCreatePayment = async (paymentData) => {
+    try {
+      const res = await createPayment(paymentData)      
+      if (res.success) {
+        showToast("success", res.message)
+      } else {
+        showToast("error", res.message)
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi xảy ra tạo khoản thanh toán.")
+    }
+  }
+
+  // Hành động sau khi ấn nút LƯU
+  const handleSaveNewMember = async (newMember) => {
+    const {email, paymentMethod, ...memberData} = newMember;
+    
+    const clerkData = {
+      username: newMember.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/\s+/g, "_"),
+      email: email,
+      role: "member"
+    }
+
+    const [addMemberRes, createClerkRes] = await Promise.all([
+      handleAddMember(memberData),
+      handleCreateClerk(clerkData)
+    ])
+    
+    // Tạo bản ghi User (liên kết với bản ghi Member và tài khoản Clerk)
+    try {
+      const newUserData = {
+        userId: createClerkRes.data.id,
+        username: clerkData.username,
+        email: email,
+        memberId: addMemberRes.data._id,
+        role: clerkData.role
+      }
+      const res = await createUser(newUserData);
+      if(res.success) {
+        showToast("success", res.message)
+      } else {
+        showToast("error", res.message)
+      }
+    } catch (err) {
+      showToast("error", "Có lỗi xảy ra khi thêm bản ghi User.")
+    }
+
+    const updatePlanRes = await handleAddMemberIntoPlan(addMemberRes.data.membershipPlanId)
+
+    const paymentData = {
+      customer: addMemberRes.data.name,
+      memberId: addMemberRes.data._id,
+      membershipPlanId: addMemberRes.data.membershipPlanId,
+      amount: updatePlanRes.data.price,
+      currency: "VND",
+      description: `Thanh toán cho ${updatePlanRes.data.name}`,
+      paymentMethod: paymentMethod
+    }
+    await handleCreatePayment(paymentData);
   }
 
   const handleUpdateMember = async (id, updatedMember) => {
@@ -100,7 +198,7 @@ export default function MemberPage() {
   return (
     <div className="flex flex-col">
       <div className="min-w-screen mb-6 flex justify-between items-center">
-        <span className="text-3xl font-bold">Bảng danh sách thành viên</span>
+        <span className="text-3xl font-bold">Quản lý thành viên</span>
         {/* ----- Button "Thêm" ----- */}
         <Button
           onClick={() => setIsAddModalOpen(true)}
@@ -134,7 +232,7 @@ export default function MemberPage() {
         plans={allPlans}
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSave={handleAddMember}
+        onSave={handleSaveNewMember}
       />
       <Notification />
     </div>
