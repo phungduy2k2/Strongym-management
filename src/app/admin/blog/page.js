@@ -112,25 +112,37 @@ export default function BlogPage() {
           </div>
           
           <TabsContent value="PENDING" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
-            <div className="grid gap-4 md:grid-cols-2">
-              {blogsFollowStatus.map(blog => (
-                <BlogCard key={blog._id} blog={blog} />
-              ))}
-            </div>
+            {blogsFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {blogsFollowStatus.map(blog => (
+                  <BlogCard key={blog._id} blog={blog} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có bài viết</p>
+            )}
           </TabsContent>
           <TabsContent value="ACCEPTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
-            <div className="grid gap-4 md:grid-cols-2">
-              {blogsFollowStatus.map(blog => (
-                <BlogCard key={blog._id} blog={blog} />
-              ))}
-            </div>
+            {blogsFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {blogsFollowStatus.map(blog => (
+                  <BlogCard key={blog._id} blog={blog} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có bài viết</p>
+            )}
           </TabsContent>
           <TabsContent value="REJECTED" className="border border-gray-400 rounded-md p-4 min-h-[400px]">
-            <div className="grid gap-4 md:grid-cols-2">
-              {blogsFollowStatus.map(blog => (
-                <BlogCard key={blog._id} blog={blog} />
-              ))}
-            </div>
+            {blogsFollowStatus.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2">
+                {blogsFollowStatus.map(blog => (
+                  <BlogCard key={blog._id} blog={blog} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 mt-6"> Không có bài viết</p>
+            )}
           </TabsContent>
         </Tabs>
       )}
