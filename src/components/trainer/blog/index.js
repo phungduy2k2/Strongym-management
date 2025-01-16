@@ -12,7 +12,7 @@ import { HashLoader } from "react-spinners";
 
 export default function TrainerBlog({ userInfo }) {
   const [myBlogs, setMyBlogs] = useState([]);
-  const [activeTab, setActiveTab] = useState('PENDING')
+  const [activeTab, setActiveTab] = useState("ACCEPTED")
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

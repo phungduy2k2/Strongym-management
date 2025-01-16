@@ -12,7 +12,6 @@ export async function PATCH(req, { params }) {
   try {
     connectToDB();
     const selectedPlan = await MembershipPlan.findOne({ _id: params.id });
-    console.log(selectedPlan, 'selectedPlan');
     
     if (!selectedPlan) {
       return NextResponse.json({

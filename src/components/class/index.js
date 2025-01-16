@@ -53,8 +53,7 @@ export default function Class({ userInfo }) {
             userClasses.map((item) => getClassById(item.classId))
           )
         : [];
-      setMyClasses(enrolledClasses);
-      console.log(enrolledClasses, 'myClasses');      
+      setMyClasses(enrolledClasses);     
 
       // Fetch all classes
       const allClassesResponse = await getClasses();

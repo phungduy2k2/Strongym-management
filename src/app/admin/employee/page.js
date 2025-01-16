@@ -71,7 +71,6 @@ export default function EmployeePage() {
   }
 
   const handleSaveNewEmployee = async (newEmployee) => {
-    console.log(newEmployee, 'newEmployee');
     const {email, ...employeeData} = newEmployee;
 
     if (newEmployee.position === "trainer") {
@@ -84,8 +83,6 @@ export default function EmployeePage() {
         handleAddEmployee(employeeData),
         handleCreateClerk(clerkData)
       ])
-      console.log(addEmployeeRes, 'addEmployeeRes');
-      console.log(createClerkRes, 'createClerkRes');
       
 
       // Tạo bản ghi User (liên kết với bản ghi Employee và tài khoản Clerk)
@@ -97,10 +94,8 @@ export default function EmployeePage() {
           employeeId: addEmployeeRes.data._id,
           role: clerkData.role
         }
-        console.log(newUserData,'newUserData');
         
         const res = await createUser(newUserData);
-        console.log(res, 'res createUser');
         
         if(res.success) {
           showToast("success", res.message)
@@ -135,7 +130,6 @@ export default function EmployeePage() {
   const handleDeleteEmployee = async (id) => {
     try {
       const res = await deleteEmployee(id);
-      console.log(res, 'res delete Employee');
       
       if (res.success) {
         setEmployees (prev => prev.filter(member => member._id !== id))

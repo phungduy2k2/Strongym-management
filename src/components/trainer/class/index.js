@@ -26,13 +26,11 @@ export default function TrainerClass({ userInfo }) {
     try {
       setIsLoading(true);
       const response = await getClasses();
-      console.log(response, "res classes");
 
       if (response.success) {
         const data = response.data.filter(
           (item) => item.trainerId?._id === userInfo.employeeId
         );
-        console.log(data, "my classes");
 
         setMyClasses(data);
       } else {
@@ -76,7 +74,6 @@ export default function TrainerClass({ userInfo }) {
       } else {
         response = await createClass(updatedClass);
       }
-      console.log(response, 'res save class');
       
       if (response.success) {
         if (selectedClass) {
@@ -97,7 +94,6 @@ export default function TrainerClass({ userInfo }) {
   };
 
   const handleDeleteClass = async (classId) => {
-    console.log("class deleted");
     try {
       const response = await deleteClass(classId);
       if (response.success) {

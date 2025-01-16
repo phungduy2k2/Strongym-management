@@ -103,7 +103,6 @@ export function DetailClassDialog({ isOpen, onClose, onSave, onDelete, classData
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(classData, 'classDate before save');
     
     onSave(classData._id, classData);
     setIsChanged(false)

@@ -148,7 +148,6 @@ export default function AdminClassPage() {
   const handleAcceptClass = async (classId) => {
     try {
       const response = await acceptClass(classId);
-      console.log(response, 'res accept class');
           
       if(response.success) {
         setIsDialogOpen(false);
